@@ -1,0 +1,71 @@
+{
+	"name": "Navigation",
+    "options": [
+        {
+            "slug": "home",
+            "name": "Home",
+            "icon": "dashboard",
+            "submenu": [
+                {
+                    "slug": "dashboard",
+                    "name": "Dashboard"
+                },
+                {
+                    "slug": "phone",
+                    "name": "Phone numbers"
+                },
+                {
+                    "slug": "address",
+                    "name": "Addresses",
+                    "subsubmenu": [
+                        {
+                            "slug": "shipping",
+                            "name": "Shipping"
+                        },
+                        {
+                            "slug": "contacts",
+                            "name": "Important contacts"
+                        },
+                        {
+                            "slug": "misc",
+                            "name": "Miscellaneous"
+                        }
+                    ]
+                },
+                {
+                    "slug": "links",
+                    "name": "Useful links"
+                },
+                {
+                    "slug": "numbers",
+                    "name": "Other numbers"
+                }
+            ]
+        },
+        {
+            "slug": "news",
+            "name": "News",
+            "icon": "bullhorn"
+        },
+        {
+            "slug": "docs",
+            "name": "Documents",
+            "icon": "file-text-o"
+        },
+        {
+            "slug": "calendar",
+            "name": "Calendar",
+            "icon": "calendar"
+        },
+        {
+            "slug": "projects",
+            "name": "Projects",
+            "icon": "lightbulb-o"
+        },
+        {
+            "slug": "users",
+            "name": "Users",
+            "icon": "users"
+        }
+    ]
+}

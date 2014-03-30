@@ -1,0 +1,21 @@
+for option in nav_menu.options
+	if option.slug == page		
+		if option.submenu
+			aside
+				nav.sidebar-nav
+					ul
+						for suboption in option.submenu
+							if suboption.slug == subpage && suboption.subsubmenu
+								li.active.sidebar-subnav
+									a(href='/#{page}/#{suboption.slug}' title='#{suboption.name}') #{suboption.name}
+									ul
+										for subsuboption in suboption.subsubmenu
+											if subsuboption.slug == subsubpage
+												li.active: a(href='/#{page}/#{suboption.slug}/#{subsuboption.slug}' title='#{subsuboption.name}') #{subsuboption.name}
+											else
+												li: a(href='/#{page}/#{suboption.slug}/#{subsuboption.slug}' title='#{subsuboption.name}') #{subsuboption.name}
+
+							else if suboption.slug == subpage && !suboption.subsubmenu
+								li.active: a(href='/#{page}/#{suboption.slug}' title='#{suboption.name}') #{suboption.name}
+							else
+								li: a(href='/#{page}/#{suboption.slug}' title='#{suboption.name}') #{suboption.name}

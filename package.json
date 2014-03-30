@@ -1,0 +1,18 @@
+{
+	"name": "Yossarian",
+	"description": "Your friendly neighborhood intranet",
+	"version": "0.0.1",
+	"author": "M.I.B.D.W. <ben@meedoenisbelangrijkerdanwinnen.nl>",
+	"private": true,
+	"dependencies": {
+		"express": "3.x",
+		"jade": "1.3.x",
+		"less-middleware": "0.2.x",
+		"mongoose": "3.8.x",
+		"markdown": "0.5.x"
+	},
+	"license": "MIT",
+	"engines": {
+		"node": ">=0.10"
+	}
+}

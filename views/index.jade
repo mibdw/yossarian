@@ -1,0 +1,13 @@
+doctype html
+html(lang="en")
+	head
+		title #{title}
+		link(href='styles/style.css', rel='stylesheet')
+	body
+		include header.jade
+
+		#main
+			
+			include:md ../public/content/sample.md
+
+		include footer.jade
