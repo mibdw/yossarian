@@ -5,17 +5,24 @@ for option in nav_menu.options
 				nav.sidebar-nav
 					ul
 						for suboption in option.submenu
-							if suboption.slug == subpage && suboption.subsubmenu
-								li.active.sidebar-subnav
-									a(href='/#{page}/#{suboption.slug}' title='#{suboption.name}') #{suboption.name}
-									ul
-										for subsuboption in suboption.subsubmenu
-											if subsuboption.slug == subsubpage
-												li.active: a(href='/#{page}/#{suboption.slug}/#{subsuboption.slug}' title='#{subsuboption.name}') #{subsuboption.name}
-											else
-												li: a(href='/#{page}/#{suboption.slug}/#{subsuboption.slug}' title='#{subsuboption.name}') #{subsuboption.name}
+							if suboption.slug == subpage
+								li.active
+									a(href='/#{page}/#{suboption.slug}' title='#{option.name} \u00BB #{suboption.name}') #{suboption.name}
+									if suboption.subsubmenu
+										ul.sidebar-subnav
+											for subsuboption in suboption.subsubmenu
+												if subsuboption.slug == subsubpage
+													li.active
+														a(href='/#{page}/#{suboption.slug}/#{subsuboption.slug}' title='#{option.name} \u00BB #{suboption.name} \u00BB #{subsuboption.name}') #{subsuboption.name}
+												else
+													li
+														a(href='/#{page}/#{suboption.slug}/#{subsuboption.slug}' title='#{option.name} \u00BB #{suboption.name} \u00BB #{subsuboption.name}') #{subsuboption.name}
 
-							else if suboption.slug == subpage && !suboption.subsubmenu
-								li.active: a(href='/#{page}/#{suboption.slug}' title='#{suboption.name}') #{suboption.name}
 							else
-								li: a(href='/#{page}/#{suboption.slug}' title='#{suboption.name}') #{suboption.name}
+								li
+									a(href='/#{page}/#{suboption.slug}' title='#{option.name} \u00BB #{suboption.name}') #{suboption.name}
+									if suboption.subsubmenu
+										ul.sidebar-subnav
+											for subsuboption in suboption.subsubmenu
+												li
+													a(href='/#{page}/#{suboption.slug}/#{subsuboption.slug}' title='#{option.name} \u00BB #{suboption.name} \u00BB #{subsuboption.name}') #{subsuboption.name}

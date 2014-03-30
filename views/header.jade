@@ -32,21 +32,25 @@ html(lang="en")
 					i.fa.fa-search
 
 			.header-user
-				//- i.fa.fa-user
-				//- span Username
-				a.header-login(href='/login') Login
-				//- i.fa.fa-caret-down
+				i.fa.fa-user
+				span Username
+				//- a.header-login(href='/login') Login
+				i.fa.fa-caret-down
 
 			nav.header-nav
 				ul
 					for option in nav_menu.options 
 						if option.slug == page 
 							if option.slug == 'home'
-								li.active: a(href='/' title='Home'): i(class='fa fa-#{option.icon}')
+								li(id='#{option.slug}').active
+									a(href='/' title='Home'): i(class='fa fa-#{option.icon}')
 							else
-								li.active: a(href='/#{option.slug}' title='#{option.name}'): i(class='fa fa-#{option.icon}')
+								li(id='#{option.slug}').active
+									a(href='/#{option.slug}' title='#{option.name}'): i(class='fa fa-#{option.icon}')
 						else
 							if option.slug == 'home'
-								li: a(href='/' title='Home'): i(class='fa fa-#{option.icon}')
+								li(id='#{option.slug}')
+									a(href='/' title='Home'): i(class='fa fa-#{option.icon}')
 							else
-								li: a(href='/#{option.slug}' title='#{option.name}'): i(class='fa fa-#{option.icon}')
+								li(id='#{option.slug}')
+									a(href='/#{option.slug}' title='#{option.name}'): i(class='fa fa-#{option.icon}')

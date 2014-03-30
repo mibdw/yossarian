@@ -5,14 +5,16 @@ footer
 			for option in nav_menu.options 
 				if option.slug == page 
 					if option.slug == 'home'
-						li.active #{option.name}
+						li(id="#{option.slug}").active #{option.name}
 					else
-						li.active #{option.name}
+						li(id="#{option.slug}").active #{option.name}
 				else
 					if option.slug == 'home'
-						li: a(href='/' title='Home') #{option.name}
+						li(id="#{option.slug}")
+							a(href='/' title='Home') #{option.name}
 					else
-						li: a(href='/#{option.slug}' title='#{option.name}') #{option.name}
+						li(id="#{option.slug}")
+							a(href='/#{option.slug}' title='#{option.name}') #{option.name}
 
 	.footer-credits  
 		a(href='http://meedoenisbelangrijkerdanwinnen.nl' title='#{site_title} by M.I.B.D.W.' target='_blank') Where are the Snowdens of yesteryear?
