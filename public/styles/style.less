@@ -99,6 +99,16 @@ input[type="text"], input[type="search"] {
 	}
 }
 
+// ELEMENTS
+
+.loading {
+	width: 100%;
+	text-align: center;
+	font-size: 3em;
+	color: lighten(@general-text, 60%);
+	margin: 5em 0;
+}
+
 // LAYOUT
 
 body {
@@ -340,80 +350,87 @@ body {
 		}
 	}
 
-	aside {
-		float: left;
-		margin-top: 20px;
-		width: 15%;
-		border-right: 1px solid @general-line;
-		z-index: 888;
+	#main {
+		margin: 0;
+		padding: 0 20px;
 
-		.sidebar-nav {
+		aside {
+			float: left;
+			width: 14.5%;
+			border-right: 1px solid @general-line;
+			z-index: 888;
 
-			ul {
-				list-style-type: none;
-				margin: 0;
-				padding: 15px 0 15px 15px;
-				
+			.sidebar-nav {
 
-				li {
+				ul {
+					list-style-type: none;
+					margin: 0;
+					padding: 15px 0;
+					
+					li > ul { display: none; }
 
-					a {
-						display: block;
-						padding: 5px 5px 5px 20px;
-						border-width: 0;
-						color: lighten(@general-text, 50%);
-						white-space: nowrap;
-						overflow: hidden;
-						text-overflow: ellipsis;
-
-
-						&:hover {
-							color: @general-text;
-						}
-					}
-
-					&.active {
-						border: 1px solid @general-line;
-						border-right: 1px solid @general-background;
-						margin: 5px 0;
-						padding: 5px 0;
-						position: relative;
-						left: 1px;
+					li {
 
 						a {
-							color: @general-text;
-							padding-left: 19px;
+							display: block;
+							padding: 5px 5px 5px 20px;
+							border-width: 0;
+							color: lighten(@general-text, 50%);
+							white-space: nowrap;
+							overflow: hidden;
+							text-overflow: ellipsis;
+
+
+							&:hover {
+								color: @general-text;
+							}
 						}
 
-						&.sidebar-subnav {
+						&.active {
+							border: 1px solid @general-line;
+							border-right: 1px solid @general-background;
+							margin: 5px 0;
+							padding: 5px 0;
+							position: relative;
+							left: 1px;
 
-							ul {
-								margin: 0;
-								padding: 5px 0;
+							a {
+								color: @general-text;
+								padding-left: 19px;
+							}
 
-								li {
+							&.sidebar-subnav {
+
+								ul {
 									margin: 0;
-									padding: 0;
+									padding: 5px 0;
+									display: block;
 
-									a {
-										padding: 3px 0 3px 30px;
+
+									li {
 										margin: 0;
-										color: lighten(@general-text, 50%);
-
-										&:hover { color: lighten(@general-text, 10%); }
-									}
-
-									&.active {
-										border-width: 0;
 										padding: 0;
-										margin: 0;
-										position: relative;
-										left: 0;
-										font-weight: bold;
-
 
 										a {
-											color: lighten(@general-text, 10%); 
+											padding: 3px 0 3px 30px;
+											margin: 0;
+											color: lighten(@general-text, 50%);
+
+											&:hover { color: lighten(@general-text, 10%); }
+										}
+
+										&.active {
+											border-width: 0;
+											padding: 0;
+											margin: 0;
+											position: relative;
+											left: 0;
+											font-weight: bold;
+
+
+											a {
+												color: lighten(@general-text, 10%); 
+											}
 										}
 									}
 								}
@@ -423,14 +440,9 @@ body {
 				}
 			}
 		}
-	}
 
-	#main {
-		margin: 0;
-		padding: 0 20px;
-
-		&.sidebar-present { 
-			margin-left: 16%;
+		#content.sidebar-present { 
+			margin-left: 17%;
 		}
 	}
 

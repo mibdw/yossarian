@@ -1,9 +1,11 @@
 var express = require('express');
 var lessMiddleware = require("less-middleware");
+var routes = require('./handlers/routes');
+var mongoose = require('mongoose');
 var app = express();
 
-// Route handlers
-var routes = require('./handlers/routes');
+// Mongo connection
+mongoose.connect('mongodb://localhost/yossarian');
 
 // View engine
 app.set('view engine', 'jade');
@@ -18,5 +20,5 @@ app.use(express.static('./public'));
 var routes = require('./handlers/routes')(app);
 
 app.listen(3000, function() {
-	console.log('Let\'s get this party started');
+	console.log('Let\'s get this party started (http://localhost:3000)!');
 });
