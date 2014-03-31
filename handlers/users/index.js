@@ -4,9 +4,19 @@ var site_description = pjson.description;
 var nav_menu = require('../nav.json');
 
 exports.index = function(req, res) { 
-	res.render('sections/users', { 
-		site_title: site_title, 
-		nav_menu: nav_menu, 
-		page: "users" 
-	}); 
+
+	
+	if (!req.user) {
+
+		res.redirect('/login');
+
+	} else { 
+		
+		res.render('sections/users', { 
+			user : req.user,
+			site_title: site_title, 
+			nav_menu: nav_menu, 
+			page: "users" 
+		}); 
+	}
 };

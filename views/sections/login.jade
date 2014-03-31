@@ -1,0 +1,25 @@
+doctype html
+html
+	head
+
+		title #{site_title} &mdash; #{site_description}
+
+		link(href='/styles/authentication.css', rel='stylesheet')
+		link(href='/images/yossarian.ico', rel='shortcut icon')
+
+		script(src='/scripts/modernizr.custom.11163.js')
+
+	body.authentication
+
+		div.login 
+
+			div.login-brand
+				span.login-logo
+					include ../branding.jade
+
+			div.login-form
+				h1 Login
+				form(role='form', action='/login', method='post')
+					input(type='text', name='username', placeholder='Enter Username')
+					input(type='password', name='password', placeholder='Password')
+					button(type='submit') Submit

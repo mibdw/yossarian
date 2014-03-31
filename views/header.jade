@@ -1,30 +1,23 @@
 
 doctype html
-html(lang="en")
+html
 	head
 		if page == "home"
 			title #{site_title} &mdash; #{site_description}
 		else
 			for option in nav_menu.options
 				if option.slug == page
-					title #{site_title} &mdash; #{option.name}					
+					title #{site_title} &mdash; #{option.name}
 
 		link(href='/styles/style.css', rel='stylesheet')
 		link(href='/images/yossarian.ico', rel='shortcut icon')
 
-		script(src='/socket.io/socket.io.js')
 		script(src='/scripts/modernizr.custom.11163.js')
 	body
 
 		header 
-			a.header-brand(href="/" title='#{site_title} - Back home')
-				i.fa.fa-cloud.cloud-one
-				i.fa.fa-cloud.cloud-two
-				i.fa.fa-cloud.cloud-three
-				i.fa.fa-cloud.cloud-four
-				i.fa.fa-plane
-				i.fa.fa-cloud.cloud-five
-				i.fa.fa-cloud.cloud-six
+			a.header-brand(href="/" title='#{site_title} - Back home' )
+				include branding.jade
 
 			//- .header-search
 				input(type='search' placeholder='Search')
@@ -33,9 +26,17 @@ html(lang="en")
 
 			.header-user
 				i.fa.fa-user
-				span Username
-				//- a.header-login(href='/login') Login
-				i.fa.fa-caret-down
+				span #{user.username}
+
+				ul.header-user-menu
+					li						
+						a(href='#') 
+							i.fa.fa-male
+							span Profile
+					li
+						a(href='/logout')
+							i.fa.fa-sign-out
+							span Logout  
 
 			nav.header-nav
 				ul

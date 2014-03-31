@@ -1,5 +1,6 @@
 {
 	"name": "Navigation",
+    "logo": "airplane",
     "options": [
         {
             "slug": "home",
