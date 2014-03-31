@@ -6,7 +6,6 @@ var docs = require('./docs');
 var news = require('./news');
 var projects = require('./projects');
 var calendar = require('./calendar');
-var users = require('./users');
 var settings = require('./settings');
 var register = require('./auth/register');
 var login = require('./auth/login');
@@ -35,10 +34,6 @@ module.exports = function (app) {
 	// PROJECTS
 
 	app.get('/projects', projects.index);
-
-	// USERS
-	
-	app.get('/users', users.index);
 
 	// SETTINGS
 	
