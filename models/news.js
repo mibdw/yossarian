@@ -10,3 +10,5 @@ var newsSchema = new Schema({
 	hidden: Boolean,
 	category: String
 });
+
+var News = mongoose.model('News', newsSchema);
