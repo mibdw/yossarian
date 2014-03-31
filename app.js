@@ -13,25 +13,16 @@ app.set('view engine', 'jade');
 app.set('views', './views');
 
 // Main configuration
-app.use(express.logger());
 app.use(express.bodyParser());
 app.use(express.methodOverride());
-app.use(express.cookieParser('your secret here'));
+app.use(express.cookieParser('Where are the Snowdens of yesteryear?'));
 app.use(express.session());
 app.use(passport.initialize());
 app.use(passport.session());
 
 app.use(app.router);
-app.use(lessMiddleware('./public/styles/less', { force: true, dest: './public/styles' }));
+app.use(lessMiddleware('./public', { force: true }));
 app.use(express.static('./public')); 
-
-app.configure('development', function(){
-	app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
-});
-
-app.configure('production', function(){
-	app.use(express.errorHandler());
-});
 
 // Passport config
 var Account = require('./models/account');

@@ -33,13 +33,10 @@ module.exports = function (app) {
 	app.post('/register', register.postregister);
 
 	app.get('/login', login.getlogin);
-	app.post('/login', passport.authenticate('local'), login.postlogin);
+	app.post('/login', login.postlogin);
 
 	app.get('/logout', function(req, res) {
 		req.logout();
 		res.redirect('/');
 	});
-
-
-
 }

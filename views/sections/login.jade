@@ -4,12 +4,16 @@ html
 
 		title #{site_title} &mdash; #{site_description}
 
-		link(href='/styles/authentication.css', rel='stylesheet')
+		link(href='/styles/style.css', rel='stylesheet')
 		link(href='/images/yossarian.ico', rel='shortcut icon')
 
 		script(src='/scripts/modernizr.custom.11163.js')
 
 	body.authentication
+
+		if error_message
+			span.alert #{error_message}. Lets try that again!
+				span.close &times;
 
 		div.login 
 
@@ -18,8 +22,12 @@ html
 					include ../branding.jade
 
 			div.login-form
-				h1 Login
+				h1 #{site_title} <span>&raquo;</span> Login
 				form(role='form', action='/login', method='post')
-					input(type='text', name='username', placeholder='Enter Username')
-					input(type='password', name='password', placeholder='Password')
-					button(type='submit') Submit
+					input.login-username(type='text', name='username', placeholder='Username')
+					input.login-password(type='password', name='password', placeholder='Password')
+					br
+					button(type='submit') Login
+
+		script(src='/scripts/jquery-1.11.0.min.js')
+		script(src='/scripts/yossarian.js')

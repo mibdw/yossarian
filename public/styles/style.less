@@ -131,7 +131,6 @@ body {
 				color: lighten(@header-text, 35%);
 				background-color: darken(@header-background, 3%);
 				border-color: darken(@header-line, 3%);
-				cursor: pointer;
 				
 				.fa-user { background-color: lighten(@header-text, 76%); }
 				.header-user-menu { display: block; }
@@ -351,6 +350,64 @@ body {
 				color: darken(@footer-text, 20%);
 				line-height: 1.15em;
 				border-bottom: 2px solid lighten(@footer-text, 10%);
+			}
+		}
+	}
+
+	&.authentication {
+		background-color: @header-background;
+
+
+		.login {
+			width: 20%;
+			position: absolute;
+			top: 18%;
+			left: 50%;
+			margin-left: -10%;
+			border-radius: 3px;
+
+			.login-brand {
+				margin-bottom: 30px;
+
+				.login-logo {
+					margin: 0 auto;
+					.logo-airplane (150px);
+				}
+			}
+
+			.login-form {
+				text-align: center;
+
+				h1 {
+					text-align: center;
+					font-size: 1.2em;
+					font-weight: normal;
+					color: lighten(@general-text, 50%);
+
+					span {
+						color: lighten(@general-text, 60%);
+						font-size: 0.7em;
+						position: relative;
+						top: -1px;
+					}
+				}
+
+				input {
+					height: 40px;
+					font-size: 1.5em;
+					line-height: 40px;
+					width: 100%;
+					margin-bottom: 5px;
+				}
+
+				button {
+					float: right;
+					position: relative;
+					right: -21px;
+					height: 40px;
+					padding: 0 15px;
+					line-height: 40px;
+				}
 			}
 		}
 	}

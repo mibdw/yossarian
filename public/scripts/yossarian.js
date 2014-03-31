@@ -33,3 +33,6 @@ $('#main').on('click', '.sidebar-nav a', function(event) {
 	document.title = 'Yossarian \u2014 ' + name;
 });
 
+$('.alert .close').click(function() {
+	$(this).parent('.alert').fadeOut(100);
+});

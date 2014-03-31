@@ -1,4 +1,10 @@
+::-webkit-input-placeholder { color: lighten(@general-text, 60%); }
+::-moz-placeholder { color: lighten(@general-text, 60%); }
+:-ms-input-placeholder { color: lighten(@general-text, 60%); }
+
 input[type="text"], input[type="search"], input[type="password"] {
+	font-family: "Clear Sans", Verdana, sans-serif;
+	font-size: 15px;
 	background-color: #fff;
 	border-width: 1px;
 	border-style: solid;
@@ -7,8 +13,26 @@ input[type="text"], input[type="search"], input[type="password"] {
 	border-radius: 3px;
 	padding: 0 10px;
 
-	&:hover, &:focus {
+	&:hover, &:focus, &:active {
 		border-color: darken(#fff, 25%);
+	}
 
+	
+}
+
+button {
+	font-family: "Clear Sans", Verdana, sans-serif;
+	font-size: 15px;
+	background-color: @button-background;
+	border-width: 1px;
+	border-style: solid;
+	border-color: @button-line;
+	color: @button-text;
+	border-radius: 3px;
+	padding: 5px 10px;
+
+	&:hover, &:focus, &:active {
+		background-color: darken(@button-background, 2%);
+		border-color: darken(@button-line, 2%);
 	}
 }
