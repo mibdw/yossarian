@@ -64,9 +64,9 @@
             "icon": "lightbulb-o"
         },
         {
-            "slug": "users",
-            "name": "Users",
-            "icon": "users"
+            "slug": "settings",
+            "name": "Settings",
+            "icon": "wrench"
         }
     ]
 }

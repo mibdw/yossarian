@@ -12,11 +12,11 @@ exports.index = function(req, res) {
 
 	} else { 
 		
-		res.render('sections/users', { 
+		res.render('sections/settings', { 
 			user : req.user,
 			site_title: site_title, 
 			nav_menu: nav_menu, 
-			page: "users" 
+			page: "settings" 
 		}); 
 	}
 };
