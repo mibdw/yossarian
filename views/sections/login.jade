@@ -15,13 +15,16 @@ html
 			span.alert #{error_message}. Lets try that again!
 				span.close &times;
 
-		div.login 
+		.login-top
+		.login-bottom
 
-			div.login-brand
+		.login 
+
+			.login-brand
 				span.login-logo
 					include ../branding.jade
 
-			div.login-form
+			.login-form
 				h1 #{site_title} <span>&raquo;</span> Login
 				form(role='form', action='/login', method='post')
 					input.login-username(type='text', name='username', placeholder='Username')
@@ -29,5 +32,8 @@ html
 					br
 					button(type='submit') Login
 
-		script(src='/scripts/jquery-1.11.0.min.js')
-		script(src='/scripts/yossarian.js')
+		.login-scripts
+			script(src='/scripts/jquery-1.11.0.min.js')
+			script(src='/scripts/yossarian-general.js')
+			script(src='/scripts/yossarian-login.js')
+		

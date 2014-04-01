@@ -6,6 +6,7 @@ var routes = require('./handlers/routes');
 var mongoose = require('mongoose');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
+var RememberMeStrategy = require('passport-remember-me').Strategy;
 var app = express();
 
 // View engine

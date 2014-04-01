@@ -51,4 +51,6 @@ module.exports = function (app) {
 		req.logout();
 		res.redirect('/');
 	});
+
+	app.post('/ajax-login', login.ajaxlogin);
 }
