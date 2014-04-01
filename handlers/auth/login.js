@@ -3,6 +3,7 @@ var site_title = pjson.name;
 var site_description = pjson.description;
 var nav_menu = require('../nav.json');
 var passport = require('passport');
+var now = new Date();
 
 exports.getlogin =  function(req, res) { 
 
@@ -48,7 +49,7 @@ exports.ajaxlogin =  function(req, res, next) {
 
 		if (err) { 
 			
-			console.log('Failed log in attempt by ' + req.body.username + ' (' + err +')');
+			console.log('Failed log in attempt by ' + req.body.username + ' (' + err +') - ' + now.toJSON());
 			res.contentType('json');
 			res.send({ failure: err }); 
 			return next(err); 
@@ -59,7 +60,7 @@ exports.ajaxlogin =  function(req, res, next) {
 
   			req.session.errormessage = info.message;			
 			
-			console.log('Failed log in attempt by ' + req.body.username + ' (' + info.message +')');
+			console.log('Failed log in attempt by ' + req.body.username + ' (' + info.message +') - ' + now.toJSON());
 			
 			res.contentType('json');
 			res.send({ failure: info.message }); 
@@ -70,14 +71,14 @@ exports.ajaxlogin =  function(req, res, next) {
 			if (err) { 
 				req.session.errormessage = info.message;			
 			
-				console.log('Failed log in attempt by ' + req.body.username + ' (' + info.message +')');
+				console.log('Failed log in attempt by ' + req.body.username + ' (' + info.message +') - ' + now.toJSON());
 				
 				res.contentType('json');
 				res.send({ failure: info.message });
 				return next(err);  
 			}	
 
-			console.log('Succesfull login attempt by ' + req.body.username);	
+			console.log('Succesfull login attempt by ' + req.body.username + ' - ' + now.toJSON());	
 			res.contentType('json');
 			res.send({ success: 'success' }); 
 
