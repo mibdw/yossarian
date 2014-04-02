@@ -1,0 +1,114 @@
+
+
+.logo-airplane (@size) {
+	font-size: @size/2.9;
+	display: block;
+	width: @size;
+	height: @size;
+	background-color: @brand-color;
+	color: @general-background;
+	border-radius: @size/2;
+	text-align: center;
+	line-height: @size;
+	overflow: hidden;
+	position: relative;
+	border: 1px solid darken(@brand-color, 10%);
+
+	.cloud-animation (@anim-duration: 2s, @anim-name: clouds, @anim-iteration: infinite) {
+		-webkit-animation-duration: @anim-duration;
+		-moz-animation-duration: @anim-duration;
+		-o-animation-duration: @anim-duration;
+		animation-duration: @anim-duration;
+		-webkit-animation-name: @anim-name;
+		-moz-animation-name: @anim-name;
+		-o-animation-name: @anim-name;
+		animation-name: @anim-name;
+		-webkit-animation-iteration-count: @anim-iteration;
+		-moz-animation-iteration-count: @anim-iteration;
+		-o-animation-iteration-count: @anim-iteration;
+		animation-iteration-count: @anim-iteration;
+		-webkit-animation-timing-function: linear;
+		-moz-animation-timing-function: linear;
+		-o-animation-timing-function: linear;
+		animation-timing-function: linear;
+	}
+
+	@-webkit-keyframes clouds {
+	0% { margin-left: 70%; }
+	100% { margin-left: -70%; }
+	}
+	@-o-keyframes clouds {
+		0% { margin-left: 70%; }
+		100% { margin-left: -70%; }
+	}
+	@-moz-keyframes clouds {
+		0% { margin-left: 70%; }
+		100% { margin-left: -70%; }
+	}
+	@keyframes clouds {
+		0% { margin-left: 70%; }
+		100% { margin-left: -70%; }
+	}
+
+	&:hover {
+		background-color: lighten(@brand-color, 2%);
+	}
+
+	i {
+		position: absolute;
+		left: 30%;
+		opacity: .75;
+
+		&.cloud-one {
+			top: 2%;
+			left: 20%;
+			font-size: .5em;
+			.cloud-animation (12.5s, clouds, infinite); 
+		}
+
+		&.cloud-two { 
+			top: 6%;
+			font-size: .6em;
+			.cloud-animation (11s, clouds, infinite); 
+		}
+
+		&.cloud-three { 
+			top: 20%;
+			font-size: .8em;
+			.cloud-animation (10s, clouds, infinite); 
+		}
+
+		&.cloud-four { 
+			top: 30%;
+			font-size: .9em;
+			.cloud-animation (7s, clouds, infinite); 
+		}
+
+		&.cloud-five { 
+			top: 45%;
+			font-size: .8em;
+			.cloud-animation (6s, clouds, infinite); 
+		}
+
+		&.cloud-six { 
+			top: 65%;
+			font-size: 1.05em;
+			.cloud-animation (5s, clouds, infinite); 
+		}
+
+		&.fa-plane {
+			opacity: 1;
+			top: 50%;
+			left: 50%;
+			font-size: 1.6em;
+			margin-left: -.45em;
+			margin-top: -.45em;
+			color: @header-text;
+			-webkit-transform: rotate(45deg);
+			-moz-transform: rotate(45deg);
+			-ms-transform: rotate(45deg);
+			-o-transform: rotate(45deg);
+			transform: rotate(45deg);
+		}
+	}
+}

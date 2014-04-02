@@ -1,0 +1,49 @@
+@import "normalize.less";
+@import "fonts.less";
+@import "font-awesome.less";
+
+body {
+	font-family: "Clear Sans", Verdana, sans-serif;
+	font-size: 15px;
+	color: @general-text;
+}
+
+a {
+	color: @general-text;
+	text-decoration: none;
+	border-bottom: 2px solid @brand-color;
+	display: inline-block;
+	line-height: 1.15em;
+
+	&:hover {
+		border-bottom-color: darken(@brand-color, 10%);
+	}
+}
+
+.alert {
+	position: absolute;
+	width: 50%;
+	top: 1%;
+	left: 50%;
+	margin-left: -25%;
+	background-color: @alert-background;
+	color: @alert-text;
+	border: 1px solid @alert-line;
+	padding: 10px 35px 10px 15px;
+	border-radius: 3px;
+	z-index: 1111;
+
+	.close {
+		color: darken(@alert-background, 10%);
+		font-weight: bold;
+		position: absolute;
+		top: 5px;
+		right: 15px;
+		font-size: 1.3em;
+
+		&:hover {
+			color: darken(@alert-background, 20%);
+			cursor: pointer;
+		}
+	}
+}

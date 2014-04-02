@@ -22,6 +22,7 @@ $('body').on('click', '.login-form button[type="submit"]', function(event) {
 		data: { 
 			'username': $('.login-username').val(),
 			'password': $('.login-password').val(),
+			'remember_me': $('#rememberme').val()
 		},
 
 		success: function (data) {

@@ -1,21 +1,27 @@
 var passport = require('passport');
-var Account = require('../models/account');
+var Account = require(__dirname + '/../models/account');
 
-var home = require('./home');
-var docs = require('./docs');
-var news = require('./news');
-var projects = require('./projects');
-var calendar = require('./calendar');
-var settings = require('./settings');
-var register = require('./auth/register');
-var login = require('./auth/login');
+var home = require(__dirname + '/home');
+var docs = require(__dirname + '/docs');
+var news = require(__dirname + '/news');
+var projects = require(__dirname + '/projects');
+var calendar = require(__dirname + '/calendar');
+var settings = require(__dirname + '/settings');
+var register = require(__dirname + '/auth/register');
+var login = require(__dirname + '/auth/login');
+
+
+function ensureAuthenticated(req, res, next) {
+  if (req.isAuthenticated()) { return next(); }
+  res.redirect('/login')
+}
 
 module.exports = function (app) {
 
 	// HOME
 
-	app.get('/', home.index);
-	app.get('/home', home.index);
+	app.get('/', ensureAuthenticated, home.index);
+	app.get('/home', ensureAuthenticated, home.index);
 	app.get('/home/:subpage', home.index);
 	app.get('/home/:subpage/:subsubpage', home.index);
 

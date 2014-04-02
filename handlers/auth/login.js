@@ -1,9 +1,24 @@
-var pjson = require('../../package.json');
+var pjson = require(__dirname + '/../../package.json');
 var site_title = pjson.name;
 var site_description = pjson.description;
-var nav_menu = require('../nav.json');
+var nav_menu = require(__dirname + '/../nav.json');
 var passport = require('passport');
 var now = new Date();
+var utils = require('./utils');
+
+var tokens = {}
+
+function consumeRememberMeToken(token, fn) {
+  var uid = tokens[token];
+  // invalidate the single-use token
+  delete tokens[token];
+  return fn(null, uid);
+}
+
+function saveRememberMeToken(token, uid, fn) {
+  tokens[token] = uid;
+  return fn();
+}
 
 exports.getlogin =  function(req, res) { 
 
@@ -47,15 +62,6 @@ exports.ajaxlogin =  function(req, res, next) {
 
   	passport.authenticate('local', function(err, user, info) {
 
-		if (err) { 
-			
-			console.log('Failed log in attempt by ' + req.body.username + ' (' + err +') - ' + now.toJSON());
-			res.contentType('json');
-			res.send({ failure: err }); 
-			return next(err); 
-
-		}
-
 		if (!user) { 
 
   			req.session.errormessage = info.message;			
@@ -65,6 +71,8 @@ exports.ajaxlogin =  function(req, res, next) {
 			res.contentType('json');
 			res.send({ failure: info.message }); 
 		}
+
+
 
 		req.logIn(user, function(err) {
 
@@ -76,7 +84,17 @@ exports.ajaxlogin =  function(req, res, next) {
 				res.contentType('json');
 				res.send({ failure: info.message });
 				return next(err);  
-			}	
+			}
+
+			if (req.body.remember_me) { 
+
+			 	issueToken(user, function(err, token) {
+
+			 		console_log(req.body.remember_me);
+					
+					res.cookie('remember_me', token, { path: '/', httpOnly: true, maxAge: 604800000 });
+				});
+			 }
 
 			console.log('Succesfull login attempt by ' + req.body.username + ' - ' + now.toJSON());	
 			res.contentType('json');
@@ -86,4 +104,6 @@ exports.ajaxlogin =  function(req, res, next) {
 
 	})(req, res);
 
+
 };
+

@@ -1,7 +1,7 @@
-var pjson = require('../../package.json');
+var pjson = require(__dirname + '/../../package.json');
 var site_title = pjson.name;
 var site_description = pjson.description;
-var nav_menu = require('../nav.json');
+var nav_menu = require(__dirname + '/../nav.json');
 
 exports.index = function(req, res) { 
 
