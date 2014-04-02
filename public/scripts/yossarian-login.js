@@ -12,7 +12,8 @@ $('body').on('click', '.login-form button[type="submit"]', function(event) {
 
 	$('.alert').fadeOut(100);
 	$('.alert').remove();
-	$(this).html('<i class="fa fa-refresh fa-spin"></i>');
+
+	$('.login').addClass('loading');
 
 	$.ajax({
 		type: 'POST',
@@ -49,13 +50,13 @@ $('body').on('click', '.login-form button[type="submit"]', function(event) {
 
 				$('body').append('<div class="alert" style="display: none;">' + data.failure + '<span class="close">&times;</span></div>');
 				$('.alert').fadeIn(200);
-				$('.login-form button[type="submit"]').html('Login');
+				$('.login').removeClass('loading');
 
 			} else {
 
 				$('body').append('<div class="alert" style="display: none;">I\'m not sure what\'s going on!<span class="close">&times;</span></div>');
 				$('.alert').fadeIn(200);
-				$('.login-form button[type="submit"]').html('Login');
+				$('.login').removeClass('loading');
 
 			}
 
