@@ -5,18 +5,10 @@ var nav_menu = require(__dirname + '/../nav.json');
 
 exports.index = function(req, res) { 
 
-	
-	if (!req.user) {
-
-		res.redirect('/login');
-
-	} else { 
-		
-		res.render('sections/settings', { 
-			user : req.user,
-			site_title: site_title, 
-			nav_menu: nav_menu, 
-			page: "settings" 
-		}); 
-	}
+	res.render('sections/settings', { 
+		user : req.user,
+		site_title: site_title, 
+		nav_menu: nav_menu, 
+		page: "settings" 
+	});
 };
