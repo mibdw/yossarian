@@ -5,10 +5,12 @@ var nav_menu = require(__dirname + '/../nav.json');
 
 var passport = require('passport');
 var utils = require(__dirname + '/utils');
-var Token = require(__dirname + '/../../models/token')
+
+var User = require(__dirname + '/../../models/user')
 var mongoose = require('mongoose');
 
 var now = new Date();
+
 
 exports.getlogin = function(req, res, next) { 
 
@@ -31,7 +33,7 @@ exports.postlogin =  function(req, res, next) {
 		if (err) { return next(err) }
 		
 		if (!user) {
-			req.session.errormessage = info;
+			req.session.errormessage = info.message;
 			return res.redirect('/login');
 
 			console.log('Failed log in attempt by ' + req.body.username + ' () - ' + now.toJSON());
@@ -39,15 +41,6 @@ exports.postlogin =  function(req, res, next) {
 
 		req.logIn(user, function(err) {
 			if (err) { return next(err); }
-
-			if (req.body.remember_me) {
-
-				var token = utils.randomString(64);
-				Token.save(token, { userId: req.user.id }, function(err) {
-					if (err) { return done(err); }
-					res.cookie('remember_me', token, { path: '/', httpOnly: true, maxAge: 604800000 });
-				});
-			}
 
 			return res.redirect('/');
 
@@ -64,7 +57,7 @@ exports.ajaxlogin =  function(req, res, next) {
 
 		if (!user) { 
 
-  			req.session.errormessage = info;			
+  			req.session.errormessage = info.message;			
 			console.log('Failed log in attempt by ' + req.body.username + ' () - ' + now.toJSON());
 			
 			res.contentType('json');
@@ -73,33 +66,24 @@ exports.ajaxlogin =  function(req, res, next) {
 
 		req.logIn(user, function(err) {
 
+			
 			if (err) { 
-				req.session.errormessage = info;			
+				req.session.errormessage = info.message;			
 			
 				console.log('Failed log in attempt by ' + req.body.username + ' () - ' + now.toJSON());
 				
 				res.contentType('json');
-				res.send({ failure: info });
+				res.send({ failure: info.message });
 				return next(err);  
-			}
-
-			if (req.body.remember_me) {
-
-				var token = utils.randomString(64);
-				Token.save(token, { userId: req.user.id }, function(err) {
-					
-					res.cookie('remember_me', token, { path: '/', httpOnly: true, maxAge: 604800000 });
-				});
-			}
+			}	
 
 			console.log('Succesfull login attempt by ' + req.body.username + ' - ' + now.toJSON());	
+				
 			res.contentType('json');
 			res.send({ success: 'success' }); 
+
 
 		});
 
 	})(req, res);
-
-
 };
-

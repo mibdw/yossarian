@@ -5,8 +5,7 @@ var express = require('express');
 var mongodb = require('mongodb');
 var mongoose = require('mongoose');
 
-var User = require(__dirname + '/models/user')
-var Token = require(__dirname + '/models/token')
+var User = require(__dirname + '/models/user');
 
 var less = require('less-middleware');
 
@@ -22,73 +21,37 @@ mongoose.connection.once('open', function callback() {
 	  console.log('Connected to database');
 });
 
-// FAKE TOKEN DATABASE
-
-function consumeRememberMeToken(token, fn) {
-	var uid = tokens[token];
-	// invalidate the single-use token
-	delete tokens[token];
-	return fn(null, uid);
-}
-
-function saveRememberMeToken(token, uid, fn) {
-	tokens[token] = uid;
-	return fn();
-}
 
 // PASSPORT CONNECTION
 
 passport.serializeUser(function(user, done) {
-	done(null, user.id);
+	done(null, user.email);
 });
 
-passport.deserializeUser(function(id, done) {
-	User.findById(id, function (err, user) {
+passport.deserializeUser(function(email, done) {
+	User.findOne( { email: email } , function (err, user) {
 		done(err, user);
 	});
-}); 
+});
 
-passport.use(new LocalStrategy(function(username, password, done) {
+passport.use(new LocalStrategy(
+	function(username, password, done) {
 
-	User.findOne({ username: username }, function(err, user) {
-		if (err) { return done(err); }
-		if (!user) { return done(null, false, { message: 'Unknown user ' + username }); }
-		user.comparePassword(password, function(err, isMatch) {
-			if (err) return done(err);
-			if(isMatch) {
-				return done(null, user);
-			} else {
-				return done(null, false, { message: 'Invalid password' });
-			}
-		});
-	});
-}));
-
-// REMEMBER ME
-
-passport.use(new RememberMeStrategy(
-	function(token, done) {
-		consumeRememberMeToken(token, function(err, uid) {
+		User.findOne({ username: username }, function(err, user) {
 			if (err) { return done(err); }
-			if (!uid) { return done(null, false); }
-
-			findById(uid, function(err, user) {
-				if (err) { return done(err); }
-				if (!user) { return done(null, false); }
-				return done(null, user);
+			if (!user) { return done(null, false, { message: 'Unknown user ' + username }); }
+			
+			user.comparePassword(password, function(err, isMatch) {
+				if (err) return done(err);
+				if(isMatch) {
+					return done(null, user);
+				} else {
+					return done(null, false, { message: 'Invalid password' });
+				}
 			});
 		});
-	},
-	issueToken
+	}
 ));
-
-function issueToken(user, done) {
-	var token = utils.randomString(64);
-	saveRememberMeToken(token, user.id, function(err) {
-		if (err) { return done(err); }
-		return done(null, token);
-	});
-}
 
 var app = express();
 
@@ -107,7 +70,6 @@ app.configure(function (){
 
 	app.use(passport.initialize());
 	app.use(passport.session());
-	app.use(passport.authenticate('remember-me'));
 
 	app.use(app.router);
 
@@ -125,3 +87,5 @@ var routes = require(__dirname + '/handlers/routes')(app);
 app.listen(3000, function() {
 	console.log('\n----------\nYOSSARIAN\n----------\n\nLet\'s get this party started (http://localhost:3000)!');
 });
+
+User.findOneAndRemove({name: 'admin'}).exec();

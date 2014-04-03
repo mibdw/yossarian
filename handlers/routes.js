@@ -43,7 +43,6 @@ module.exports = function (app, res, req, next) {
 	app.post('/login', login.postlogin);
 
 	app.get('/logout', function(req, res) {
-		res.clearCookie('remember_me');
 		req.logout();
 		res.redirect('/');
 	});
