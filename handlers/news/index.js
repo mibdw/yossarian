@@ -12,3 +12,13 @@ exports.index = function(req, res) {
 		page: "news" 
 	}); 
 };
+
+exports.addition = function(req, res) { 
+		
+	res.render('sections/news', { 
+		user : req.user,
+		site_title: site_title,  
+		nav_menu: nav_menu,
+		page: "news" 
+	}); 
+};
