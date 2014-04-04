@@ -5,11 +5,21 @@
         {
             "slug": "home",
             "name": "Home",
-            "icon": "dashboard",
+            "icon": "dashboard"
+        },
+        {
+            "slug": "news",
+            "name": "News",
+            "icon": "bullhorn"
+        },
+        {
+            "slug": "docs",
+            "name": "Documents",
+            "icon": "file-text-o",
             "submenu": [
                 {
-                    "slug": "dashboard",
-                    "name": "Dashboard"
+                    "slug": "overview",
+                    "name": "Overview"
                 },
                 {
                     "slug": "phone",
@@ -42,16 +52,6 @@
                     "name": "Other numbers"
                 }
             ]
-        },
-        {
-            "slug": "news",
-            "name": "News",
-            "icon": "bullhorn"
-        },
-        {
-            "slug": "docs",
-            "name": "Documents",
-            "icon": "file-text-o"
         },
         {
             "slug": "calendar",

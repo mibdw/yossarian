@@ -1,6 +1,6 @@
 var passport = require('passport');
 
-var home = require(__dirname + '/home');
+var dashboard = require(__dirname + '/dashboard');
 var docs = require(__dirname + '/docs');
 var news = require(__dirname + '/news');
 var projects = require(__dirname + '/projects');
@@ -10,16 +10,16 @@ var login = require(__dirname + '/auth/login');
 
 module.exports = function (app, res, req, next) {
 
-	// HOME
+	// DASHBOARD
 
-	app.get('/', ensureAuthenticated, home.index);
-	app.get('/home', ensureAuthenticated, home.index);
-	app.get('/home/:subpage', ensureAuthenticated, home.index);
-	app.get('/home/:subpage/:subsubpage', ensureAuthenticated, home.index);
+	app.get('/', ensureAuthenticated, dashboard.index);
+	app.get('/dashboard', ensureAuthenticated, dashboard.index);
 
 	// DOCS
 
 	app.get('/docs', ensureAuthenticated, docs.index);
+	app.get('/docs/:subpage', ensureAuthenticated, docs.index);
+	app.get('/docs/:subpage/:subsubpage', ensureAuthenticated, docs.index);
 
 	// NEWS
 
