@@ -3,11 +3,11 @@ doctype html
 html
 	head
 		if page == "home"
-			title #{site_title} &mdash; #{site_description}
+			title #{config.name} &mdash; #{config.description}
 		else
-			for option in nav_menu.options
+			for option in config.navigation
 				if option.slug == page
-					title #{site_title} &mdash; #{option.name}
+					title #{config.name} &mdash; #{option.name}
 
 		link(href='/styles/style.css', rel='stylesheet')
 		link(href='/images/yossarian.ico', rel='shortcut icon')
@@ -16,7 +16,7 @@ html
 	body
 
 		header 
-			a.header-brand(href="/" title='#{site_title} - Back home' )
+			a.header-brand(href="/" title='#{config.name} - Back home' )
 				include branding.jade
 
 			//- .header-search
@@ -40,18 +40,18 @@ html
 
 			nav.header-nav
 				ul
-					for option in nav_menu.options 
+					for option in config.navigation 
 						if option.slug == page 
-							if option.slug == 'home'
+							if option.slug == 'dashboard' || !option.slug
 								li(id='#{option.slug}').active
-									a(href='/' title='Home'): i(class='fa fa-#{option.icon}')
+									a(href='/' title='Dashboard'): i(class='fa fa-#{option.icon}')
 							else
 								li(id='#{option.slug}').active
 									a(href='/#{option.slug}' title='#{option.name}'): i(class='fa fa-#{option.icon}')
 						else
-							if option.slug == 'home'
+							if option.slug == 'dashboard' || !option.slug
 								li(id='#{option.slug}')
-									a(href='/' title='Home'): i(class='fa fa-#{option.icon}')
+									a(href='/' title='Dashboard'): i(class='fa fa-#{option.icon}')
 							else
 								li(id='#{option.slug}')
 									a(href='/#{option.slug}' title='#{option.name}'): i(class='fa fa-#{option.icon}')

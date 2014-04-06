@@ -44,6 +44,7 @@ $('body').on('click', '.login-form button[type="submit"]', function(event) {
 
 					window.history.pushState({}, '', '/');
 					document.title = 'Yossarian \u2014 Home';
+					$('.header-nav #home, footer nav #home').addClass('active');
 
 				});
 				

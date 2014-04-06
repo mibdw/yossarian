@@ -1,14 +1,10 @@
-var pjson = require(__dirname + '/../../package.json');
-var site_title = pjson.name;
-var site_description = pjson.description;
-var nav_menu = require(__dirname + '/../nav.json');
+var config = require(__dirname + '/../../config.json');
 
-exports.index = function(req, res) { 
-		
+exports.index =  function(req, res) { 
+	
 	res.render('sections/news', { 
-		user : req.user,
-		site_title: site_title,  
-		nav_menu: nav_menu,
+		config: config,
+		user: req.user, 
 		page: "news" 
 	}); 
 };
@@ -16,9 +12,8 @@ exports.index = function(req, res) {
 exports.addition = function(req, res) { 
 		
 	res.render('sections/news', { 
+		config: config,
 		user : req.user,
-		site_title: site_title,  
-		nav_menu: nav_menu,
 		page: "news" 
 	}); 
 };

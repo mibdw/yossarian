@@ -1,7 +1,4 @@
-var pjson = require(__dirname + '/../../package.json');
-var site_title = pjson.name;
-var site_description = pjson.description;
-var nav_menu = require(__dirname + '/../nav.json');
+var config = require(__dirname + '/../../config.json');
 
 var passport = require('passport');
 var utils = require(__dirname + '/utils');
@@ -15,11 +12,9 @@ var now = new Date();
 exports.getlogin = function(req, res, next) { 
 
 	res.render('sections/login', { 
-		user : req.user,
-		site_title : site_title,
-		site_description : site_description,
-		nav_menu: nav_menu,
-		error_message: req.session.errormessage
+		user: req.user,
+		config: config,
+		errorMessage: req.session.errormessage
 	});
 
 	delete req.session.errormessage;

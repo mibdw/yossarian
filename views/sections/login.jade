@@ -2,7 +2,7 @@ doctype html
 html
 	head
 
-		title #{site_title} &mdash; #{site_description}
+		title #{config.name} &mdash; #{config.description}
 
 		link(href='/styles/style.css', rel='stylesheet')
 		link(href='/styles/authentication.css', rel='stylesheet')
@@ -12,8 +12,8 @@ html
 
 	body.authentication
 
-		if error_message
-			span.alert #{error_message}
+		if errorMessage
+			span.alert #{errorMessage}
 				span.close &times;
 
 		.login-top
@@ -26,9 +26,9 @@ html
 					include ../branding.jade
 
 			.login-form
-				h1 #{site_title} <span>&raquo;</span> Login
+				h1 #{config.name} <span>&raquo;</span> Login
 				form(role='form', action='/login', method='post')
-					input.login-username(type='text', name='username', placeholder='Username')
+					input.login-username(type='text', name='username', placeholder='Username', autofocus)
 					input.login-password(type='password', name='password', placeholder='Password')
 					br
 					label.login-remember(for='rememberme')
