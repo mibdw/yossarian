@@ -11,7 +11,7 @@
 body {
 	background-color: @general-background;
 	margin: 0;
-	padding: 60px 0 0;
+	padding: 0;
 	
 	header {
 		background-color: @header-background;
@@ -206,12 +206,14 @@ body {
 
 	#main {
 		margin: 0;
-		padding: 0 20px;
+		padding: 70px 20px 0;
+		.clearfix;
 
 		aside {
 			float: left;
 			width: 14.5%;
 			border-right: 1px solid @general-line;
+			margin-top: 20px;
 			z-index: 555;
 
 			.sidebar-nav {

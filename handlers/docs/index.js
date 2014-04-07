@@ -24,8 +24,6 @@ exports.subpage = function(req, res) {
 
 	} else {
 
-		console.log(subsubmenu);
-
 		res.render('sections/docs', { 
 			config: config,
 			user: req.user, 

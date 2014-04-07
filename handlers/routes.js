@@ -8,6 +8,7 @@ var calendar = require(__dirname + '/calendar');
 var settings = require(__dirname + '/settings');
 
 var login = require(__dirname + '/auth/login');
+var profile = require(__dirname + '/profile');
 
 module.exports = function (app, res, req) {
 
@@ -32,6 +33,9 @@ module.exports = function (app, res, req) {
 
 	// SETTINGS
 	app.get('/settings', ensureAuthenticated, settings.index);
+
+	// PROFILE
+	app.get('/profile', ensureAuthenticated, profile.index);
 
 	// AUTHENTICATION
 	app.get('/login', login.getlogin);
