@@ -1,0 +1,41 @@
+include ../header.jade
+
+#main
+
+	include ../sidebar.jade
+
+	#content.sidebar-present
+
+		if subpage == "overview"
+
+			h1 Overview
+
+		else if subpage == "phone"
+
+			h1 Phone numbers
+
+		else if subpage == "address"
+
+			if subsubpage == "shipping"
+
+				h1 Shipping
+
+			else if subsubpage == "contacts"
+
+				h1 Contacts
+
+			else if subsubpage == "misc"
+
+				h1 Miscellaneous
+
+		else if subpage == "links"
+
+			h1 Links
+
+		else if subpage == "numbers"
+
+			h1 Other numbers
+
+
+
+include ../footer.jade

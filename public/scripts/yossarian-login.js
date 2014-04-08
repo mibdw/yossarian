@@ -43,8 +43,8 @@ $('body').on('click', '.login-form button[type="submit"]', function(event) {
 					}, 3000);
 
 					window.history.pushState({}, '', '/');
-					document.title = 'Yossarian \u2014 Home';
-					$('.header-nav #home, footer nav #home').addClass('active');
+					document.title = 'Yossarian \u2014 Dashboard';
+					$('.header-nav #dashboard, footer nav #dashboard').addClass('active');
 
 				});
 				

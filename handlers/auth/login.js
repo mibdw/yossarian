@@ -3,15 +3,14 @@ var config = require(__dirname + '/../../config.json');
 var passport = require('passport');
 var utils = require(__dirname + '/utils');
 
-var User = require(__dirname + '/../../models/user')
+var User = require(__dirname + '/../../models/users/user')
 var mongoose = require('mongoose');
 
 var now = new Date();
 
-
 exports.getlogin = function(req, res, next) { 
 
-	res.render('sections/login', { 
+	res.render('auth/login', { 
 		user: req.user,
 		config: config,
 		errorMessage: req.session.errormessage

@@ -2,7 +2,7 @@ var config = require(__dirname + '/../../config.json');
 
 exports.index =  function(req, res) { 
 	
-	res.render('sections/news', { 
+	res.render('news/news', { 
 		config: config,
 		user: req.user, 
 		page: "news" 
@@ -11,7 +11,7 @@ exports.index =  function(req, res) {
 
 exports.addition = function(req, res) { 
 		
-	res.render('sections/news', { 
+	res.render('news/news', { 
 		config: config,
 		user : req.user,
 		page: "news" 

@@ -2,7 +2,7 @@ var config = require(__dirname + '/../../config.json');
 
 exports.index =  function(req, res) {
 
-	res.render('sections/docs', { 
+	res.render('docs/docs', { 
 		config: config,
 		user: req.user,
 		page: "docs",
@@ -14,7 +14,7 @@ exports.subpage = function(req, res) {
 
 	if (req.params.subpage == "address") {	
 
-		res.render('sections/docs', { 
+		res.render('docs/docs', { 
 			config: config,
 			user: req.user, 
 			page: "docs",
@@ -24,7 +24,7 @@ exports.subpage = function(req, res) {
 
 	} else {
 
-		res.render('sections/docs', { 
+		res.render('docs/docs', { 
 			config: config,
 			user: req.user, 
 			page: "docs",
@@ -35,7 +35,7 @@ exports.subpage = function(req, res) {
 
 exports.subsubpage = function(req, res) {
 
-	res.render('sections/docs', { 
+	res.render('docs/docs', { 
 		config: config,
 		user: req.user,
 		page: "docs",

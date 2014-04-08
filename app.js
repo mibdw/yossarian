@@ -5,7 +5,7 @@ var express = require('express');
 var mongodb = require('mongodb');
 var mongoose = require('mongoose');
 
-var User = require(__dirname + '/models/user');
+var User = require(__dirname + '/models/users/user');
 
 var less = require('less-middleware');
 

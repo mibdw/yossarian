@@ -1,43 +1,48 @@
 var passport = require('passport');
 
-var dashboard = require(__dirname + '/dashboard');
-var docs = require(__dirname + '/docs');
-var news = require(__dirname + '/news');
-var projects = require(__dirname + '/projects');
-var calendar = require(__dirname + '/calendar');
-var settings = require(__dirname + '/settings');
-
-var login = require(__dirname + '/auth/login');
-var profile = require(__dirname + '/profile');
-
 module.exports = function (app, res, req) {
 
 	// DASHBOARD
+	var dashboard = require(__dirname + '/dashboard');
+
 	app.get('/', ensureAuthenticated, dashboard.index);
 	app.get('/dashboard', ensureAuthenticated, dashboard.index);
 
 	// DOCS
+	var docs = require(__dirname + '/docs');
+
 	app.get('/docs', ensureAuthenticated, docs.index);
 	app.get('/docs/:subpage', ensureAuthenticated, docs.subpage);
 	app.get('/docs/:subpage/:subsubpage', ensureAuthenticated, docs.subsubpage);
 
 	// NEWS
+	var news = require(__dirname + '/news');
+
 	app.get('/news', ensureAuthenticated, news.index);
 	app.get('/news/add', ensureAuthenticated, news.addition);
 
 	// CALENDAR
+	var calendar = require(__dirname + '/calendar');
+
 	app.get('/calendar', ensureAuthenticated, calendar.index);
 
 	// PROJECTS
+	var projects = require(__dirname + '/projects');
+
 	app.get('/projects', ensureAuthenticated, projects.index);
 
 	// SETTINGS
+	var settings = require(__dirname + '/settings');
+
 	app.get('/settings', ensureAuthenticated, settings.index);
 
 	// PROFILE
+	var profile = require(__dirname + '/profile');
+
 	app.get('/profile', ensureAuthenticated, profile.index);
 
 	// AUTHENTICATION
+	var login = require(__dirname + '/auth/login');
 	app.get('/login', login.getlogin);
 
 	app.get('/logout', function(req, res) {
