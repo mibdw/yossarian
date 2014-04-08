@@ -1,0 +1,12 @@
+include ../header.jade
+
+#main
+
+	h1 Add news article
+
+	form(role='form', action='/news/add', method='post')
+		input.news-title(type='text', name='news-title', placeholder='Title')
+		textarea.news-body(name='news-title')
+		button(type='submit') Submit
+
+include ../footer.jade

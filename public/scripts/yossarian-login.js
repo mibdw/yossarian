@@ -17,7 +17,7 @@ $('body').on('click', '.login-form button[type="submit"]', function(event) {
 
 	$.ajax({
 		type: 'POST',
-		url: '/ajax-login',
+		url: '/ajaxLogin',
 		dataType: 'json',
 		data: { 
 			'username': $('.login-username').val(),

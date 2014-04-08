@@ -8,7 +8,7 @@ var mongoose = require('mongoose');
 
 var now = new Date();
 
-exports.getlogin = function(req, res, next) { 
+exports.getLogin = function(req, res, next) { 
 
 	res.render('auth/login', { 
 		user: req.user,
@@ -20,7 +20,7 @@ exports.getlogin = function(req, res, next) {
 
 };
 
-exports.postlogin =  function(req, res, next) { 
+exports.postLogin =  function(req, res, next) { 
 
 	passport.authenticate('local', function(err, user, info) {
 		
@@ -45,7 +45,7 @@ exports.postlogin =  function(req, res, next) {
 
 };
 
-exports.ajaxlogin =  function(req, res, next) { 
+exports.ajaxLogin =  function(req, res, next) { 
 
   	passport.authenticate('local', function(err, user, info) {
 

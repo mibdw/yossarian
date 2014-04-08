@@ -19,7 +19,10 @@ module.exports = function (app, res, req) {
 	var news = require(__dirname + '/news');
 
 	app.get('/news', ensureAuthenticated, news.index);
-	app.get('/news/add', ensureAuthenticated, news.addition);
+	app.get('/news/add', ensureAuthenticated, news.getAdd);
+
+	app.post('/news/add', ensureAuthenticated, news.postAdd);
+	app.post('/news/ajaxAdd', ensureAuthenticated, news.ajaxAdd);
 
 	// CALENDAR
 	var calendar = require(__dirname + '/calendar');
@@ -43,15 +46,15 @@ module.exports = function (app, res, req) {
 
 	// AUTHENTICATION
 	var login = require(__dirname + '/auth/login');
-	app.get('/login', login.getlogin);
+	app.get('/login', login.getLogin);
 
 	app.get('/logout', function(req, res) {
 		req.logout();
 		res.redirect('/');
 	});
 
-	app.post('/login', login.postlogin);
-	app.post('/ajax-login', login.ajaxlogin);
+	app.post('/login', login.postLogin);
+	app.post('/ajaxLogin', login.ajaxLogin);
 }
 
 function ensureAuthenticated(req, res, next) {
