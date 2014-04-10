@@ -40,9 +40,9 @@ module.exports = function (app, res, req) {
 	app.get('/settings', ensureAuthenticated, settings.index);
 
 	// PROFILE
-	var profile = require(__dirname + '/profile');
+	var user = require(__dirname + '/user');
 
-	app.get('/profile', ensureAuthenticated, profile.index);
+	app.get('/profile', ensureAuthenticated, user.profile);
 
 	// AUTHENTICATION
 	var login = require(__dirname + '/auth/login');

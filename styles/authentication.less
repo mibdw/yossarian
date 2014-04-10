@@ -4,7 +4,7 @@
 @import "branding.less";
 @import "mixins.less";
 
-.authentication {
+.auth {
 	background-color: @general-background;
 
 	.login-transition (@property: bottom, @duration: 2s) {
@@ -80,11 +80,10 @@
 		top: 50%;
 		left: 50%;
 		margin-left: -10%;
-		border-radius: 3px;
 		background-color: @general-background;
 		border: 1px solid darken(@general-line, 10%);
-		border-radius: 3px;
 		z-index: 999;
+		.border-radius (3px);
 
 		.login-brand {
 			margin: 20px 0 30px;
@@ -120,14 +119,16 @@
 				height: 40px;
 				font-size: 1.3em;
 				line-height: 40px;
-				width: 80%;
-				margin-bottom: 5px;
+				width: 85%;
+				margin: 0 auto 5px;
+				padding-top: 0;
+				padding-bottom: 0;
 			}
 
 			button {
 				float: right;
 				position: relative;
-				left: -7%;
+				left: -6%;
 				height: 40px;
 				padding: 0 15px;
 				margin-bottom: 20px;

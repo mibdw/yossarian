@@ -1,4 +1,4 @@
-if ($('body').hasClass('authentication')) {
+if ($('body').hasClass('auth')) {
 
 	var login_height = $('.login').height();
 	var margin_correction = '-' + login_height / 2 + 'px';
@@ -21,8 +21,7 @@ $('body').on('click', '.login-form button[type="submit"]', function(event) {
 		dataType: 'json',
 		data: { 
 			'username': $('.login-username').val(),
-			'password': $('.login-password').val(),
-			'remember_me': $('#rememberme').val()
+			'password': $('.login-password').val()
 		},
 
 		success: function (data) {
@@ -39,12 +38,12 @@ $('body').on('click', '.login-form button[type="submit"]', function(event) {
 
 					setTimeout( function() {
 						$('.login-top, .login-bottom, .login, .login-scripts').remove();
-						$('body').removeClass('authentication');
+						$('body').removeClass('auth');
 					}, 3000);
 
 					window.history.pushState({}, '', '/');
 					document.title = 'Yossarian \u2014 Dashboard';
-					$('.header-nav #dashboard, footer nav #dashboard').addClass('active');
+					$('.header-nav #dashboard, footer #dashboard').addClass('active');
 
 				});
 				
@@ -59,10 +58,7 @@ $('body').on('click', '.login-form button[type="submit"]', function(event) {
 				$('body').append('<div class="alert" style="display: none;">I\'m not sure what\'s going on!<span class="close">&times;</span></div>');
 				$('.alert').fadeIn(200);
 				$('.login').removeClass('loading');
-
-			}
-
-			
+			}	
 		},
 
 		error: function() {

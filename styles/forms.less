@@ -2,37 +2,139 @@
 ::-moz-placeholder { color: lighten(@general-text, 60%); }
 :-ms-input-placeholder { color: lighten(@general-text, 60%); }
 
-input[type="text"], input[type="search"], input[type="password"] {
-	font-family: "Clear Sans", Verdana, sans-serif;
-	font-size: 15px;
-	background-color: #fff;
-	border-width: 1px;
-	border-style: solid;
-	border-color: darken(#fff, 15%);
-	outline-width: 0;
-	border-radius: 3px;
-	padding: 0 10px;
+form {
 
-	&:hover, &:focus, &:active {
-		border-color: darken(#fff, 25%);
+	label {
+		display: block;
+		float: left;
+		width: 15%;
+
+		font-style: italic;
+		line-height: 2.3em;
+		color: lighten(@general-text, 60%);
 	}
 
-	
+	input[type="text"], input[type="search"], input[type="password"] {
+		display: block;
+
+		width: 85%;
+		height: 2.3em;
+		padding: 0 .6em;
+		margin-bottom: .4em;
+
+		font-family: @font-stack;
+		font-size: 1em;
+		color: @input-text;
+
+		background-color: @input-background;
+		border-width: 1px;
+		border-style: solid;
+		border-color: darken(@input-background, 15%);
+		outline-width: 0;
+
+		.border-radius (3px);
+		.box-sizing (border-box);
+
+		&:hover, &:focus, &:active {
+			border-color: darken(@input-background, 25%);
+		}
+	}
+
+	textarea {
+		display: block;
+
+		width: 85%;
+		min-height: 25em;
+		padding: .4em .6em;
+		margin-bottom: .4em;
+
+		font-family: @font-stack;
+		font-size: 1em;
+		color: @input-text;
+
+		background-color: @input-background;
+		border-width: 1px;
+		border-style: solid;
+		border-color: darken(@input-background, 15%);
+		outline-width: 0;
+
+		.border-radius (3px);		
+		.box-sizing (border-box);
+
+		&:hover, &:focus, &:active {
+			border-color: darken(@input-background, 25%);
+		}
+	}
+
+	select {
+		display: block;
+
+		padding: .4em .6em;
+		margin-bottom: .4em;
+
+		font-family: @font-stack;
+		font-size: 1em;
+		color: @input-text;
+
+		background-color: @input-background;
+		border-width: 1px;
+		border-style: solid;
+		border-color: darken(@input-background, 15%);
+		outline-width: 0;
+
+		.border-radius (3px);		
+		.box-sizing (border-box);
+
+		option { padding-right: 1em; }
+
+		&:hover, &:focus, &:active {
+			border-color: darken(@input-background, 25%);
+		}
+	}
+
+	button[type="submit"], button[type="reset"] {
+		float: right;
+		margin-right: .4em;
+	}
 }
 
-button {
-	font-family: "Clear Sans", Verdana, sans-serif;
-	font-size: 15px;
+button, .button {
+	display: inline-block;
+
+	padding: 0 1em;
+
+	font-family: @font-stack;
+	font-size: 1em;
+	line-height: 2.3em;
+	color: @button-text;
+	text-decoration: none;
+
 	background-color: @button-background;
 	border-width: 1px;
 	border-style: solid;
 	border-color: @button-line;
-	color: @button-text;
-	border-radius: 3px;
-	padding: 5px 10px;
+	.border-radius (3px);
+
 
 	&:hover, &:focus, &:active {
 		background-color: darken(@button-background, 2%);
 		border-color: darken(@button-line, 2%);
 	}
+
+	&[type="reset"], .button-alt {
+		background-color: @button-alt-background;
+		border-color: @button-alt-line;
+		color: @button-alt-text;
+
+		&:hover, &:focus, &:active {
+			background-color: darken(@button-alt-background, 2%);
+			border-color: darken(@button-alt-line, 2%);
+		}
+	}
+}
+
+.form-controls {
+	border-top: 1px solid @general-line;
+	margin-top: 2em;
+	padding-top: .7em;
 }

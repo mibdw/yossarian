@@ -1,12 +1,28 @@
 include ../header.jade
 
-#main
+main(role="main" class="#{page}")
 
-	h1 Add news article
+	h1 New article
 
 	form(role='form', action='/news/add', method='post')
-		input.news-title(type='text', name='news-title', placeholder='Title')
-		textarea.news-body(name='news-title')
-		button(type='submit') Submit
+		label(for="article-title") Title
+		input#article-title(type='text', name='articleTitle')
+		
+		label(for="article-body") Content
+		textarea#article-body(name='articleBody')
+
+		label(for="article-category") Category
+		select#article-category(name="articleCategory")
+			option(value="customer") Customer
+			option(value="events") Events
+			option(value="intranet") Intranet
+			option(value="news") News
+			option(value="website") Website
+			option(value="uncategorized" selected) Uncategorized
+		
+		.form-controls
+			button(type='submit') Submit
+			button(type='reset') Clear
+
 
 include ../footer.jade

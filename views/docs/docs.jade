@@ -1,10 +1,10 @@
 include ../header.jade
 
-#main
+main(role="main" class="#{page}")
 
 	include ../sidebar.jade
 
-	#content.sidebar-present
+	article
 
 		if subpage == "overview"
 
@@ -35,7 +35,5 @@ include ../header.jade
 		else if subpage == "numbers"
 
 			h1 Other numbers
-
-
 
 include ../footer.jade

@@ -2,27 +2,26 @@ for option in config.navigation
 	if option.slug == page		
 		if option.submenu
 			aside
-				nav.sidebar-nav
-					ul
-						for suboption in option.submenu
-							if suboption.slug == subpage
-								li.active
-									a(href='/#{page}/#{suboption.slug}' title='#{option.name} \u00BB #{suboption.name}') #{suboption.name}
-									if suboption.subsubmenu
-										ul.sidebar-subnav
-											for subsuboption in suboption.subsubmenu
-												if subsuboption.slug == subsubpage
-													li.active
-														a(href='/#{page}/#{suboption.slug}/#{subsuboption.slug}' title='#{option.name} \u00BB #{suboption.name} \u00BB #{subsuboption.name}') #{subsuboption.name}
-												else
-													li
-														a(href='/#{page}/#{suboption.slug}/#{subsuboption.slug}' title='#{option.name} \u00BB #{suboption.name} \u00BB #{subsuboption.name}') #{subsuboption.name}
-
-							else
-								li
-									a(href='/#{page}/#{suboption.slug}' title='#{option.name} \u00BB #{suboption.name}') #{suboption.name}
-									if suboption.subsubmenu
-										ul.sidebar-subnav
-											for subsuboption in suboption.subsubmenu
+				ul.sidebar-nav
+					for suboption in option.submenu
+						if suboption.slug == subpage
+							li.active
+								a(href='/#{page}/#{suboption.slug}' title='#{option.name} \u00BB #{suboption.name}') #{suboption.name}
+								if suboption.subsubmenu
+									ul.sidebar-subnav
+										for subsuboption in suboption.subsubmenu
+											if subsuboption.slug == subsubpage
+												li.active
+													a(href='/#{page}/#{suboption.slug}/#{subsuboption.slug}' title='#{option.name} \u00BB #{suboption.name} \u00BB #{subsuboption.name}') #{subsuboption.name}
+											else
 												li
 													a(href='/#{page}/#{suboption.slug}/#{subsuboption.slug}' title='#{option.name} \u00BB #{suboption.name} \u00BB #{subsuboption.name}') #{subsuboption.name}
+
+						else
+							li
+								a(href='/#{page}/#{suboption.slug}' title='#{option.name} \u00BB #{suboption.name}') #{suboption.name}
+								if suboption.subsubmenu
+									ul.sidebar-subnav
+										for subsuboption in suboption.subsubmenu
+											li
+												a(href='/#{page}/#{suboption.slug}/#{subsuboption.slug}' title='#{option.name} \u00BB #{suboption.name} \u00BB #{subsuboption.name}') #{subsuboption.name}

@@ -10,7 +10,7 @@ html
 
 		script(src='/scripts/modernizr.custom.11163.js')
 
-	body.authentication
+	body.auth
 
 		if errorMessage
 			span.alert #{errorMessage}
@@ -30,8 +30,7 @@ html
 				form(role='form', action='/login', method='post')
 					input.login-username(type='text', name='username', placeholder='Username', autofocus)
 					input.login-password(type='password', name='password', placeholder='Password')
-					br
-					label.login-remember(for='rememberme')
+					//- label.login-remember(for='rememberme')
 						//- input(type='checkbox', name='remember_me', id='rememberme', checked='checked')
 						//-| Remember me
 					button(type='submit') Login

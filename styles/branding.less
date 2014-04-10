@@ -7,12 +7,12 @@
 	height: @size;
 	background-color: @brand-color;
 	color: @general-background;
-	border-radius: @size/2;
 	text-align: center;
 	line-height: @size;
 	overflow: hidden;
 	position: relative;
 	border: 1px solid darken(@brand-color, 10%);
+	.border-radius (@size/2);
 
 	.cloud-animation (@anim-duration: 2s, @anim-name: clouds, @anim-iteration: infinite) {
 		-webkit-animation-duration: @anim-duration;

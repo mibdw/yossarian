@@ -1,8 +1,8 @@
 var config = require(__dirname + '/../../config.json');
 
-exports.index =  function(req, res) { 
+exports.profile =  function(req, res) { 
 	
-	res.render('profile/profile', { 
+	res.render('user/profile', { 
 		config: config,
 		user: req.user,
 		page: "profile" 
