@@ -1,18 +1,14 @@
 // REQUIREMENTS
 
 var express = require('express');
-
 var mongodb = require('mongodb');
 var mongoose = require('mongoose');
-
-var User = require(__dirname + '/models/users/user');
-
 var less = require('less-middleware');
-
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
-var RememberMeStrategy = require('passport-remember-me').Strategy;
+
 var utils = require(__dirname + '/handlers/auth/utils');
+var User = require(__dirname + '/models/users/user');
 
 // MONGO CONNECTION
 mongoose.connect('mongodb://localhost/yossarian');
@@ -21,9 +17,7 @@ mongoose.connection.once('open', function callback() {
 	  console.log('Connected to database');
 });
 
-
 // PASSPORT CONNECTION
-
 passport.serializeUser(function(user, done) {
 	done(null, user.email);
 });
@@ -55,8 +49,7 @@ passport.use(new LocalStrategy(
 
 var app = express();
 
-// Main configuration
-
+// MAIN CONFIGURATION
 app.configure(function (){ 
 
 	app.set('view engine', 'jade');
@@ -81,11 +74,9 @@ app.configure(function (){
 
 });
 
-// Routes
+// ROUTES
 var routes = require(__dirname + '/handlers/routes')(app);
 
 app.listen(3000, function() {
 	console.log('\n----------\nYOSSARIAN\n----------\n\nLet\'s get this party started (http://localhost:3000)!');
 });
-
-User.findOneAndRemove({name: 'admin'}).exec();
