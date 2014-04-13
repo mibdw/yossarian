@@ -1,16 +1,15 @@
 // REQUIREMENTS
-
 var express = require('express');
+var less = require('less-middleware');
 var mongodb = require('mongodb');
 var mongoose = require('mongoose');
-var less = require('less-middleware');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 
 var utils = require(__dirname + '/handlers/auth/utils');
 var User = require(__dirname + '/models/users/user');
 
-// MONGO CONNECTION
+// DATABASE CONNECTION
 mongoose.connect('mongodb://localhost/yossarian');
 mongoose.connection.on('error', console.error.bind(console, 'Connection error:'));
 mongoose.connection.once('open', function callback() {
