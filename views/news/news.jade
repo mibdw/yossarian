@@ -7,4 +7,10 @@ main(role="main" class="#{page}")
 		h1 News
 		a.button.new-article(href="/news/add") New article
 
+		for article in articles
+			h2 #{article.title}
+			.content
+				| #{article.body}
+			small #{article.author} #{article.category}
+
 include ../footer.jade

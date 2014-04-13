@@ -6,7 +6,8 @@ var utils = require(__dirname + '/utils');
 var User = require(__dirname + '/../../models/users/user')
 var mongoose = require('mongoose');
 
-var now = new Date();
+var moment = require('moment');
+var dateFormat = "dddd MM-DD-YYYY HH:mm:ss";
 
 exports.getLogin = function(req, res, next) { 
 
@@ -30,7 +31,7 @@ exports.postLogin =  function(req, res, next) {
 			req.session.errormessage = info.message;
 			return res.redirect('/login');
 
-			console.log('Failed log in attempt by ' + req.body.username + ' () - ' + now.toJSON());
+			console.log('Failed log in attempt by ' + req.body.username + ' () - ' + moment().format(dateFormat));
 		}
 
 		req.logIn(user, function(err) {
@@ -38,7 +39,7 @@ exports.postLogin =  function(req, res, next) {
 
 			return res.redirect('/');
 
-			console.log('Succesfull login attempt by ' + req.body.username + ' - ' + now.toJSON());
+			console.log('Succesfull login attempt by ' + req.body.username + ' - ' + moment().format(dateFormat));
 		});
 
 	})(req, res, next);
@@ -52,7 +53,7 @@ exports.ajaxLogin =  function(req, res, next) {
 		if (!user) { 
 
   			req.session.errormessage = info.message;			
-			console.log('Failed log in attempt by ' + req.body.username + ' () - ' + now.toJSON());
+			console.log('Failed log in attempt by ' + req.body.username + ' () - ' + moment().format(dateFormat));
 			
 			res.contentType('json');
 			res.send({ failure: info }); 
@@ -64,18 +65,17 @@ exports.ajaxLogin =  function(req, res, next) {
 			if (err) { 
 				req.session.errormessage = info.message;			
 			
-				console.log('Failed log in attempt by ' + req.body.username + ' () - ' + now.toJSON());
+				console.log('Failed log in attempt by ' + req.body.username + ' () - ' + moment().format(dateFormat));
 				
 				res.contentType('json');
 				res.send({ failure: info.message });
 				return next(err);  
 			}	
 
-			console.log('Succesfull login attempt by ' + req.body.username + ' - ' + now.toJSON());	
+			console.log('Succesfull login attempt by ' + req.body.username + ' - ' + moment().format(dateFormat));	
 				
 			res.contentType('json');
 			res.send({ success: 'success' }); 
-
 
 		});
 

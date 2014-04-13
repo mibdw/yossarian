@@ -1,14 +1,19 @@
 var config = require(__dirname + '/../../config.json');
-
-
+	
+var Article = require(__dirname + '/../../models/news/article');
+var mongoose = require('mongoose');
 
 exports.index =  function(req, res) { 
+
+	Article.find({}, function(err, articles) {
 	
-	res.render('news/news', { 
-		config: config,
-		user: req.user, 
-		page: "news" 
-	}); 
+		res.render('news/news', { 
+			config: config,
+			user: req.user, 
+			page: "news",
+			articles: articles
+		});
+	});
 };
 
 exports.getAdd = function(req, res) { 
@@ -21,45 +26,34 @@ exports.getAdd = function(req, res) {
 };
 
 exports.postAdd = function(req, res) { 
-		
-	var Article = require(__dirname + '/../../models/news/article')
-	var mongoose = require('mongoose');
 
-	var article = new Article({
-		title: req.params.articleTitle,
+	var article = new Article ({
+		title: req.body.articleTitle,
 		author: req.user.id,
-		body: req.params.articleBody,
-		category: req.params.articleCategory		
+		body: req.body.articleBody,
+		category: req.body.articleCategory		
 	});
 
-	article.save(function (err) {
+	article.save (function (err) {
 		if (err) return handleError(err);
-		console.log('New article posted by ' + req.user.username + '(' + req.params.articleTitle + ')');
+		
+		console.log('New article posted by ' + req.user.username + '(' + req.body.articleTitle + ')');
+	});	
 
-		res.redirect('/news');
-	}); 
+	res.render('news/news', { 
+		config: config,
+		user: req.user, 
+		page: "news" 
+	});
 };
 
-exports.ajaxAdd = function(req, res) { 
-		
-	var Article = require(__dirname + '/../../models/news/article')
-	var mongoose = require('mongoose');
+exports.ajaxAdd = function(req, res) {
 
-	var article = new Article({
-		title: req.params.articleTitle,
-		author: req.user.id,
-		body: req.params.articleBody,
-		category: req.params.articleCategory		
-	});
+	console.log(req.body.articleTitle);
+	console.log(req.body.articleBody);
+	console.log(req.body.articleCategory);
+	console.log(req.body);
 
-	article.save(function (err) {
-		if (err) return handleError(err);
-		Article.findById(article, function (err, doc) {
-			if (err) return handleError(err);
-
-			console.log('New article posted by ' + req.user.username + '(' + article.title + ')'); 
-			console.log(doc);
-		})
-	})
+	res.send(200); 
 };
 
