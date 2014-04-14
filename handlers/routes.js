@@ -19,8 +19,18 @@ module.exports = function (app, res, req) {
 		res.json(config);
 	});
 
+	app.get('/navigation', ensureAuthenticated, function(req, res) {
+		var config = require(__dirname + '/../config.json');
+		res.json(config.navigation);
+	});
+
 	app.get('/username', ensureAuthenticated, function(req, res) {
 		res.send(req.user.username);
+	});
+
+	// PARTIALS
+	app.get('/partials/:partial', ensureAuthenticated, function(req, res) {
+		res.render("partials/" + req.params.partial + ".html");
 	});
 }
 
