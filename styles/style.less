@@ -209,8 +209,8 @@ body {
 	// MAIN
 
 	main {
-		margin: 0;
-		padding: 70px 20px 0;
+		margin: 70px 0 0;
+		padding: 0 20px;
 		.clearfix;
 
 		// SIDEBAR
@@ -297,12 +297,6 @@ body {
 			}
 		}
 
-		// ARTICLE
-
-		article {
-			position: relative;
-		}
-
 		// DOCUMENTS
 
 		&.docs {
@@ -312,12 +306,15 @@ body {
 			}
 		}
 
+		// NEWS
+
 		&.news {
+			position: relative;
 
 			.new-article {
 				position: absolute;
-				top: 0;
-				right: 0;
+				top: 1em;
+				right: 20px;
 			}
 		}	
 	}

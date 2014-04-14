@@ -45,39 +45,3 @@ exports.postLogin =  function(req, res, next) {
 	})(req, res, next);
 
 };
-
-exports.ajaxLogin =  function(req, res, next) { 
-
-  	passport.authenticate('local', function(err, user, info) {
-
-		if (!user) { 
-
-  			req.session.errormessage = info.message;			
-			console.log('Failed log in attempt by ' + req.body.username + ' () - ' + moment().format(dateFormat));
-			
-			res.contentType('json');
-			res.send({ failure: info }); 
-		}
-
-		req.logIn(user, function(err) {
-
-			
-			if (err) { 
-				req.session.errormessage = info.message;			
-			
-				console.log('Failed log in attempt by ' + req.body.username + ' () - ' + moment().format(dateFormat));
-				
-				res.contentType('json');
-				res.send({ failure: info.message });
-				return next(err);  
-			}	
-
-			console.log('Succesfull login attempt by ' + req.body.username + ' - ' + moment().format(dateFormat));	
-				
-			res.contentType('json');
-			res.send({ success: 'success' }); 
-
-		});
-
-	})(req, res);
-};

@@ -20,7 +20,6 @@ module.exports = function (app, res, req) {
 	app.get('/news/add', ensureAuthenticated, news.getAdd);
 
 	app.post('/news/add', ensureAuthenticated, news.postAdd);
-	app.post('/news/ajaxAdd', ensureAuthenticated, news.ajaxAdd);
 
 	// CALENDAR
 	var calendar = require(__dirname + '/calendar');
@@ -52,7 +51,13 @@ module.exports = function (app, res, req) {
 	});
 
 	app.post('/login', login.postLogin);
-	app.post('/ajaxLogin', login.ajaxLogin);
+
+	// CONFIG
+	app.get('/config', ensureAuthenticated, function(req, res) {
+		var config = require(__dirname + '/../config.json');
+
+		res.json(config);
+	});
 }
 
 function ensureAuthenticated(req, res, next) {

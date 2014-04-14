@@ -1,7 +1,9 @@
-var config = require(__dirname + '/../../config.json');
-	
-var Article = require(__dirname + '/../../models/news/article');
 var mongoose = require('mongoose');
+var markdown = require('markdown').markdown;
+
+var config = require(__dirname + '/../../config.json');
+var Article = require(__dirname + '/../../models/news/article');
+
 
 exports.index =  function(req, res) { 
 
@@ -25,7 +27,7 @@ exports.getAdd = function(req, res) {
 	}); 
 };
 
-exports.postAdd = function(req, res) { 
+exports.postAdd = function(req, res) {
 
 	var article = new Article ({
 		title: req.body.articleTitle,
@@ -40,20 +42,6 @@ exports.postAdd = function(req, res) {
 		console.log('New article posted by ' + req.user.username + '(' + req.body.articleTitle + ')');
 	});	
 
-	res.render('news/news', { 
-		config: config,
-		user: req.user, 
-		page: "news" 
-	});
-};
-
-exports.ajaxAdd = function(req, res) {
-
-	console.log(req.body.articleTitle);
-	console.log(req.body.articleBody);
-	console.log(req.body.articleCategory);
-	console.log(req.body);
-
-	res.send(200); 
+	res.redirect('/news');
 };
 
