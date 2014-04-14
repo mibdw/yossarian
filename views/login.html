@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en" ng-app="yossarianApp" ng-controller="yossarianConfig">
+	<head>
+		<meta charset="UTF-8">
+		<title><%= config.name %> &mdash; <%= config.description %></title>
+
+		<link rel="stylesheet" href="/styles/style.css">
+		<link rel="stylesheet" href="/styles/authentication.css">
+		<link rel="shortcut icon" href="/images/yossarian.ico">
+
+		<script src="/scripts/libs/modernzr.custom.11163.js"></script>
+		<script src="/scripts/libs/angular.min.js"></script>
+		<script src="/scripts/libs/angular-route.min.js"></script>
+		<script src="/scripts/yossarian-app.js"></script>
+		<script src="/scripts/yossarian-controller.js"></script>
+
+	</head>
+	<body class="auth">
+
+		<div class="login-top"></div>
+		<div class="login-bottom"></div>
+
+		<div class="login">
+			
+			<div class="login-brand">
+				<span class="login-logo">
+					<i class="fa fa-cloud cloud-one"></i>
+					<i class="fa fa-cloud cloud-two"></i>
+					<i class="fa fa-cloud cloud-three"></i>
+					<i class="fa fa-cloud cloud-four"></i>
+					<i class="fa fa-plane"></i>
+					<i class="fa fa-cloud cloud-five"></i>
+					<i class="fa fa-cloud cloud-six"></i>					
+				</span>
+			</div>
+
+			<div class="login-form">
+				<h1>
+					<%= config.name %> <span>&raquo;</span> Login
+				</h1>
+				<form action="/login" role="form" method="post">
+					<input type="text" name="username" placeholder="Username" class="login-username" autofocus>
+					<input type="password" name="password" placeholder="Password" class="login-password">
+					<button type="submit">Login</button>
+				</form>			
+			</div>				
+			
+		</div>
+		
+	</body>
+</html>

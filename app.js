@@ -51,7 +51,7 @@ var app = express();
 // MAIN CONFIGURATION
 app.configure(function (){ 
 
-	app.set('view engine', 'jade');
+	app.engine('html', require('ejs').renderFile);
 	app.set('views', __dirname + '/views');
 
 	app.use(express.json());

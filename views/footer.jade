@@ -1,8 +1,0 @@
-
-footer
-	ul(ng-controller="yossarianNav")
-		li(ng-repeat="option in config.navigation" id="{{option.slug}}" ng-class="{active: option.slug==currentRoute}")
-			a(href="/{{option.slug}}" title="{{option.name}}") {{option.name}}
-
-	.footer-credits  
-		a(href='http://meedoenisbelangrijkerdanwinnen.nl' title='#{site_title} by M.I.B.D.W.' target='_blank') Where are the Snowdens of yesteryear?
