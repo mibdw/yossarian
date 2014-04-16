@@ -26,7 +26,7 @@ module.exports = function (app, res, req) {
 	});
 
 	app.get('/username', ensureAuthenticated, function(req, res) {
-		res.send(req.user.name);
+		res.send(req.user);
 	});
 
 	// PARTIALS

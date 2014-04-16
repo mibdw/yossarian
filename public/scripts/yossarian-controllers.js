@@ -9,7 +9,7 @@ ctrl.controller('yossarianConfig', ['$rootScope', '$http',
 		});
 
 		$http.get('/username').success( function (data) {
-			$rootScope.username = data;
+			$rootScope.user = data;
 		});
 
 		var activeURL = window.location.pathname.substr(1);	
