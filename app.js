@@ -6,6 +6,9 @@ var mongoose = require('mongoose');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 
+var moment = require('moment');
+var dateFormat = "ddd MM-DD-YYYY HH:mm:ss";
+
 var utils = require(__dirname + '/handlers/auth/utils');
 var User = require(__dirname + '/models/users/user');
 
@@ -13,7 +16,7 @@ var User = require(__dirname + '/models/users/user');
 mongoose.connect('mongodb://localhost/yossarian');
 mongoose.connection.on('error', console.error.bind(console, 'Connection error:'));
 mongoose.connection.once('open', function callback() {
-	  console.log('Connected to database');
+	  console.log(moment().format(dateFormat) + ' - Connected to database');
 });
 
 // PASSPORT CONNECTION
@@ -30,7 +33,7 @@ passport.deserializeUser(function(email, done) {
 passport.use(new LocalStrategy(
 	function(username, password, done) {
 
-		User.findOne({ username: username }, function(err, user) {
+		User.findOne({ email: username }, function(err, user) {
 			if (err) { return done(err); }
 			if (!user) { return done(null, false, { message: 'Unknown user ' + username }); }
 			
@@ -77,5 +80,15 @@ app.configure(function (){
 var routes = require(__dirname + '/handlers/routes')(app);
 
 app.listen(3000, function() {
-	console.log('\n----------\nYOSSARIAN\n----------\n\nLet\'s get this party started (http://localhost:3000)!');
+	console.log('\n----------\nYOSSARIAN\n----------\n\n'+ moment().format(dateFormat) + ' - Let\'s get this party started (http://localhost:3000)!');
 });
+
+/* Seed a user
+var user = new User({ email: 'ben@meedoenisbelangrijkerdanwinnen.nl', password: 's22)pp', name: { first: 'Ben', last: 'van den Ende' } });
+user.save(function(err) {
+  if(err) {
+    console.log(err);
+  } else {
+    console.log('user: ' + user.username + " saved.");
+  }
+}); */

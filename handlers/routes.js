@@ -10,6 +10,7 @@ module.exports = function (app, res, req) {
 	
 	app.get('/login', authentication.getLogin);
 	app.post('/login', authentication.postLogin);
+	app.post('/ajaxLogin', authentication.ajaxLogin);
 
 	app.get('/logout', authentication.logout);
 
@@ -25,7 +26,7 @@ module.exports = function (app, res, req) {
 	});
 
 	app.get('/username', ensureAuthenticated, function(req, res) {
-		res.send(req.user.username);
+		res.send(req.user.name);
 	});
 
 	// PARTIALS
