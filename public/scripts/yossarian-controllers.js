@@ -11,16 +11,42 @@ ctrl.controller('yossarianConfig', ['$rootScope', '$http',
 		$http.get('/username').success( function (data) {
 			$rootScope.user = data;
 		});
-
-		var activeURL = window.location.pathname.substr(1);	
-		if (activeURL.indexOf('/') > -1) {
-			var activeURL = activeURL.substr(0, activeURL.indexOf('/'));
-		}
-
-		$rootScope.currentRoute = activeURL || 'dashboard';
 	}
 ]);
 
+// NAVIGATION
+ctrl.controller('yossarianNav', ['$scope', '$rootScope', '$http',
+	function ($scope, $rootScope, $http) {
+
+		$http.get('/navigation').success( function (data) {
+			$rootScope.navigation = data;
+
+			var activeURL = document.URL.substr(document.URL.indexOf('#')+2);
+
+			if (activeURL.indexOf('/') > -1) {
+				var activeURL = activeURL.substr(0, activeURL.indexOf('/'));
+			}
+
+			var currentNav;
+
+			for (i in data) {
+				if(data[i].slug == activeURL) {
+					currentNav = i;
+				}
+			}
+
+			$rootScope.activeNav = currentNav || 0;
+		});
+
+		$rootScope.select = function (index) {
+			$rootScope.activeNav = index;
+			
+		};
+
+	}
+]);
+
+// ALERT
 ctrl.controller('yossarianAlert', ['$scope', 
 	function ($scope) {
 
@@ -28,22 +54,7 @@ ctrl.controller('yossarianAlert', ['$scope',
 	}
 ]);
 
-// NAVIGATION
-ctrl.controller('yossarianNav', ['$scope', '$http',
-	function ($scope, $http) {
-
-		$http.get('/navigation').success( function (data) {
-			$scope.navigation = data;
-		});
-
-		$scope.activeNav = 0;
-
-		$scope.select = function (index) {
-			$scope.activeNav = index; 
-		};
-	}
-]);
-
+// AUTHORIZATION
 ctrl.controller('yossarianAuth', ['$scope', '$http', '$window',
 	function ($scope, $http, $window) {
 

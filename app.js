@@ -83,12 +83,12 @@ app.listen(3000, function() {
 	console.log('\n----------\nYOSSARIAN\n----------\n\n'+ moment().format(dateFormat) + ' - Let\'s get this party started (http://localhost:3000)!');
 });
 
-/* Seed a user
-var user = new User({ email: 'ben@meedoenisbelangrijkerdanwinnen.nl', password: 's22)pp', name: { first: 'Ben', last: 'van den Ende' } });
+/* // SEED A USER (uncomment for first run, then remove)
+var user = new User({ email: 'admin@example.com', password: 'secret', name: { first: 'Don', last: 'Draper' } });
 user.save(function(err) {
   if(err) {
     console.log(err);
   } else {
-    console.log('user: ' + user.username + " saved.");
+    console.log('user: ' + user.email + " saved.");
   }
 }); */

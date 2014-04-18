@@ -2,7 +2,7 @@
 <html lang="en" ng-app="yossarianApp" ng-controller="yossarianConfig">
 	<head>
 		<meta charset="UTF-8">
-		<title ng-repeat="option in config.navigation | filter:currentRoute">{{config.name}} &mdash; {{option.name}}</title>
+		<title ng-repeat="option in config.navigation">{{config.name}} &mdash; {{navigation[activeNav].name}}</title>
 
 		<link rel="stylesheet" href="/styles/style.css">
 		<link rel="shortcut icon" href="/images/yossarian.ico">
@@ -26,7 +26,6 @@
 				<i class="fa fa-cloud cloud-five"></i>
 				<i class="fa fa-cloud cloud-six"></i>
 			</a>
-
 
 			<div class="header-user">
 				<i class="fa fa-user"></i>
@@ -56,12 +55,12 @@
 							<i class="fa fa-{{option.icon}}"></i>
 						</a>
 					</li>
-				</ul>	
+				</ul>
 			</nav>
 
 		</header>
 
-		<main role="main" ng-class="currentRoute" ng-view></main>
+		<main role="main" ng-class="navigation[activeNav].slug" ng-view></main>
 
 		<footer>
 
