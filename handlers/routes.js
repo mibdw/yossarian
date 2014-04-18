@@ -33,6 +33,11 @@ module.exports = function (app, res, req) {
 	app.get('/partials/:partial', ensureAuthenticated, function(req, res) {
 		res.render("partials/" + req.params.partial + ".html");
 	});
+
+	//DOCS
+	var docs = require(__dirname + '/docs/index');
+	
+	app.get('/get-doc/:docSlug', ensureAuthenticated, docs.getDoc);
 }
 
 function ensureAuthenticated(req, res, next) {

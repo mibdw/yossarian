@@ -27,11 +27,9 @@ ctrl.controller('yossarianNav', ['$scope', '$rootScope', '$http',
 				var activeURL = activeURL.substr(0, activeURL.indexOf('/'));
 			}
 
-			var currentNav;
-
 			for (i in data) {
 				if(data[i].slug == activeURL) {
-					currentNav = i;
+					var currentNav = i;
 				}
 			}
 
@@ -43,6 +41,23 @@ ctrl.controller('yossarianNav', ['$scope', '$rootScope', '$http',
 			
 		};
 
+	}
+]);
+
+// DOCS
+
+ctrl.controller('yossarianDocs', ['$scope', '$sce', '$routeParams', '$http', '$window',
+	function ($scope, $sce, $routeParams, $http, $window) {	
+
+		$scope.activeSubnav = $routeParams.subdoc;
+		$scope.activeSubsubnav = $routeParams.subsubdoc;
+
+		var docSlug = $routeParams.subsubdoc || $routeParams.subdoc;
+
+		$http.get('/get-doc/' + docSlug).success( function (data) {
+			$scope.doc = data;
+			$scope.doc.content = $sce.trustAsHtml($scope.doc.content);
+		});
 	}
 ]);
 

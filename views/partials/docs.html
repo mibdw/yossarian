@@ -1,1 +1,18 @@
-<h1>Documents</h1>
+<aside>
+	<ul class="sidebar-nav">
+		<li ng-repeat="suboption in navigation[activeNav].submenu" ng-class="{active: suboption.slug == activeSubnav}">
+			<a ng-if="suboption.subsubmenu" href="/#/{{navigation[activeNav].slug}}/{{suboption.slug}}/{{suboption.subsubmenu[0].slug}}">{{suboption.name}}</a>
+			<a ng-if="!suboption.subsubmenu" href="/#/{{navigation[activeNav].slug}}/{{suboption.slug}}">{{suboption.name}}</a>
+			<ul ng-if="suboption.subsubmenu" class="sidebar-subnav">
+				<li ng-repeat="subsuboption in suboption.subsubmenu" ng-class="{active: subsuboption.slug == activeSubsubnav}">
+					<a href="/#/{{navigation[activeNav].slug}}/{{suboption.slug}}/{{subsuboption.slug}}">{{subsuboption.name}}</a>
+				</li>
+			</ul>
+		</li>
+	</ul>
+</aside>
+
+<article>
+	<h1>{{doc.title}}</h1>
+	<div ng-bind-html="doc.content"></div>
+</article>
