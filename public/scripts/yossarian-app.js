@@ -9,25 +9,17 @@ app.config(['$routeProvider',
 			.when('/news', { 
 				templateUrl: '/partials/news' 
 			})
-
-			//DOCS
-			.when('/docs', { 
+			.when('/docs', {  
 				redirectTo: '/docs/overview' 
 			})
-			.when('/docs/add', { 
-				templateUrl: '/partials/docs/add', 
-				controller: 'yossarianDocs' 
-			})
 			.when('/docs/:subdoc', { 
-				templateUrl: '/partials/docs/index', 
+				templateUrl: '/partials/docs', 
 				controller: 'yossarianDocs' 
 			})
 			.when('/docs/:subdoc/:subsubdoc', { 
-				templateUrl: '/partials/docs/index', 
+				templateUrl: '/partials/docs', 
 				controller: 'yossarianDocs' 
 			})
-
-			//CALENDAR
 			.when('/calendar', { 
 				templateUrl: '/partials/calendar' 
 			})
