@@ -1,5 +1,32 @@
 var ctrl = angular.module('yossarianControllers', []);
 
+// AUTHORIZATION
+ctrl.controller('yossarianAuth', ['$scope', '$http', '$window',
+	function ($scope, $http, $window) {
+
+		$scope.credentials = {};
+
+		$scope.yossarianLogin = function () {
+			$http
+			.post('/ajaxLogin', $scope.credentials)
+			.success( function (data) {
+				if (data.success) {
+
+					$window.location.href = '/';
+				
+				} else if (data.failure) {
+
+					$scope.errorMessage = data.failure;
+
+				} else {
+
+					$scope.errorMessage = "Oh boy, something's horribly wrong. Keep calm and contact the authorities."
+				}
+			});
+		}
+	}
+]);
+
 // CONFIG
 ctrl.controller('yossarianConfig', ['$rootScope', '$http',
 	function ($rootScope, $http) {
@@ -38,16 +65,14 @@ ctrl.controller('yossarianNav', ['$scope', '$rootScope', '$http',
 
 		$rootScope.select = function (index) {
 			$rootScope.activeNav = index;
-			
 		};
 
 	}
 ]);
 
 // DOCS
-
-ctrl.controller('yossarianDocs', ['$scope', '$sce', '$routeParams', '$http', '$window',
-	function ($scope, $sce, $routeParams, $http, $window) {	
+ctrl.controller('yossarianDocs', ['$scope', '$rootScope', '$sce', '$routeParams', '$http', '$window',
+	function ($scope, $rootScope, $sce, $routeParams, $http, $window) {	
 
 		$scope.activeSubnav = $routeParams.subdoc;
 		$scope.activeSubsubnav = $routeParams.subsubdoc;
@@ -58,38 +83,15 @@ ctrl.controller('yossarianDocs', ['$scope', '$sce', '$routeParams', '$http', '$w
 			$scope.doc = data;
 			$scope.doc.content = $sce.trustAsHtml($scope.doc.content);
 		});
-	}
-]);
 
-// ALERT
-ctrl.controller('yossarianAlert', ['$scope', 
-	function ($scope) {
+		$scope.newDoc = function () {
 
-		$scope.alertClose = true;
-	}
-]);
-
-// AUTHORIZATION
-ctrl.controller('yossarianAuth', ['$scope', '$http', '$window',
-	function ($scope, $http, $window) {
-
-		$scope.credentials = {};
-
-		$scope.yossarianLogin = function () {
-			$http
-			.post('/ajaxLogin', $scope.credentials)
-			.success( function (data) {
-				if (data.success) {
-					$window.location.href = '/';
-				} else if (data.failure) {
-
-					$scope.errorMessage = data.failure;
-
-				} else {
-
-					$scope.errorMessage = "Oh boy, something's horribly wrong. Keep calm and contact the authorities."
-				}
-			});
+			$scope.modalShow = true;
+			$scope.modalContent = {
+				title: "New document",
+				body: "/new-doc"
+			};
 		}
+
 	}
 ]);

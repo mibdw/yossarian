@@ -38,6 +38,10 @@ module.exports = function (app, res, req) {
 	var docs = require(__dirname + '/docs/index');
 	
 	app.get('/get-doc/:docSlug', ensureAuthenticated, docs.getDoc);
+	app.get('/new-doc', ensureAuthenticated, function(req, res) {
+		res.render("modals/new-doc.html");
+	});
+
 }
 
 function ensureAuthenticated(req, res, next) {

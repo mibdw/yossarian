@@ -10,9 +10,21 @@
 			</ul>
 		</li>
 	</ul>
+
+	<button ng-click="newDoc()">New document</button>
 </aside>
 
 <article>
 	<h1>{{doc.title}}</h1>
 	<div ng-bind-html="doc.content"></div>
 </article>
+
+<div class="modal-wrapper" ng-show="modalContent.title">
+	<div class="modal">
+		<span class="modal-close" ng-click="modalContent.title = !modalContent.title">&times;</span>
+		
+		<h1>{{modalContent.title}}</h1>
+		
+		<ng-include src="modalContent.body"></ng-include>
+	</div>
+</div>

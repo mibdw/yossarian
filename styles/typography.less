@@ -24,13 +24,9 @@ h1 {
 	text-transform: uppercase;
 	font-size: 1.4em;
 	color: lighten(@general-text, 30%);
-
-	small {
-		position: relative;
-		top: -.2em;
-		color: lighten(@general-text, 60%);
-	}
 }
+
+// ALERTS
 
 .alert {
 	position: fixed;
@@ -38,12 +34,15 @@ h1 {
 	top: 1%;
 	left: 50%;
 	margin-left: -25%;
+	padding: 10px 35px 10px 15px;
+
 	background-color: @alert-background;
 	color: @alert-text;
 	border: 1px solid @alert-line;
-	padding: 10px 35px 10px 15px;
-	z-index: 1111;
 	text-align: left;
+
+	z-index: 1111;
+
 	.border-radius (5px);
 
 	.close {
@@ -57,6 +56,82 @@ h1 {
 		&:hover {
 			color: darken(@alert-background, 20%);
 			cursor: pointer;
+		}
+	}
+}
+
+// MODALS
+
+.modal-wrapper {
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	z-index: 2222;
+
+	background-color: fade(@general-text, 70%);
+
+	.modal {
+		position: absolute;
+		top: 5%;
+		left: 50%;
+
+		margin: 0 0 0 -40%;
+		padding: 5em 1em;
+		width: 80%;
+		max-height: 85%;
+
+		background-color: @general-background;
+
+		overflow-y: auto;
+		overflow-x: hidden;
+
+		.border-radius (5px);
+		.box-sizing (border-box);
+
+		.fa-refresh {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+
+			font-size: 3em;
+			color: lighten(@general-text, 60%);
+
+			margin-left: -.5em;
+			margin-top: -.5em;
+		}
+
+		.modal-close {
+			position: absolute;
+			top: .3em;
+			right: .7em;
+
+			font-size: 1.6em;
+			color: lighten(@general-text, 60%);
+
+			cursor: pointer;
+
+			z-index: 3333;
+
+			&:hover {
+				color: lighten(@general-text, 10%);
+			}
+		}
+
+		h1 {
+			position: absolute;
+			top: 0;
+			left: 0;
+			right: 0;
+
+			padding: .5em 1em;
+			margin: 0;
+
+			background-color: @general-background;
+			border-bottom: 1px solid @general-line;
+
+			.border-radius (5px 5px 0 0);
 		}
 	}
 }
