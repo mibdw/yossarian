@@ -83,15 +83,19 @@ ctrl.controller('yossarianDocs', ['$scope', '$rootScope', '$sce', '$routeParams'
 			$scope.doc = data;
 			$scope.doc.content = $sce.trustAsHtml($scope.doc.content);
 		});
-
-		$scope.newDoc = function () {
-
-			$scope.modalShow = true;
-			$scope.modalContent = {
-				title: "New document",
-				body: "/new-doc"
-			};
-		}
-
 	}
 ]);
+
+// DOCS / POST NEW DOC
+ctrl.controller('yossarianPostdoc', ['$scope', '$rootScope', '$routeParams', '$http',
+	function ($scope, $rootScope, $routeParams, $http) {	
+
+		$scope.postDoc = {
+			'category': { 'uncategorized': true },
+			'parent': 'noParent'
+		};
+	}
+]);
+
+
+

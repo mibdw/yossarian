@@ -1,4 +1,7 @@
-var marked = require("marked");
+var mongoose = require('mongoose');
+var Doc = require(__dirname + '/../../models/docs/doc.js')
+var marked = require('marked');
+
 marked.setOptions({
 	gfm: true,
 	tables: true
@@ -14,4 +17,8 @@ exports.getDoc =  function(req, res, next) {
 	}
 
 	res.send(doc);
+};
+
+exports.postDoc =  function(req, res, next) { 
+
 };

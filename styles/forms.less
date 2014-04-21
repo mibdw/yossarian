@@ -44,7 +44,7 @@ form {
 		display: block;
 
 		width: 85%;
-		min-height: 25em;
+		min-height: 30em;
 		padding: .4em .6em;
 		margin-bottom: .4em;
 
@@ -96,6 +96,55 @@ form {
 		float: right;
 		margin-right: .4em;
 	}
+
+	.checkboxes {
+		float: left;
+		width: 85%;
+		margin-bottom: .9em;
+
+		label {
+			display: block;
+			width: auto;
+			float: none;
+
+			font-style: normal;
+			color: @general-text;
+			line-height: 1.4em;
+
+			input[type="checkbox"] {
+				margin-right: 10px;
+				position: relative;
+				top: 2px;
+			}
+		}
+	}
+
+	.form-main {
+		float: left;
+		width: 75%;
+	}
+
+	.form-sidebar {
+		float: left;
+		width: 21%;
+		margin-left: 1.5%;
+		padding-left: 1.5%;
+		border-left: 1px solid @general-line;
+
+		.form-controls {
+			border-bottom: 1px solid @general-line;
+			margin-bottom: 1em;
+			padding-bottom: 1em;
+
+			.clearfix;
+		}
+
+		label {
+			float: none;
+			display: block;
+			width: 100%;
+		}
+	}
 }
 
 button, .button {
@@ -131,10 +180,4 @@ button, .button {
 			border-color: darken(@button-alt-line, 2%);
 		}
 	}
-}
-
-.form-controls {
-	border-top: 1px solid @general-line;
-	margin-top: 2em;
-	padding-top: .7em;
 }

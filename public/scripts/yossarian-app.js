@@ -12,6 +12,10 @@ app.config(['$routeProvider',
 			.when('/docs', {  
 				redirectTo: '/docs/overview' 
 			})
+			.when('/docs/add', {
+				templateUrl: '/partials/docs-add',
+				controller: 'yossarianPostdoc'
+			})
 			.when('/docs/:subdoc', { 
 				templateUrl: '/partials/docs', 
 				controller: 'yossarianDocs' 
