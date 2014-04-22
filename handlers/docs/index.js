@@ -8,17 +8,62 @@ marked.setOptions({
 });
 
 exports.getDoc =  function(req, res, next) { 
-	source = "Deze *shit* is vet. Wat **kunnen** we nog meer verzinnen?\n\n- Misschien\n- Een\n- Lijstje\n\n## Of een H2?\n| Name | Description          |\n| ------------- | ----------- |\n| Help      | ~~Display the~~ help window.|\n| Close     | _Closes_ a window     |";
-	blurb = marked(source);
 
-	doc = {
-		title: req.params.docSlug,
-		content: blurb
+	if (req.params.docSlug == "overview") {
+
+		var doc = {
+			title: "Overview",
+			body: "Overview",
+			author: "ben@meedoenisbelangrijkerdanwinnen.nl"
+		};
+
+		res.send(doc)
+
+	} else {
+
+		Doc.findOne({ 'slug': req.params.docSlug }, function (err, doc) {
+			if (err) return handleError(err);
+
+			doc.body = marked(doc.body);
+			return res.send(doc);
+		});
+
 	}
+};
 
-	res.send(doc);
+exports.docSubmenu =  function(req, res, next) { 
+
+	Doc.find({ 'parent': 'noParent' }, 'title slug', function (err, submenu) {
+		if (err) return handleError(err);
+
+		return res.send(submenu);
+	});
 };
 
 exports.postDoc =  function(req, res, next) { 
 
+	function slugify(text) {
+
+		return text.toString().toLowerCase().replace(/\s+/g, '-').replace(/[^\w\-]+/g, '').replace(/\-\-+/g, '-').replace(/^-+/, '').replace(/-+$/, '');
+	}
+
+	var slug = slugify(req.body.title);
+
+	var doc = new Doc({
+		title: req.body.title,
+		slug: slug,
+		body: req.body.body,
+		parent: req.body.parent,
+		author: req.user.email
+	});
+
+	doc.save(function (err) {
+		if (err) return handleError(err);
+		Doc.findById(doc, function (err, data) {
+			if (err) return handleError(err);
+		})
+	})
+
+	res.send({ success: "Way to go dude! You rock" });
+	
 };

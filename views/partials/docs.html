@@ -1,22 +1,25 @@
 <aside>
 	<ul class="sidebar-nav">
-		<li ng-repeat="suboption in navigation[activeNav].submenu" ng-class="{active: suboption.slug == activeSubnav}">
-			<a ng-if="suboption.subsubmenu" href="/#/{{navigation[activeNav].slug}}/{{suboption.slug}}/{{suboption.subsubmenu[0].slug}}">{{suboption.name}}</a>
-			<a ng-if="!suboption.subsubmenu" href="/#/{{navigation[activeNav].slug}}/{{suboption.slug}}">{{suboption.name}}</a>
-			<ul ng-if="suboption.subsubmenu" class="sidebar-subnav">
-				<li ng-repeat="subsuboption in suboption.subsubmenu" ng-class="{active: subsuboption.slug == activeSubsubnav}">
-					<a href="/#/{{navigation[activeNav].slug}}/{{suboption.slug}}/{{subsuboption.slug}}">{{subsuboption.name}}</a>
-				</li>
-			</ul>
+		<li ng-class="{active: activeSubnav == 'overview'}">
+			<a href="/#/docs/overview">Overview</a>
+		</li>
+		<li ng-repeat="option in submenu | orderBy:'title'" ng-class="{active: option.slug == activeSubnav}">
+			<a href="/#/docs/{{option.slug}}">{{option.title}}</a>
+			<ul></ul>
 		</li>
 	</ul>
 
-	<a href="/#/docs/add">New document</a>
+	<ul class="sidebar-options">
+		<li><a href="/#/docs/add"><i class="fa fa-plus-circle"></i> New document</a></li>
+		<li ng-if="activeSubnav != 'overview'"><a href="/#/docs/{{activeSubnav}}/edit"><i class="fa fa-pencil"></i> Edit document</a></li>
+	</ul>
 </aside>
 
 <article>
-	<h1>{{doc.title}}</h1>
-	<div ng-bind-html="doc.content"></div>
+	<h1>{{subTitle.substr(2)}}</h1>
+	<div ng-bind-html="doc.body" class="document-body"></div>
+	<small ng-show="doc.editor">Last edited by {{doc.editor}} on {{doc.dateModified}}</small>
+	<small>Create by {{doc.author}} on {{doc.dateCreated}}</small>
 </article>
 
 <div class="modal-wrapper" ng-show="modalContent.title">

@@ -222,7 +222,7 @@ body {
 			margin-top: 20px;
 			z-index: 555;
 
-			.sidebar-nav {
+			.sidebar-nav, .sidebar-options {
 				list-style-type: none;
 				margin: 0;
 				padding: 15px 0;
@@ -241,6 +241,11 @@ body {
 
 						&:hover {
 							color: @general-text;
+						}
+
+						i {
+							width: 1.3em;
+
 						}
 					}
 
@@ -302,7 +307,17 @@ body {
 		&.docs {
 
 			article {
-				margin-left: 17%;
+				margin: 0 0 0 17%;
+
+				.document-body {
+					margin-bottom: 2em;
+				}
+
+				small {
+					display: block;
+					text-align: right;
+					color: lighten(@general-text, 60%);
+				}
 			}
 		}
 

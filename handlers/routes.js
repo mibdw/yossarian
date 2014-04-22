@@ -37,10 +37,9 @@ module.exports = function (app, res, req) {
 	//DOCS
 	var docs = require(__dirname + '/docs/index');
 	
-	app.get('/get-doc/:docSlug', ensureAuthenticated, docs.getDoc);
-	app.get('/new-doc', ensureAuthenticated, function(req, res) {
-		res.render("modals/new-doc.html");
-	});
+	app.get('/getDoc/:docSlug', ensureAuthenticated, docs.getDoc);
+	app.get('/docSubmenu', ensureAuthenticated, docs.docSubmenu);
+	app.post('/postDoc', ensureAuthenticated, docs.postDoc);
 
 }
 

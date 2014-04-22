@@ -61,10 +61,12 @@ ctrl.controller('yossarianNav', ['$scope', '$rootScope', '$http',
 			}
 
 			$rootScope.activeNav = currentNav || 0;
+
 		});
 
 		$rootScope.select = function (index) {
 			$rootScope.activeNav = index;
+			$rootScope.subTitle = "";
 		};
 
 	}
@@ -79,20 +81,36 @@ ctrl.controller('yossarianDocs', ['$scope', '$rootScope', '$sce', '$routeParams'
 
 		var docSlug = $routeParams.subsubdoc || $routeParams.subdoc;
 
-		$http.get('/get-doc/' + docSlug).success( function (data) {
+		$http.get('/getDoc/' + docSlug).success( function (data) {
 			$scope.doc = data;
-			$scope.doc.content = $sce.trustAsHtml($scope.doc.content);
+			$scope.doc.body = $sce.trustAsHtml($scope.doc.body);
+			$rootScope.subTitle = "\u00BB " + $scope.doc.title;
+		});
+
+		$http.get('/docSubmenu').success( function (submenu) {
+			$scope.submenu = submenu;
 		});
 	}
 ]);
 
 // DOCS / POST NEW DOC
 ctrl.controller('yossarianPostdoc', ['$scope', '$rootScope', '$routeParams', '$http',
-	function ($scope, $rootScope, $routeParams, $http) {	
+	function ($scope, $rootScope, $routeParams, $http) {
 
-		$scope.postDoc = {
-			'category': { 'uncategorized': true },
+		$rootScope.subTitle = "\u00BB New document";	
+
+		$scope.newDoc = {
 			'parent': 'noParent'
+		};
+
+		$scope.postDoc = function () { 
+			$http.post('/postDoc', $scope.newDoc)
+			.success(function (data) { 
+				$scope.errorMessage = data.success; 
+			})
+			.error(function () { 
+				$scope.errorMessage = "Something went wrong dude. Get your shit together!"; 
+			});
 		};
 	}
 ]);

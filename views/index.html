@@ -2,7 +2,7 @@
 <html lang="en" ng-app="yossarianApp" ng-controller="yossarianConfig">
 	<head>
 		<meta charset="UTF-8">
-		<title ng-repeat="option in config.navigation">{{config.name}} &mdash; {{navigation[activeNav].name}}</title>
+		<title ng-repeat="option in config.navigation">{{config.name}} &mdash; {{navigation[activeNav].name}} {{subTitle}}</title>
 
 		<link rel="stylesheet" href="/styles/style.css">
 		<link rel="shortcut icon" href="/images/yossarian.ico">
@@ -60,7 +60,9 @@
 
 		</header>
 
-		<main role="main" ng-class="navigation[activeNav].slug" ng-view></main>
+		<main role="main" ng-class="navigation[activeNav].slug" ng-view>
+			
+		</main>
 
 		<footer>
 
@@ -71,7 +73,7 @@
 			</ul>
 
 			<div class="footer-credits">
-				<a href='http://meedoenisbelangrijkerdanwinnen.nl' title='{{config.name}} by M.I.B.D.W.' target='_blank'></a>
+				<a href='http://meedoenisbelangrijkerdanwinnen.nl' title='{{config.name}} by M.I.B.D.W.' target='_blank'>Where are the Snowdens of yesteryear?</a>
 			</div>
 		</footer>
 	</body>
