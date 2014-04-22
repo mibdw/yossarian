@@ -1,0 +1,40 @@
+<h1>{{subTitle.substr(2)}}</h1>
+<form ng-submit="updateDoc()">
+	
+	<div class="form-main">
+		<label for="doc-title">Title</label>
+		<input id="doc-title" type="text" autofocus ng-model="editDoc.title">
+
+		<label for="doc-content">Content</label>
+		<textarea id="doc-content" placeholder="Please use Markdown to create lists, headings, tables, etc." ng-model="editDoc.body"></textarea>
+	</div>
+	<div class="form-sidebar">
+		
+		<div class="form-controls">
+			<button type="submit">Submit</button>
+			<button type="reset">Clear</button>
+		</div>
+
+		<label for="doc-parent">Parent</label>
+		<select name="docParent" id="doc-parent" ng-model="editDoc.parent">
+			<option value="noParent">No parent</option>
+			<option value="docParent1">Parent page #1</option>
+			<option value="docParent2">Parent page #2</option>
+			<option value="docParent3">Parent page #3</option>
+			<option value="docParent4">Parent page #4</option>
+			<option value="docParent5">Parent page #5</option>
+		</select>
+
+		<label>Options</label>
+		<a href="#">Preview document</a><br>
+		<a href="http://www.daringfireball.net/markdown" target="_blank">Markdown guide</a><br>
+		&nbsp;<br>
+		&larr; <a href="/#/docs">Back to overview</a><br>
+
+		<div class="alert" ng-show="errorMessage">
+			{{errorMessage}}
+			<span class="close" ng-click="errorMessage = !errorMessage">&times;</span>
+		</div>
+			
+	</div>
+</form>

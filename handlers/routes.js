@@ -38,8 +38,11 @@ module.exports = function (app, res, req) {
 	var docs = require(__dirname + '/docs/index');
 	
 	app.get('/getDoc/:docSlug', ensureAuthenticated, docs.getDoc);
+	app.get('/editDoc/:docSlug', ensureAuthenticated, docs.editDoc);
 	app.get('/docSubmenu', ensureAuthenticated, docs.docSubmenu);
+
 	app.post('/postDoc', ensureAuthenticated, docs.postDoc);
+	app.post('/updateDoc', ensureAuthenticated, docs.updateDoc);
 
 }
 

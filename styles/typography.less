@@ -21,9 +21,67 @@ a {
 }
 
 h1 {
-	text-transform: uppercase;
-	font-size: 1.4em;
-	color: lighten(@general-text, 30%);
+	font-size: 2em;
+	border-bottom: 1px solid @general-line;
+	margin: .4em 0 .6em;
+}
+
+h2 {
+	font-size: 1.5em;
+	line-height: 1.3em;
+	margin: .4em 0;
+}
+
+h3 {
+	font-weight: normal;
+	font-size: 1.5em;
+	line-height: 1.3em;
+	margin: .4em 0;
+}
+
+h4 {
+	font-size: 1.2em;
+	line-height: 1.4em;
+	margin: .4em 0;
+}
+
+h5 {
+	font-style: italic;
+	font-size: 1.2em;
+	line-height: 1.4em;
+	margin: .4em 0;
+}
+
+h6 {
+	font-size: 1em;
+	line-height: 1.3em;
+	margin: .2em 0;
+}
+
+table {
+
+	tr {
+
+		td, th {
+			padding: .3em .6em;
+			border-width: 0 1px 1px 0;
+			border-style: solid;
+			border-color: @general-line;
+
+			&:last-child { border-right: 0; }
+		}
+
+		&:last-child td { border-bottom: 0; }
+	}
+}
+
+pre {
+	display: inline-block;
+	background-color: darken(@general-background, 4%);
+	border: 1px solid darken(@general-background, 7%);
+	padding: 1em;
+
+	.border-radius (5px);
 }
 
 // ALERTS

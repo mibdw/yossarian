@@ -93,9 +93,9 @@ ctrl.controller('yossarianDocs', ['$scope', '$rootScope', '$sce', '$routeParams'
 	}
 ]);
 
-// DOCS / POST NEW DOC
-ctrl.controller('yossarianPostdoc', ['$scope', '$rootScope', '$routeParams', '$http',
-	function ($scope, $rootScope, $routeParams, $http) {
+// DOCS / NEW DOC
+ctrl.controller('yossarianPostdoc', ['$scope', '$rootScope', '$routeParams', '$http', '$window',
+	function ($scope, $rootScope, $routeParams, $http, $window) {
 
 		$rootScope.subTitle = "\u00BB New document";	
 
@@ -106,7 +106,30 @@ ctrl.controller('yossarianPostdoc', ['$scope', '$rootScope', '$routeParams', '$h
 		$scope.postDoc = function () { 
 			$http.post('/postDoc', $scope.newDoc)
 			.success(function (data) { 
-				$scope.errorMessage = data.success; 
+				$window.location.href = "/#/docs/" + data.success; 
+			})
+			.error(function () { 
+				$scope.errorMessage = "Something went wrong dude. Get your shit together!"; 
+			});
+		};
+	}
+]);
+
+// DOCS / EDIT DOC
+ctrl.controller('yossarianEditdoc', ['$scope', '$rootScope', '$routeParams', '$http', '$window',
+	function ($scope, $rootScope, $routeParams, $http, $window) {
+
+		var docSlug = $routeParams.subsubdoc || $routeParams.subdoc;
+
+		$http.get('/editDoc/' + docSlug).success( function (data) {
+			$scope.editDoc = data;
+			$rootScope.subTitle = "\u00BB Edit document";
+		});
+
+		$scope.updateDoc = function () { 
+			$http.post('/updateDoc', $scope.editDoc)
+			.success(function (data) { 
+				$window.location.href = "/#/docs/" + data.success; 
 			})
 			.error(function () { 
 				$scope.errorMessage = "Something went wrong dude. Get your shit together!"; 

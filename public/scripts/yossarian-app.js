@@ -20,6 +20,10 @@ app.config(['$routeProvider',
 				templateUrl: '/partials/docs', 
 				controller: 'yossarianDocs' 
 			})
+			.when('/docs/:subdoc/edit', { 
+				templateUrl: '/partials/docs-edit', 
+				controller: 'yossarianEditdoc' 
+			})
 			.when('/docs/:subdoc/:subsubdoc', { 
 				templateUrl: '/partials/docs', 
 				controller: 'yossarianDocs' 
