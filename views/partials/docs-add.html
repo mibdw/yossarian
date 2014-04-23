@@ -11,7 +11,7 @@
 	<div class="form-sidebar">
 		
 		<div class="form-controls">
-			<button type="submit">Submit</button>
+			<button type="submit">Save</button>
 			<button type="reset">Clear</button>
 		</div>
 
@@ -26,10 +26,12 @@
 		</select>
 
 		<label>Options</label>
-		<a href="#">Preview document</a><br>
-		<a href="http://www.daringfireball.net/markdown" target="_blank">Markdown guide</a><br>
-		&nbsp;<br>
-		&larr; <a href="/#/docs">Back to overview</a><br>
+		<ul class="form-options">
+			<li><a href="#"><i class="fa fa-file-o"></i> Preview document</a></li>
+			<li><a href="http://www.daringfireball.net/markdown" target="_blank"><i class="fa fa-code"></i> Markdown guide</a></li>
+			<li>&nbsp;</li>
+			<li><a href="/#/docs"><i class="fa fa-arrow-left"></i> Back to overview</a></li>
+		</ul>
 
 		<div class="alert" ng-show="errorMessage">
 			{{errorMessage}}

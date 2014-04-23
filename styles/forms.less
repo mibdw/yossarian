@@ -139,6 +139,35 @@ form {
 			.clearfix;
 		}
 
+		.form-options {
+			list-style-type: none;
+			margin: 0;
+			padding: 0 0;
+
+			li {
+
+				a {
+					display: block;
+					padding: 5px 5px 5px 0;
+					border-width: 0;
+					color: lighten(@general-text, 50%);
+					white-space: nowrap;
+					overflow: hidden;
+					text-overflow: ellipsis;
+
+
+					&:hover {
+						color: @general-text;
+					}
+
+					i {
+						width: 1.3em;
+
+					}
+				}
+			}
+		}
+
 		label {
 			float: none;
 			display: block;
