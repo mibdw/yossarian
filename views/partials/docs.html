@@ -3,15 +3,22 @@
 		<li ng-class="{active: activeSubnav == 'overview'}">
 			<a href="/#/docs/overview">Overview</a>
 		</li>
-		<li ng-repeat="option in submenu | orderBy:'title'" ng-class="{active: option.slug == activeSubnav}">
-			<a href="/#/docs/{{option.slug}}">{{option.title}}</a>
-			<ul></ul>
+		<li ng-repeat="option in submenu | filter:{ parent: 'noParent'} | orderBy:'title'" ng-class="{active: option.slug == activeSubnav}">
+			<a href="/#/docs/{{option.slug}}" title="{{option.title}}">{{option.title}}</a>
+			<ul class="sidebar-subnav">
+				<li ng-repeat="suboption in submenu | filter:{ parent: option.slug }" ng-class="{active: suboption.slug == activeSubsubnav}">
+					<a href="/#/docs/{{option.slug}}/{{suboption.slug}}" title="{{suboption.title}}">{{suboption.title}}</a>
+				</li>		
+			</ul>
 		</li>
 	</ul>
 
 	<ul class="sidebar-options">
 		<li><a href="/#/docs/add"><i class="fa fa-plus-circle"></i> New document</a></li>
-		<li ng-if="activeSubnav != 'overview'"><a href="/#/docs/{{activeSubnav}}/edit"><i class="fa fa-pencil"></i> Edit document</a></li>
+		<li ng-if="activeSubnav != 'overview'">
+			<a ng-if="activeSubsubnav" href="/#/docs/{{activeSubnav}}/{{activeSubsubnav}}/edit"><i class="fa fa-pencil"></i> Edit document</a>
+			<a ng-if="!activeSubsubnav" href="/#/docs/{{activeSubnav}}/edit"><i class="fa fa-pencil"></i> Edit document</a>
+		</li>
 	</ul>
 </aside>
 

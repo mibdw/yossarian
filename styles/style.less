@@ -267,12 +267,15 @@ body {
 						.sidebar-subnav {
 							list-style-type: none;
 							margin: 0;
-							padding: 5px 0;
+							padding: 0;
 							display: block;
 
 							li {
 								margin: 0;
 								padding: 0;
+
+								&:first-child { margin-top: 5px; }
+								&:last-child { margin-bottom: 5px; }
 
 								a {
 									padding: 3px 0 3px 30px;

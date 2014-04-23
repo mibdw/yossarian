@@ -16,19 +16,15 @@
 		</div>
 
 		<label for="doc-parent">Parent</label>
-		<select name="docParent" id="doc-parent" ng-model="editDoc.parent">
+		<select name="docParent" id="doc-parent" ng-model="editDoc.parent" disabled="disabled">
 			<option value="noParent">No parent</option>
-			<option value="docParent1">Parent page #1</option>
-			<option value="docParent2">Parent page #2</option>
-			<option value="docParent3">Parent page #3</option>
-			<option value="docParent4">Parent page #4</option>
-			<option value="docParent5">Parent page #5</option>
+			<option ng-repeat="option in submenu | filter:{ parent: 'noParent' } | orderBy:'title'" value="{{option.slug}}">{{option.title}}</option>
 		</select>
 
 		<label>Options</label>
 		<ul class="form-options">
 			<li><a href="#"><i class="fa fa-file-o"></i> Preview document</a></li>
-			<li><a href="#"><i class="fa fa-trash-o"></i> Delete document</a></li>
+			<li><a ng-click="deleteDoc()"><i class="fa fa-trash-o"></i> Delete document</a></li>
 			<li><a href="http://www.daringfireball.net/markdown" target="_blank"><i class="fa fa-code"></i> Markdown guide</a></li>
 			<li>&nbsp;</li>
 			<li><a href="/#/docs/{{editDoc.slug}}"><i class="fa fa-arrow-left"></i> Back to document</a></li>

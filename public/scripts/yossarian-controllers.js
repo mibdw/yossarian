@@ -112,6 +112,10 @@ ctrl.controller('yossarianPostdoc', ['$scope', '$rootScope', '$routeParams', '$h
 				$scope.errorMessage = "Something went wrong dude. Get your shit together!"; 
 			});
 		};
+
+		$http.get('/docSubmenu').success( function (submenu) {
+			$scope.submenu = submenu;
+		});
 	}
 ]);
 
@@ -135,6 +139,14 @@ ctrl.controller('yossarianEditdoc', ['$scope', '$rootScope', '$routeParams', '$h
 				$scope.errorMessage = "Something went wrong dude. Get your shit together!"; 
 			});
 		};
+
+		$scope.deleteDoc = function () { 
+			alert("Yo!");
+		};
+
+		$http.get('/docSubmenu').success( function (submenu) {
+			$scope.submenu = submenu;
+		});
 	}
 ]);
 

@@ -41,6 +41,7 @@ module.exports = function (app, res, req) {
 	app.get('/editDoc/:docSlug', ensureAuthenticated, docs.editDoc);
 	app.get('/docSubmenu', ensureAuthenticated, docs.docSubmenu);
 
+	app.get('/deleteDoc/:docID', ensureAuthenticated, docs.deleteDoc)
 	app.post('/postDoc', ensureAuthenticated, docs.postDoc);
 	app.post('/updateDoc', ensureAuthenticated, docs.updateDoc);
 

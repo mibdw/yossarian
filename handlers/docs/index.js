@@ -45,7 +45,7 @@ exports.editDoc =  function(req, res, next) {
 
 exports.docSubmenu =  function(req, res, next) { 
 
-	Doc.find({ 'parent': 'noParent' }, 'title slug', function (err, submenu) {
+	Doc.find( 'title slug parent', function (err, submenu) {
 		if (err) return handleError(err);
 
 		return res.send(submenu);
@@ -68,7 +68,13 @@ exports.postDoc =  function(req, res, next) {
 		if (err) return handleError(err);
 		Doc.findById(doc, function (err, data) {
 			if (err) return handleError(err);
-			res.send({ success: slug });
+
+			if (doc.parent != 'noParent') {
+				var path = doc.parent + "/" + slug;
+				res.send({ success: path })
+			} else {
+				res.send({ success: slug });
+			}
 		});
 	})
 };
