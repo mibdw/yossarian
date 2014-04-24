@@ -8,11 +8,20 @@
 		<label for="doc-content">Content</label>
 		<textarea id="doc-content" placeholder="Please use Markdown to create lists, headings, tables, etc." ng-model="newDoc.body"></textarea>
 	</div>
+
 	<div class="form-sidebar">
 		
 		<div class="form-controls">
 			<button type="submit">Save</button>
 			<button type="reset">Clear</button>
+		</div>
+
+		<div class="form-users">
+		
+			<i class="fa fa-user avatar"></i>
+			<small class="author writer-label">Author</small>
+			<span class="author writer-name">{{user.name.first}} {{user.name.last}}</span>
+			<span class="author writer-email">{{user.email}}</span>			
 		</div>
 
 		<label for="doc-parent">Parent</label>

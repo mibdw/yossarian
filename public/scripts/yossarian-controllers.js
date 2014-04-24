@@ -128,25 +128,82 @@ ctrl.controller('yossarianEditdoc', ['$scope', '$rootScope', '$routeParams', '$h
 		$http.get('/editDoc/' + docSlug).success( function (data) {
 			$scope.editDoc = data;
 			$rootScope.subTitle = "\u00BB Edit document";
-		});
 
-		$scope.updateDoc = function () { 
-			$http.post('/updateDoc', $scope.editDoc)
-			.success(function (data) { 
-				$window.location.href = "/#/docs/" + data.success; 
-			})
-			.error(function () { 
-				$scope.errorMessage = "Something went wrong dude. Get your shit together!"; 
+			$http.get('/getUser/' + data.author).success( function (hero) {
+				$scope.author = hero;
 			});
-		};
 
-		$scope.deleteDoc = function () { 
-			alert("Yo!");
-		};
+			$scope.originalSlug = data.slug;
+		});
 
 		$http.get('/docSubmenu').success( function (submenu) {
 			$scope.submenu = submenu;
 		});
+
+		$scope.updateDoc = function () { 
+			
+			var hasChildren = false;
+			for (i in $scope.submenu) {
+				if ($scope.submenu[i]['parent'] == $scope.originalSlug) {
+					hasChildren = true; 
+				}
+			}
+
+			if (hasChildren === true) {
+
+				$scope.errorMessage = "This document has children! Please find them a foster family first. Geez!"; 
+
+			} else if (hasChildren === false) {
+
+				$http.post('/updateDoc', $scope.editDoc)
+				.success(function (data) {
+					if ($scope.editDoc.parent == 'noParent') {
+						$window.location.href = "/#/docs/" + $scope.editDoc.slug; 
+					} else {
+						$window.location.href = "/#/docs/" + $scope.editDoc.parent +"/" + $scope.editDoc.slug; 
+					}				
+				})
+				.error(function () { 
+					$scope.errorMessage = "Something went wrong dude. Get your shit together!"; 
+				});
+			}
+		};
+
+		$scope.confirmDelete = function() {
+
+			var hasChildren = false;
+			for (i in $scope.submenu) {
+				if ($scope.submenu[i]['parent'] == $scope.originalSlug) {
+					hasChildren = true; 
+				}
+			}
+			if (hasChildren === true) {
+
+				$scope.errorMessage = "This document has children! Please find them a foster family first. Geez!"; 
+
+			} else if (hasChildren === false) {
+
+				$scope.confirmMessage = "Are you sure you want to delete this document?";
+
+			}
+		};
+
+		$scope.deleteDoc = function () { 
+
+			$scope.confirmMessage = "";
+
+			if (hasChildren === true) {
+
+				$scope.errorMessage = "This document has children! Please find them a foster family first. Geez!"; 
+
+			} else if (hasChildren === false) {
+
+				$http.post('/deleteDoc', { 'docid': $scope.editDoc._id })
+				.success(function (data) {
+					$window.location.href = "/#/docs";
+				});
+			}
+		};
 	}
 ]);
 

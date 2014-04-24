@@ -22,6 +22,7 @@ a {
 
 h1 {
 	font-size: 2em;
+	color: darken(@brand-color, 6%);
 	border-bottom: 1px solid @general-line;
 	margin: .4em 0 .6em;
 }
@@ -80,6 +81,7 @@ pre {
 	background-color: darken(@general-background, 4%);
 	border: 1px solid darken(@general-background, 7%);
 	padding: 1em;
+	margin: 0 25px 1em;
 
 	.border-radius (5px);
 }
@@ -88,6 +90,7 @@ blockquote {
 	background-color: darken(@general-background, 4%);
 	border-left: 5px solid @brand-color;
 	padding: .3em 1em;
+	margin: 0 20px 1em;
 }
 
 // ALERTS
@@ -121,6 +124,30 @@ blockquote {
 			color: darken(@alert-background, 20%);
 			cursor: pointer;
 		}
+	}
+}
+
+.confirm {
+	position: fixed;
+	width: 50%;
+	top: 1%;
+	left: 50%;
+	margin-left: -25%;
+	padding: 10px 15px;
+
+	background-color: @confirm-background;
+	color: @confirm-text;
+	border: 1px solid @confirm-line;
+	line-height: 35px;
+	text-align: left;
+
+	z-index: 1111;
+
+	.border-radius (5px);
+
+	button { 
+		float: right; 
+		margin-left: .2em;
 	}
 }
 
@@ -198,4 +225,19 @@ blockquote {
 			.border-radius (5px 5px 0 0);
 		}
 	}
+}
+
+// AVATARS
+.avatar {
+	display: inline-block;
+	width: @avatar-size;
+	height: @avatar-size;
+	background-color: lighten(@header-text, 75%);
+	color: #fff;
+	text-align: center;
+	line-height: @avatar-size/1.05;
+	font-size: 1.4em;
+	border-radius: @avatar-size/2;
+	border: 1px solid lighten(@header-text, 70%);
+	text-shadow: 1px 1px 0 lighten(@header-text, 70%), -1px 1px 0 lighten(@header-text, 70%), 1px -1px 0 lighten(@header-text, 70%), -1px -1px 0 lighten(@header-text, 70%);
 }

@@ -8,6 +8,7 @@
 		<label for="doc-content">Content</label>
 		<textarea id="doc-content" placeholder="Please use Markdown to create lists, headings, tables, etc." ng-model="editDoc.body"></textarea>
 	</div>
+
 	<div class="form-sidebar">
 		
 		<div class="form-controls">
@@ -15,25 +16,46 @@
 			<button type="reset">Clear</button>
 		</div>
 
+		<div class="form-users">
+			<i class="fa fa-user avatar"></i>
+			<small class="author writer-label">Author</small>
+			<span class="author writer-name">{{author.name.first}} {{author.name.last}}</span>
+			<span class="author writer-email">{{editDoc.author}}</span>
+
+			<i class="fa fa-user avatar"></i>
+			<small class="editor writer-label">Editor</small>
+			<span class="editor writer-name">{{user.name.first}} {{user.name.last}}</span>
+			<span class="editor writer-email">{{user.email}}</span>
+		</div>
+
 		<label for="doc-parent">Parent</label>
-		<select name="docParent" id="doc-parent" ng-model="editDoc.parent" disabled="disabled">
+		<select name="docParent" id="doc-parent" ng-model="editDoc.parent">
 			<option value="noParent">No parent</option>
-			<option ng-repeat="option in submenu | filter:{ parent: 'noParent' } | orderBy:'title'" value="{{option.slug}}">{{option.title}}</option>
+			<option ng-repeat="option in submenu | filter:{ parent: 'noParent' } | orderBy:'title'" ng-if="option.slug != editDoc.slug" value="{{option.slug}}" ng-selected="editDoc.parent == option.slug">{{option.title}}</option>
 		</select>
 
 		<label>Options</label>
 		<ul class="form-options">
 			<li><a href="#"><i class="fa fa-file-o"></i> Preview document</a></li>
-			<li><a ng-click="deleteDoc()"><i class="fa fa-trash-o"></i> Delete document</a></li>
+			<li><a ng-click="confirmDelete()"><i class="fa fa-trash-o"></i> Delete document</a></li>
 			<li><a href="http://www.daringfireball.net/markdown" target="_blank"><i class="fa fa-code"></i> Markdown guide</a></li>
 			<li>&nbsp;</li>
-			<li><a href="/#/docs/{{editDoc.slug}}"><i class="fa fa-arrow-left"></i> Back to document</a></li>
+			<li>
+				<a ng-if="editDoc.parent == 'noParent'" href="/#/docs/{{editDoc.slug}}"><i class="fa fa-arrow-left"></i> Back to document</a>
+				<a ng-if="editDoc.parent != 'noParent'" href="/#/docs/{{editDoc.parent}}/{{editDoc.slug}}"><i class="fa fa-arrow-left"></i> Back to document</a>
+			</li>
 		</ul>
-
-		<div class="alert" ng-show="errorMessage">
-			{{errorMessage}}
-			<span class="close" ng-click="errorMessage = !errorMessage">&times;</span>
-		</div>
-			
 	</div>
 </form>
+
+
+<div class="alert" ng-show="errorMessage">
+	{{errorMessage}}
+	<span class="close" ng-click="errorMessage = !errorMessage">&times;</span>
+</div>
+
+<div class="confirm" ng-show="confirmMessage">
+	{{confirmMessage}}
+	<button class="rejection" ng-click="confirmMessage = !confirmMessage">Nope</button>
+	<button class="confirmation" ng-click="deleteDoc()">Sure!</button>
+</div>	

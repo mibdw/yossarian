@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-var Doc = require(__dirname + '/../../models/docs/doc.js')
+var Doc = require(__dirname + '/../../models/docs/doc.js');
 var marked = require('marked');
 
 marked.setOptions({
@@ -15,12 +15,7 @@ exports.getDoc =  function(req, res, next) {
 
 	if (req.params.docSlug == "overview") {
 
-		var doc = {
-			title: "Overview",
-			body: "Overview",
-			author: "ben@meedoenisbelangrijkerdanwinnen.nl"
-		};
-
+		var doc = { title: "Overview", body: "Overview" };
 		res.send(doc)
 
 	} else {
@@ -93,4 +88,13 @@ exports.updateDoc =  function(req, res, next) {
 		if (err) return handleError(err);
 		res.send({ success: slug });
 	});
+};
+
+exports.deleteDoc =  function(req, res, next) {
+
+	Doc.findByIdAndRemove(req.body.docid, function() {
+		res.send({ success: 'yay!' });
+	});
+	
+
 };

@@ -44,7 +44,7 @@ form {
 		display: block;
 
 		width: 85%;
-		min-height: 30em;
+		min-height: 40em;
 		padding: .4em .6em;
 		margin-bottom: .4em;
 
@@ -154,7 +154,7 @@ form {
 					white-space: nowrap;
 					overflow: hidden;
 					text-overflow: ellipsis;
-
+					cursor: pointer;
 
 					&:hover {
 						color: @general-text;
@@ -167,6 +167,39 @@ form {
 				}
 			}
 		}
+
+		.form-users {
+			border-bottom: 1px solid @general-line;
+			margin-bottom: .5em;
+			padding-bottom: .5em;
+
+			.avatar {
+				float: left;
+			}
+
+			.author, .editor {
+				display: block;
+				margin-left: @avatar-size * 1.3;
+				overflow: hidden;
+				white-space: nowrap;
+				text-overflow: ellipsis;
+				color: lighten(@general-text, 50%);
+
+				&.writer-label { font-style: italic; }
+
+				&.writer-name {
+					font-size: 1.1em;
+					line-height: 1.1em;
+					font-weight: bold;
+				}
+
+				&.writer-email {
+					margin-bottom: .7em;
+				}
+			}
+
+		}
+		
 
 		label {
 			float: none;
@@ -207,6 +240,28 @@ button, .button {
 		&:hover, &:focus, &:active {
 			background-color: darken(@button-alt-background, 2%);
 			border-color: darken(@button-alt-line, 2%);
+		}
+	}
+
+	&.confirmation {
+		background-color: darken(@confirm-background, 10%);
+		border-color: darken(@confirm-line, 10%);
+		color: @confirm-text;
+
+		&:hover, &:focus, &:active {
+			background-color: darken(@confirm-background, 12%);
+			border-color: darken(@confirm-line, 12%);
+		}
+	}
+
+	&.rejection {
+		background-color: @warning-background;
+		border-color: @warning-line;
+		color: @warning-text;
+
+		&:hover, &:focus, &:active {
+			background-color: darken(@warning-background, 4%);
+			border-color: darken(@warning-line, 4%);
 		}
 	}
 }

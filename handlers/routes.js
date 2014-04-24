@@ -25,7 +25,7 @@ module.exports = function (app, res, req) {
 		res.json(config.navigation);
 	});
 
-	app.get('/username', ensureAuthenticated, function(req, res) {
+	app.get('/username', ensureAuthenticated, function(req, res) { 
 		res.send(req.user);
 	});
 
@@ -34,6 +34,11 @@ module.exports = function (app, res, req) {
 		res.render("partials/" + req.params.partial + ".html");
 	});
 
+	// USERS
+	var users = require(__dirname + '/users/index');
+
+	app.get('/getUser/:userEmail', ensureAuthenticated, users.getUser);
+
 	//DOCS
 	var docs = require(__dirname + '/docs/index');
 	
@@ -41,7 +46,7 @@ module.exports = function (app, res, req) {
 	app.get('/editDoc/:docSlug', ensureAuthenticated, docs.editDoc);
 	app.get('/docSubmenu', ensureAuthenticated, docs.docSubmenu);
 
-	app.get('/deleteDoc/:docID', ensureAuthenticated, docs.deleteDoc)
+	app.post('/deleteDoc', ensureAuthenticated, docs.deleteDoc);
 	app.post('/postDoc', ensureAuthenticated, docs.postDoc);
 	app.post('/updateDoc', ensureAuthenticated, docs.updateDoc);
 
