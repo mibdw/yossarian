@@ -32,16 +32,27 @@
 
 		<label>Options</label>
 		<ul class="form-options">
-			<li><a href="#"><i class="fa fa-file-o"></i> Preview document</a></li>
+			<li><a ng-click="previewDoc()"><i class="fa fa-file-o"></i> Preview document</a></li>
 			<li><a href="http://www.daringfireball.net/markdown" target="_blank"><i class="fa fa-code"></i> Markdown guide</a></li>
 			<li>&nbsp;</li>
 			<li><a href="/#/docs"><i class="fa fa-arrow-left"></i> Back to overview</a></li>
 		</ul>
-
-		<div class="alert" ng-show="errorMessage">
-			{{errorMessage}}
-			<span class="close" ng-click="errorMessage = !errorMessage">&times;</span>
-		</div>
 			
 	</div>
 </form>
+
+<div class="alert" ng-show="errorMessage">
+	{{errorMessage}}
+	<span class="close" ng-click="errorMessage = !errorMessage">&times;</span>
+</div>
+
+<div class="modal-wrapper" ng-show="previewBody">
+	<div class="modal-header">
+		<span class="modal-title">Preview document</span>
+		<span class="modal-close" ng-click="previewBody = !previewBody">&times;</span>
+	</div>
+	<div class="modal-body">
+		<h1>{{newDoc.title}}</h1>
+		<div ng-bind-html="previewBody"></div>
+	</div>
+</div>

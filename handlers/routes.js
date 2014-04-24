@@ -25,9 +25,6 @@ module.exports = function (app, res, req) {
 		res.json(config.navigation);
 	});
 
-	app.get('/username', ensureAuthenticated, function(req, res) { 
-		res.send(req.user);
-	});
 
 	// PARTIALS
 	app.get('/partials/:partial', ensureAuthenticated, function(req, res) {
@@ -37,18 +34,20 @@ module.exports = function (app, res, req) {
 	// USERS
 	var users = require(__dirname + '/users/index');
 
-	app.get('/getUser/:userEmail', ensureAuthenticated, users.getUser);
+	app.get('/user/get/:userEmail', ensureAuthenticated, users.getUser);	
+	app.get('/user/current', ensureAuthenticated, function(req, res) { res.send(req.user); });
 
 	//DOCS
 	var docs = require(__dirname + '/docs/index');
 	
-	app.get('/getDoc/:docSlug', ensureAuthenticated, docs.getDoc);
-	app.get('/editDoc/:docSlug', ensureAuthenticated, docs.editDoc);
-	app.get('/docSubmenu', ensureAuthenticated, docs.docSubmenu);
+	app.get('/docs/get/:docSlug', ensureAuthenticated, docs.getDoc);
+	app.get('/docs/edit/:docSlug', ensureAuthenticated, docs.editDoc);
+	app.get('/docs/submenu', ensureAuthenticated, docs.docSubmenu);
 
-	app.post('/deleteDoc', ensureAuthenticated, docs.deleteDoc);
-	app.post('/postDoc', ensureAuthenticated, docs.postDoc);
-	app.post('/updateDoc', ensureAuthenticated, docs.updateDoc);
+	app.post('/docs/delete', ensureAuthenticated, docs.deleteDoc);
+	app.post('/docs/post', ensureAuthenticated, docs.postDoc);
+	app.post('/docs/update', ensureAuthenticated, docs.updateDoc);
+	app.post('/docs/preview', ensureAuthenticated, docs.previewDoc);
 
 }
 

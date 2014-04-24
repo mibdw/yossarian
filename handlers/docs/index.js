@@ -95,6 +95,10 @@ exports.deleteDoc =  function(req, res, next) {
 	Doc.findByIdAndRemove(req.body.docid, function() {
 		res.send({ success: 'yay!' });
 	});
-	
+};
 
+exports.previewDoc = function(req, res, next) {
+
+	var preview = marked(req.body.previewBody);
+	res.send({ 'body': preview });
 };

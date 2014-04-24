@@ -31,13 +31,8 @@ ctrl.controller('yossarianAuth', ['$scope', '$http', '$window',
 ctrl.controller('yossarianConfig', ['$rootScope', '$http',
 	function ($rootScope, $http) {
 
-		$http.get('/config').success( function (data) {
-			$rootScope.config = data;
-		});
-
-		$http.get('/username').success( function (data) {
-			$rootScope.user = data;
-		});
+		$http.get('/config').success( function (data) { $rootScope.config = data; });
+		$http.get('/user/current').success( function (data) { $rootScope.user = data; });
 	}
 ]);
 
@@ -81,30 +76,27 @@ ctrl.controller('yossarianDocs', ['$scope', '$rootScope', '$sce', '$routeParams'
 
 		var docSlug = $routeParams.subsubdoc || $routeParams.subdoc;
 
-		$http.get('/getDoc/' + docSlug).success( function (data) {
+		$http.get('/docs/get/' + docSlug).success( function (data) {
 			$scope.doc = data;
 			$scope.doc.body = $sce.trustAsHtml($scope.doc.body);
 			$rootScope.subTitle = "\u00BB " + $scope.doc.title;
 		});
 
-		$http.get('/docSubmenu').success( function (submenu) {
+		$http.get('/docs/submenu').success( function (submenu) {
 			$scope.submenu = submenu;
 		});
 	}
 ]);
 
 // DOCS / NEW DOC
-ctrl.controller('yossarianPostdoc', ['$scope', '$rootScope', '$routeParams', '$http', '$window',
-	function ($scope, $rootScope, $routeParams, $http, $window) {
+ctrl.controller('yossarianPostdoc', ['$scope', '$sce', '$rootScope', '$routeParams', '$http', '$window',
+	function ($scope, $sce, $rootScope, $routeParams, $http, $window) {
 
 		$rootScope.subTitle = "\u00BB New document";	
-
-		$scope.newDoc = {
-			'parent': 'noParent'
-		};
+		$scope.newDoc = { 'parent': 'noParent' };
 
 		$scope.postDoc = function () { 
-			$http.post('/postDoc', $scope.newDoc)
+			$http.post('/docs/post', $scope.newDoc)
 			.success(function (data) { 
 				$window.location.href = "/#/docs/" + data.success; 
 			})
@@ -113,30 +105,39 @@ ctrl.controller('yossarianPostdoc', ['$scope', '$rootScope', '$routeParams', '$h
 			});
 		};
 
-		$http.get('/docSubmenu').success( function (submenu) {
+		$http.get('/docs/submenu').success( function (submenu) {
 			$scope.submenu = submenu;
 		});
+
+		$scope.previewDoc = function () {
+
+
+			$http.post('/docs/preview', { 'previewBody': $scope.newDoc.body })
+			.success(function (data) {
+				$scope.previewBody = $sce.trustAsHtml(data.body);
+			});
+		};
 	}
 ]);
 
 // DOCS / EDIT DOC
-ctrl.controller('yossarianEditdoc', ['$scope', '$rootScope', '$routeParams', '$http', '$window',
-	function ($scope, $rootScope, $routeParams, $http, $window) {
+ctrl.controller('yossarianEditdoc', ['$scope', '$sce', '$rootScope', '$routeParams', '$http', '$window',
+	function ($scope, $sce, $rootScope, $routeParams, $http, $window) {
 
 		var docSlug = $routeParams.subsubdoc || $routeParams.subdoc;
 
-		$http.get('/editDoc/' + docSlug).success( function (data) {
+		$http.get('/docs/edit/' + docSlug).success( function (data) {
 			$scope.editDoc = data;
 			$rootScope.subTitle = "\u00BB Edit document";
 
-			$http.get('/getUser/' + data.author).success( function (hero) {
+			$http.get('/user/get/' + data.author).success( function (hero) {
 				$scope.author = hero;
 			});
 
 			$scope.originalSlug = data.slug;
 		});
 
-		$http.get('/docSubmenu').success( function (submenu) {
+		$http.get('/docs/submenu').success( function (submenu) {
 			$scope.submenu = submenu;
 		});
 
@@ -155,7 +156,7 @@ ctrl.controller('yossarianEditdoc', ['$scope', '$rootScope', '$routeParams', '$h
 
 			} else if (hasChildren === false) {
 
-				$http.post('/updateDoc', $scope.editDoc)
+				$http.post('/docs/update', $scope.editDoc)
 				.success(function (data) {
 					if ($scope.editDoc.parent == 'noParent') {
 						$window.location.href = "/#/docs/" + $scope.editDoc.slug; 
@@ -192,20 +193,18 @@ ctrl.controller('yossarianEditdoc', ['$scope', '$rootScope', '$routeParams', '$h
 
 			$scope.confirmMessage = "";
 
-			if (hasChildren === true) {
+			$http.post('/docs/delete', { 'docid': $scope.editDoc._id })
+			.success(function (data) {
+				$window.location.href = "/#/docs";
+			});
+		};
 
-				$scope.errorMessage = "This document has children! Please find them a foster family first. Geez!"; 
+		$scope.previewDoc = function () {
 
-			} else if (hasChildren === false) {
-
-				$http.post('/deleteDoc', { 'docid': $scope.editDoc._id })
-				.success(function (data) {
-					$window.location.href = "/#/docs";
-				});
-			}
+			$http.post('/docs/preview', { 'previewBody': $scope.editDoc.body })
+			.success(function (data) {
+				$scope.previewBody = $sce.trustAsHtml(data.body);
+			});
 		};
 	}
 ]);
-
-
-

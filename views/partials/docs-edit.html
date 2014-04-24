@@ -20,7 +20,7 @@
 			<i class="fa fa-user avatar"></i>
 			<small class="author writer-label">Author</small>
 			<span class="author writer-name">{{author.name.first}} {{author.name.last}}</span>
-			<span class="author writer-email">{{editDoc.author}}</span>
+			<span class="author writer-email">{{author.email}}</span>
 
 			<i class="fa fa-user avatar"></i>
 			<small class="editor writer-label">Editor</small>
@@ -36,7 +36,7 @@
 
 		<label>Options</label>
 		<ul class="form-options">
-			<li><a href="#"><i class="fa fa-file-o"></i> Preview document</a></li>
+			<li><a ng-click="previewDoc()"><i class="fa fa-file-o"></i> Preview document</a></li>
 			<li><a ng-click="confirmDelete()"><i class="fa fa-trash-o"></i> Delete document</a></li>
 			<li><a href="http://www.daringfireball.net/markdown" target="_blank"><i class="fa fa-code"></i> Markdown guide</a></li>
 			<li>&nbsp;</li>
@@ -59,3 +59,14 @@
 	<button class="rejection" ng-click="confirmMessage = !confirmMessage">Nope</button>
 	<button class="confirmation" ng-click="deleteDoc()">Sure!</button>
 </div>	
+
+<div class="modal-wrapper" ng-show="previewBody">
+	<div class="modal-header">
+		<span class="modal-title">Preview document</span>
+		<span class="modal-close" ng-click="previewBody = !previewBody">&times;</span>
+	</div>
+	<div class="modal-body">
+		<h1>{{editDoc.title}}</h1>
+		<div ng-bind-html="previewBody"></div>
+	</div>
+</div>
