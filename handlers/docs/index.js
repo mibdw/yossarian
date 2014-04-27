@@ -1,6 +1,8 @@
 var mongoose = require('mongoose');
 var Doc = require(__dirname + '/../../models/docs/doc.js');
 var marked = require('marked');
+var moment = require('moment');
+var dateFormat = "ddd MM-DD-YYYY HH:mm:ss";
 
 marked.setOptions({
 	gfm: true,
@@ -40,7 +42,7 @@ exports.editDoc =  function(req, res, next) {
 
 exports.docSubmenu =  function(req, res, next) { 
 
-	Doc.find( 'title slug parent', function (err, submenu) {
+	Doc.find('title slug parent', function (err, submenu) {
 		if (err) return handleError(err);
 
 		return res.send(submenu);
@@ -50,13 +52,17 @@ exports.docSubmenu =  function(req, res, next) {
 exports.postDoc =  function(req, res, next) { 
 
 	var slug = slugify(req.body.title);
+	var postDate = moment().format(dateFormat);
 
 	var doc = new Doc({
-		title: req.body.title,
-		slug: slug,
-		body: req.body.body,
-		parent: req.body.parent,
-		author: req.user.email
+
+		'title': req.body.title,
+		'slug': slug,
+		'body': req.body.body,
+		'parent': req.body.parent,
+		'author': req.user.email,
+		'dateCreated': postDate
+
 	});
 
 	doc.save(function (err) {
@@ -77,16 +83,32 @@ exports.postDoc =  function(req, res, next) {
 exports.updateDoc =  function(req, res, next) { 
 
 	var slug = slugify(req.body.title);
+	var editDate = moment().format(dateFormat);
 
-	Doc.findByIdAndUpdate(req.body._id, { $set: { 
-		title: req.body.title,
-		slug: slug,
-		body: req.body.body,
-		parent: req.body.parent,
-		editor: req.user.email 
-	}}, function (err, data) {
+	Doc.findByIdAndUpdate(req.body._id, { 
+
+		$set: { 
+		
+			'title': req.body.title,
+			'slug': slug,
+			'body': req.body.body,
+			'parent': req.body.parent,
+			'editor': req.user.email,
+			'dateModified': editDate
+
+		}
+
+	}, function (err, data) {
+
 		if (err) return handleError(err);
-		res.send({ success: slug });
+		
+		if (req.body.parent != 'noParent') {
+			var path = req.body.parent + "/" + slug;
+			res.send({ success: path })
+		} else {
+			res.send({ success: slug });
+		}
+
 	});
 };
 

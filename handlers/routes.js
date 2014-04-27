@@ -25,10 +25,9 @@ module.exports = function (app, res, req) {
 		res.json(config.navigation);
 	});
 
-
 	// PARTIALS
-	app.get('/partials/:partial', ensureAuthenticated, function(req, res) {
-		res.render("partials/" + req.params.partial + ".html");
+	app.get('/partials/:section/:partial', ensureAuthenticated, function(req, res) {
+		res.render("partials/" + req.params.section + "/" + req.params.partial + ".html");
 	});
 
 	// USERS

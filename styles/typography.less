@@ -83,6 +83,8 @@ pre {
 	padding: 1em;
 	margin: 0 25px 1em;
 
+	font-family: @font-stack-monospace;
+
 	.border-radius (5px);
 }
 
@@ -91,6 +93,10 @@ blockquote {
 	border-left: 5px solid @brand-color;
 	padding: .3em 1em;
 	margin: 0 20px 1em;
+}
+
+code {
+	font-family: @font-stack-monospace;
 }
 
 // ALERTS
@@ -109,6 +115,9 @@ blockquote {
 	text-align: left;
 
 	z-index: 1111;
+	opacity: 1;
+	
+		.transition (opacity 2s ease-in);
 
 	.border-radius (5px);
 
@@ -124,6 +133,10 @@ blockquote {
 			color: darken(@alert-background, 20%);
 			cursor: pointer;
 		}
+	}
+
+	.ng-hide {
+		opacity: 0;
 	}
 }
 

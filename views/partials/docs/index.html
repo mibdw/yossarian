@@ -25,8 +25,9 @@
 <article>
 	<h1>{{subTitle.substr(2)}}</h1>
 	<div ng-bind-html="doc.body" class="document-body"></div>
-	<small ng-show="doc.editor">Last edited by {{doc.editor}} on {{doc.dateModified}}</small>
-	<small>Create by {{doc.author}} on {{doc.dateCreated}}</small>
+	
+	<small ng-show="doc.author">Created <strong>{{doc.dateCreated}}</strong> by {{author.name.first}} {{author.name.last}}</small>
+	<small ng-show="doc.editor">Last edited <strong>{{doc.dateModified}}</strong> by {{editor.name.first}} {{editor.name.last}}</small>
 </article>
 
 <div class="modal-wrapper" ng-show="modalContent.title">

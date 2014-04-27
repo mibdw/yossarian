@@ -1,48 +1,61 @@
-var app = angular.module('yossarianApp', ['ngRoute', 'yossarianControllers']);
+var app = angular.module('yossarianApp', ['ngRoute', 'ngAnimate', 'yossarianControllers', 'yossarianNews', 'yossarianDocs']);
 
 app.config(['$routeProvider',
 	function($routeProvider) {
 		$routeProvider
 			.when('/' , { 
-				templateUrl: '/partials/dashboard' 
+				templateUrl: '/partials/dashboard/index' 
 			})
-			.when('/news', { 
-				templateUrl: '/partials/news' 
+			.when('/news', { 						// NEWS
+				templateUrl: '/partials/news/index',
+				controller: 'yossarianNews'
 			})
-			.when('/docs', {  
+			.when('/news/add', {
+				templateUrl: '/partials/news/add',
+				controller: 'yossarianNews'
+			})
+			.when('/news/:article', {
+				templateUrl: '/partials/news/detail',
+				controller: 'yossarianNews'
+			})
+			.when('/news/:article/edit', {
+				templateUrl: '/partials/news/edit',
+				controller: 'yossarianNews'
+			})
+			.when('/docs', {						// DOCUMENTS
 				redirectTo: '/docs/overview' 
 			})
 			.when('/docs/add', {
-				templateUrl: '/partials/docs-add',
+				templateUrl: '/partials/docs/add',
 				controller: 'yossarianPostdoc'
 			})
 			.when('/docs/:subdoc', { 
-				templateUrl: '/partials/docs', 
+				templateUrl: '/partials/docs/index', 
 				controller: 'yossarianDocs' 
 			})
 			.when('/docs/:subdoc/edit', { 
-				templateUrl: '/partials/docs-edit', 
-				controller: 'yossarianEditdoc' 
-			})
-			.when('/docs/:subdoc/:subsubdoc/edit', { 
-				templateUrl: '/partials/docs-edit', 
+				templateUrl: '/partials/docs/edit', 
 				controller: 'yossarianEditdoc' 
 			})
 			.when('/docs/:subdoc/:subsubdoc', { 
-				templateUrl: '/partials/docs', 
+				templateUrl: '/partials/docs/index', 
 				controller: 'yossarianDocs' 
 			})
-			.when('/calendar', { 
-				templateUrl: '/partials/calendar' 
+			.when('/docs/:subdoc/:subsubdoc/edit', { 
+				templateUrl: '/partials/docs/edit', 
+				controller: 'yossarianEditdoc' 
 			})
-			.when('/projects', { 
-				templateUrl: '/partials/projects' 
+			.when('/calendar', { 					// CALENDAR
+				templateUrl: '/partials/calendar/index' 
 			})
-			.when('/settings', { 
-				templateUrl: '/partials/settings' 
+			.when('/projects', { 					// PROJECTS
+				templateUrl: '/partials/projects/index' 
+			})
+			.when('/settings', {					// SETTINGS 
+				templateUrl: '/partials/settings/index' 
 			})
 			.when('/profile', { 
-				templateUrl: '/partials/profile' 
+				templateUrl: '/partials/user/profile' 
 			})
 			.otherwise({ redirectTo: '/' });
 	}

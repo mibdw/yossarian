@@ -3,7 +3,7 @@
 	
 	<div class="form-main">
 		<label for="doc-title">Title</label>
-		<input id="doc-title" type="text" autofocus ng-model="editDoc.title">
+		<input id="doc-title" type="text" autofocus ng-model="editDoc.title" ng-disabled="hasChildren" ng-click="childrenCheck()">
 
 		<label for="doc-content">Content</label>
 		<textarea id="doc-content" placeholder="Please use Markdown to create lists, headings, tables, etc." ng-model="editDoc.body"></textarea>
@@ -18,18 +18,20 @@
 
 		<div class="form-users">
 			<i class="fa fa-user avatar"></i>
-			<small class="author writer-label">Author</small>
+			<small class="author writer-label">Created {{editDoc.dateCreated}} by</small>
 			<span class="author writer-name">{{author.name.first}} {{author.name.last}}</span>
 			<span class="author writer-email">{{author.email}}</span>
 
-			<i class="fa fa-user avatar"></i>
-			<small class="editor writer-label">Editor</small>
-			<span class="editor writer-name">{{user.name.first}} {{user.name.last}}</span>
-			<span class="editor writer-email">{{user.email}}</span>
+			<span ng-show="editor">
+				<i class="fa fa-user avatar"></i>
+				<small class="editor writer-label">Last edited {{editDoc.dateModified}} by</small>
+				<span class="editor writer-name">{{editor.name.first}} {{editor.name.last}}</span>
+				<span class="editor writer-email">{{editor.email}}</span>
+			</span>
 		</div>
 
 		<label for="doc-parent">Parent</label>
-		<select name="docParent" id="doc-parent" ng-model="editDoc.parent">
+		<select name="docParent" id="doc-parent" ng-model="editDoc.parent" ng-disabled="hasChildren" ng-click="childrenCheck()">
 			<option value="noParent">No parent</option>
 			<option ng-repeat="option in submenu | filter:{ parent: 'noParent' } | orderBy:'title'" ng-if="option.slug != editDoc.slug" value="{{option.slug}}" ng-selected="editDoc.parent == option.slug">{{option.title}}</option>
 		</select>
