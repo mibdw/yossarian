@@ -43,13 +43,11 @@ body {
 				height: 38px;
 				width: 250px;
 				padding: 0 35px 0 10px;
-				border: 1px solid @header-line;
 
-				.border-radius (3px);
-				.transition (width .5s ease);
+				.transition (width .2s ease);
 
 				&:active, &:focus {
-					width: 350px;
+					width: 400px;
 				}
 			}
 
@@ -194,6 +192,89 @@ body {
 		}
 	}
 
+	// SIDEBAR
+
+	aside {
+		z-index: 555;
+
+		.sidebar-nav, .sidebar-options {
+			list-style-type: none;
+			margin: 0;
+			padding: 15px 0;
+
+			li {
+
+				a {
+					display: block;
+					padding: 5px;
+					border-width: 0;
+					color: lighten(@general-text, 50%);
+					white-space: nowrap;
+					overflow: hidden;
+					text-overflow: ellipsis;
+					cursor: pointer;
+
+
+					&:hover {
+						color: @general-text;
+					}
+
+					i {
+						width: 1.3em;
+					}
+				}
+
+				.sidebar-subnav { 
+					display: none; 
+					list-style-type: none;
+					margin: 0;
+					padding: 0;
+
+					li {
+						margin: 0;
+						padding: 0;
+
+						&:first-child { margin-top: 5px; }
+						&:last-child { margin-bottom: 5px; }
+
+						a {
+							margin: 0;
+							color: lighten(@general-text, 50%);
+
+							&:hover { color: lighten(@general-text, 10%); }
+						}
+
+						&.active {
+							border-width: 0;
+							padding: 0;
+							margin: 0;
+							position: relative;
+							left: 0;
+							font-weight: bold;
+
+							a {
+								color: lighten(@general-text, 10%); 
+							}
+						}
+					}
+				}
+
+				&.active {
+					border: 1px solid @general-line;
+					margin: 5px 0;
+					padding: 5px 0;
+
+					a {
+						color: @general-text;
+						padding-left: 19px;
+					}
+
+					.sidebar-subnav { display: block; }
+				}
+			}
+		}
+	}
+
 	// MAIN
 
 	main {
@@ -204,6 +285,69 @@ body {
 		// NEWS
 
 		&.news {
+
+			aside {
+				float: right;
+				width: 20%;
+				border-left: 1px solid @general-line;
+				margin-top: 26px;
+
+				.sidebar-options {
+					margin-left: 1em;
+				}
+
+				.article-categories li a {
+					padding: 3px 5px;
+				}
+			}
+
+			h1 { margin-right: 22%; }
+
+			article {
+				float: left;
+				width: 78%; 
+				margin: 0 0 .5em 0;
+				padding-bottom: .5em;
+				border-bottom: 1px solid @general-background;
+
+				.clearfix;
+
+				.article-time {
+					float: left;
+					display: block;
+					width: 27%;
+					margin-top: .5em;
+
+					color: lighten(@general-text, 50%);
+					font-style: italic;
+					font-size: .85em;
+				}
+
+				h2 {
+					margin: 0 0 0 29%;
+					font-size: 2.1em;
+					line-height: 1.2em;
+				}
+
+				.article-excerpt {
+					margin-left: 29%;
+					color: lighten(@general-text, 25%);
+				}
+
+				small {
+					margin-left: 29%;
+					color: lighten(@general-text, 50%);
+				}
+
+				&:hover {
+					cursor: pointer;
+					border-bottom-color: @general-line;
+
+					h2 { color: @brand-color; }
+					.article-time, .article-excerpt, small { color: @general-text; }
+
+				}
+			}
 			
 		}
 
@@ -216,85 +360,25 @@ body {
 				width: 14.5%;
 				border-right: 1px solid @general-line;
 				margin-top: 20px;
-				z-index: 555;
 
 				.sidebar-nav, .sidebar-options {
-					list-style-type: none;
-					margin: 0;
-					padding: 15px 0;
 
 					li {
 
 						a {
-							display: block;
-							padding: 5px 5px 5px 20px;
-							border-width: 0;
-							color: lighten(@general-text, 50%);
-							white-space: nowrap;
-							overflow: hidden;
-							text-overflow: ellipsis;
-
-
-							&:hover {
-								color: @general-text;
-							}
-
-							i {
-								width: 1.3em;
-
-							}
-						}
-
-						.sidebar-subnav { display: none; }
+							padding-left: 20px;
+						}						
 
 						&.active {
-							border: 1px solid @general-line;
 							border-right: 1px solid @general-background;
-							margin: 5px 0;
-							padding: 5px 0;
 							position: relative;
 							left: 1px;
 
-							a {
-								color: @general-text;
-								padding-left: 19px;
-							}
-
 							.sidebar-subnav {
-								list-style-type: none;
-								margin: 0;
-								padding: 0;
-								display: block;
 
-								li {
-									margin: 0;
-									padding: 0;
-
-									&:first-child { margin-top: 5px; }
-									&:last-child { margin-bottom: 5px; }
-
-									a {
-										padding: 3px 0 3px 30px;
-										margin: 0;
-										color: lighten(@general-text, 50%);
-
-										&:hover { color: lighten(@general-text, 10%); }
-									}
-
-									&.active {
-										border-width: 0;
-										padding: 0;
-										margin: 0;
-										position: relative;
-										left: 0;
-										font-weight: bold;
-
-
-										a {
-											color: lighten(@general-text, 10%); 
-										}
-									}
-								}
+								a {
+									padding-left: 30px;
+								}	
 							}
 						}
 					}
@@ -312,6 +396,10 @@ body {
 					display: block;
 					text-align: right;
 					color: lighten(@general-text, 60%);
+
+					time {
+						font-weight: bold;
+					}
 				}
 			}
 		}	

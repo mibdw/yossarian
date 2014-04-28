@@ -2,7 +2,6 @@ var mongoose = require('mongoose');
 var Doc = require(__dirname + '/../../models/docs/doc.js');
 var marked = require('marked');
 var moment = require('moment');
-var dateFormat = "ddd MM-DD-YYYY HH:mm:ss";
 
 marked.setOptions({
 	gfm: true,
@@ -52,7 +51,7 @@ exports.docSubmenu =  function(req, res, next) {
 exports.postDoc =  function(req, res, next) { 
 
 	var slug = slugify(req.body.title);
-	var postDate = moment().format(dateFormat);
+	var postDate = moment().format();
 
 	var doc = new Doc({
 
@@ -83,7 +82,7 @@ exports.postDoc =  function(req, res, next) {
 exports.updateDoc =  function(req, res, next) { 
 
 	var slug = slugify(req.body.title);
-	var editDate = moment().format(dateFormat);
+	var editDate = moment().format();
 
 	Doc.findByIdAndUpdate(req.body._id, { 
 

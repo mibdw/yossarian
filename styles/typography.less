@@ -73,6 +73,7 @@ table {
 		}
 
 		&:last-child td { border-bottom: 0; }
+		&:nth-child(odd) td { background-color: darken(@general-background, 2%); }
 	}
 }
 
@@ -186,8 +187,8 @@ code {
 		width: 80%;
 		height: 50px;
 		
-		background-color: @general-background;
-		border-bottom: 1px solid @general-line;
+		background-color: @brand-color;
+		border-bottom: 1px solid darken(@brand-color, 5%);
 
 		.box-sizing(border-box);
 		.border-radius(5px 5px 0 0);
@@ -195,8 +196,7 @@ code {
 		.modal-title {
 			font-size: 1.5em;
 			line-height: 49px;
-			font-weight: bold;
-			color: lighten(@general-text, 60%);
+			color: @general-text;
 		}
 
 		.modal-close {
@@ -205,14 +205,14 @@ code {
 			right: .7em;
 
 			font-size: 1.6em;
-			color: lighten(@general-text, 60%);
+			color:  @general-text;
 
 			cursor: pointer;
 
 			z-index: 3333;
 
 			&:hover {
-				color: lighten(@general-text, 10%);
+				color: darken(@general-text, 5%);
 			}
 		}
 	}

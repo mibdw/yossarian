@@ -18,8 +18,8 @@ ctrl.controller('yossarianDocs', ['$scope', '$rootScope', '$sce', '$routeParams'
 			$http.get('/docs/get/' + docSlug).success( function (data) {
 				$scope.doc = data;
 				$scope.doc.body = $sce.trustAsHtml($scope.doc.body);
-				$scope.doc.dateCreated = moment($scope.doc.dateCreated, "ddd MM-DD-YYYY HH:mm:ss").fromNow();
-				$scope.doc.dateModified = moment($scope.doc.dateModified, "ddd MM-DD-YYYY HH:mm:ss").fromNow();
+				$scope.doc.dateCreatedFromNow = moment($scope.doc.dateCreated, "YYYY-MM-DDTHH:mm:ssZ").fromNow();
+				$scope.doc.dateModifiedFromNow = moment($scope.doc.dateModified, "YYYY-MM-DDTHH:mm:ssZ").fromNow();
 				$rootScope.subTitle = "\u00BB " + $scope.doc.title;			
 
 				$http.get('/user/get/' + data.author).success( function (hero) {
@@ -78,8 +78,8 @@ ctrl.controller('yossarianEditdoc', ['$scope', '$sce', '$rootScope', '$routePara
 		$http.get('/docs/edit/' + docSlug).success( function (data) {
 			$scope.editDoc = data;
 			$rootScope.subTitle = "\u00BB Edit document";
-			$scope.editDoc.dateCreated = moment($scope.editDoc.dateCreated, "ddd MM-DD-YYYY HH:mm:ss").fromNow();
-			$scope.editDoc.dateModified = moment($scope.editDoc.dateModified, "ddd MM-DD-YYYY HH:mm:ss").fromNow();
+			$scope.editDoc.dateCreatedFromNow = moment($scope.editDoc.dateCreated, "YYYY-MM-DDTHH:mm:ssZ").fromNow();
+			$scope.editDoc.dateModifiedFromNow = moment($scope.editDoc.dateModified, "YYYY-MM-DDTHH:mm:ssZ").fromNow();
 
 			$http.get('/user/get/' + data.author).success( function (hero) {
 				$scope.author = hero;

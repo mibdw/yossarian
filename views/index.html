@@ -32,10 +32,10 @@
 				<i class="fa fa-cloud cloud-six"></i>
 			</a>
 
-			<div class="header-search">
-				<input type="text">
+			<form class="header-search" ng-submit="yossarianSearch(yossarianSearchterm)">
+				<input type="text" ng-model="yossarianSearchterm">
 				<button><i class="fa fa-search"></i></button>
-			</div>
+			</form>
 
 			<div class="header-user">
 				<i class="fa fa-user avatar"></i>

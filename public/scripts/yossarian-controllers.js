@@ -64,5 +64,9 @@ ctrl.controller('yossarianNav', ['$scope', '$rootScope', '$http',
 			$rootScope.subTitle = "";
 		};
 
+		$scope.yossarianSearch = function (term) {
+			alert("\"" + term + "\"!? Go search for yourself!");
+		};
+
 	}
 ]);

@@ -6,9 +6,9 @@ var docSchema = new Schema({
 	slug: String,
 	body: String,
 	author: String,
-	dateCreated: String,
+	dateCreated: Date,
 	editor: String,
-	dateModified: String,
+	dateModified: Date,
 	parent: String
 });
 
