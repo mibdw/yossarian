@@ -1,114 +1,40 @@
+
 <aside>
-	
 	<ul class="sidebar-options">
 		<li><a href="/#/news/add"><i class="fa fa-plus-circle"></i> New article</a></li>
-		<li><a href="/#/news/add"><i class="fa fa-tags"></i> Add category</a></li>
 	</ul>
 
 	<ul class="sidebar-options article-categories">
-		<li><a><i class="fa fa-square-o"></i> Uncategorized</a></li>
-		<li><a><i class="fa fa-square-o"></i> Publishers</a></li>
-		<li><a><i class="fa fa-square-o"></i> Customers</a></li>
-		<li><a><i class="fa fa-square-o"></i> Events</a></li>
-		<li><a><i class="fa fa-square-o"></i> IT/Website</a></li>
-		<li><a><i class="fa fa-square-o"></i> Intranet</a></li>
+		<h3>Categories</h3>
+		<li ng-repeat="category in articleCategories">
+			<a ng-click="articleCategoryToggle($index)">
+				<i class="fa" ng-class="{true: 'fa-check-circle', false: 'fa-circle-o'}[articleCategories[$index].active]"></i> {{category.name}}
+			</a>
+		</li>	
 	</ul>
+
+	<ul class="sidebar-options article-archive">
+		<h3>Archive</h3>
+		<li><a><i class="fa fa-circle-o"></i> April 2014</a></li>
+		<li><a><i class="fa fa-circle-o"></i> March 2014</a></li>
+		<li><a><i class="fa fa-circle-o"></i> February 2014</a></li>
+		<li><a><i class="fa fa-circle-o"></i> January 2014</a></li>
+		<li><a><i class="fa fa-circle-o"></i> December 2013</a></li>
 </aside>
 
-<h1>News</h1>
+<h1 class="articles-header">News</h1>
 
-<article ng-click="articleDetail()">
-	<time class="article-time" datetime="">Monday, April 28th 2014, 12:34</time>
+<article ng-click="articleDetail($index)" ng-repeat="article in articleList | orderBy: '-dateCreated'">
+	<time class="article-time" datetime="{{article.dateCreated}}">{{article.dateCreatedPretty}}</time>
 
-	<h2>Hart Publishing -> Bloomsbury, orders vanaf dinsdag naar Macmillan</h2>
-	<div class="article-excerpt">Lufthansa Zürich Helsinki, flat white craftsmanship handsome emerging exquisite sophisticated ryokan Baggu Gaggenau bulletin Shinkansen. Melbourne bespoke Marylebone global.</div>
-	<small>by Jelle Bloem in Publishers, <time>10 minutes ago</time></small>
-</article>
-
-<article ng-click="articleDetail()">
-	<time class="article-time" datetime="">Monday, April 28th 2014, 12:34</time>
-
-	<h2>From 31 March, distribution of John Blake will transfer to The Book Service (TBS)</h2>
-	<div class="article-excerpt">Lufthansa Zürich Helsinki, flat white craftsmanship handsome emerging exquisite sophisticated ryokan Baggu Gaggenau bulletin Shinkansen. Melbourne bespoke Marylebone global.</div>
-	<small>by Jelle Bloem in Publishers</small>
-</article>
-
-<article ng-click="articleDetail()">
-	<time class="article-time" datetime="">Monday, April 28th 2014, 12:34</time>
-
-	<h2>Call Report – College of Europe</h2>
-	<div class="article-excerpt">Lufthansa Zürich Helsinki, flat white craftsmanship handsome emerging exquisite sophisticated ryokan Baggu Gaggenau bulletin Shinkansen. Melbourne bespoke Marylebone global.</div>
-	<small>by Joleen McFarlane</small>
-</article>
-
-<article ng-click="articleDetail()">
-	<time class="article-time" datetime="">Monday, April 28th 2014, 12:34</time>
-
-	<h2>Oxbow Books distribueert The University Press of New England</h2>
-	<div class="article-excerpt">Lufthansa Zürich Helsinki, flat white craftsmanship handsome emerging exquisite sophisticated ryokan Baggu Gaggenau bulletin Shinkansen. Melbourne bespoke Marylebone global.</div>
-	<small>by Jelle Bloem in Publishers</small>
-</article>
-
-<article ng-click="articleDetail()">
-	<time class="article-time" datetime="">Monday, April 28th 2014, 12:34</time>
-
-	<h2>Hart Publishing -> Bloomsbury, orders vanaf dinsdag naar Macmillan</h2>
-	<div class="article-excerpt">Lufthansa Zürich Helsinki, flat white craftsmanship handsome emerging exquisite sophisticated ryokan Baggu Gaggenau bulletin Shinkansen. Melbourne bespoke Marylebone global.</div>
-	<small>by Jelle Bloem in Publishers</small>
-</article>
-
-<article ng-click="articleDetail()">
-	<time class="article-time" datetime="">Monday, April 28th 2014, 12:34</time>
-
-	<h2>From 31 March, distribution of John Blake will transfer to The Book Service (TBS)</h2>
-	<div class="article-excerpt">Lufthansa Zürich Helsinki, flat white craftsmanship handsome emerging exquisite sophisticated ryokan Baggu Gaggenau bulletin Shinkansen. Melbourne bespoke Marylebone global.</div>
-	<small>by Jelle Bloem in Publishers</small>
-</article>
-
-<article ng-click="articleDetail()">
-	<time class="article-time" datetime="">Monday, April 28th 2014, 12:34</time>
-
-	<h2>Call Report – College of Europe</h2>
-	<div class="article-excerpt">Lufthansa Zürich Helsinki, flat white craftsmanship handsome emerging exquisite sophisticated ryokan Baggu Gaggenau bulletin Shinkansen. Melbourne bespoke Marylebone global.</div>
-	<small>by Joleen McFarlane</small>
-</article>
-
-<article ng-click="articleDetail()">
-	<time class="article-time" datetime="">Monday, April 28th 2014, 12:34</time>
-
-	<h2>Oxbow Books distribueert The University Press of New England</h2>
-	<div class="article-excerpt">Lufthansa Zürich Helsinki, flat white craftsmanship handsome emerging exquisite sophisticated ryokan Baggu Gaggenau bulletin Shinkansen. Melbourne bespoke Marylebone global.</div>
-	<small>by Jelle Bloem in Publishers</small>
-</article>
-
-<article ng-click="articleDetail()">
-	<time class="article-time" datetime="">Monday, April 28th 2014, 12:34</time>
-
-	<h2>Hart Publishing -> Bloomsbury, orders vanaf dinsdag naar Macmillan</h2>
-	<div class="article-excerpt">Lufthansa Zürich Helsinki, flat white craftsmanship handsome emerging exquisite sophisticated ryokan Baggu Gaggenau bulletin Shinkansen. Melbourne bespoke Marylebone global.</div>
-	<small>by Jelle Bloem in Publishers</small>
-</article>
-
-<article ng-click="articleDetail()">
-	<time class="article-time" datetime="">Monday, April 28th 2014, 12:34</time>
-
-	<h2>From 31 March, distribution of John Blake will transfer to The Book Service (TBS)</h2>
-	<div class="article-excerpt">Lufthansa Zürich Helsinki, flat white craftsmanship handsome emerging exquisite sophisticated ryokan Baggu Gaggenau bulletin Shinkansen. Melbourne bespoke Marylebone global.</div>
-	<small>by Jelle Bloem in Publishers</small>
-</article>
-
-<article ng-click="articleDetail()">
-	<time class="article-time" datetime="">Monday, April 28th 2014, 12:34</time>
-
-	<h2>Call Report – College of Europe</h2>
-	<div class="article-excerpt">Lufthansa Zürich Helsinki, flat white craftsmanship handsome emerging exquisite sophisticated ryokan Baggu Gaggenau bulletin Shinkansen. Melbourne bespoke Marylebone global.</div>
-	<small>by Joleen McFarlane</small>
-</article>
-
-<article ng-click="articleDetail()">
-	<time class="article-time" datetime="">Monday, April 28th 2014, 12:34</time>
-
-	<h2>Oxbow Books distribueert The University Press of New England</h2>
-	<div class="article-excerpt">Lufthansa Zürich Helsinki, flat white craftsmanship handsome emerging exquisite sophisticated ryokan Baggu Gaggenau bulletin Shinkansen. Melbourne bespoke Marylebone global.</div>
-	<small>by Jelle Bloem in Publishers</small>
+	<h2>{{article.title}}</h2>
+	<div class="article-excerpt">{{article.excerpt}} ...</div>
+	<small>
+		Posted <time datetime="{{article.dateCreated}}">{{article.dateCreatedFromNow}}</time> by {{article.hero.name.first}} {{article.hero.name.last}}
+		in 
+		<ul class="article-categories">
+			<li ng-repeat="category in article.category | filter: {active: true}">{{category.name}}</li>
+		</ul>
+		
+	</small>
 </article>

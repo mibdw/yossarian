@@ -1,4 +1,4 @@
-var app = angular.module('yossarianApp', ['ngRoute', 'ngAnimate', 'yossarianControllers', 'yossarianNews', 'yossarianDocs']);
+var app = angular.module('yossarianApp', ['ngRoute', 'ngAnimate', 'yossarianControllers', 'yossarianArticles', 'yossarianDocs']);
 
 app.config(['$routeProvider',
 	function($routeProvider) {
@@ -8,42 +8,42 @@ app.config(['$routeProvider',
 			})
 			.when('/news', { 						// NEWS
 				templateUrl: '/partials/news/index',
-				controller: 'yossarianNews'
+				controller: 'yossarianArticleIndex'
 			})
 			.when('/news/add', {
 				templateUrl: '/partials/news/add',
-				controller: 'yossarianNews'
+				controller: 'yossarianArticlePost'
 			})
 			.when('/news/:article', {
 				templateUrl: '/partials/news/detail',
-				controller: 'yossarianNews'
+				controller: 'yossarianArticleDetail'
 			})
 			.when('/news/:article/edit', {
 				templateUrl: '/partials/news/edit',
-				controller: 'yossarianNews'
+				controller: 'yossarianArticleEdit'
 			})
 			.when('/docs', {						// DOCUMENTS
 				redirectTo: '/docs/overview' 
 			})
 			.when('/docs/add', {
 				templateUrl: '/partials/docs/add',
-				controller: 'yossarianPostdoc'
+				controller: 'yossarianDocPost'
 			})
 			.when('/docs/:subdoc', { 
 				templateUrl: '/partials/docs/index', 
-				controller: 'yossarianDocs' 
+				controller: 'yossarianDocIndex' 
 			})
 			.when('/docs/:subdoc/edit', { 
 				templateUrl: '/partials/docs/edit', 
-				controller: 'yossarianEditdoc' 
+				controller: 'yossarianDocEdit' 
 			})
 			.when('/docs/:subdoc/:subsubdoc', { 
 				templateUrl: '/partials/docs/index', 
-				controller: 'yossarianDocs' 
+				controller: 'yossarianDocIndex' 
 			})
 			.when('/docs/:subdoc/:subsubdoc/edit', { 
 				templateUrl: '/partials/docs/edit', 
-				controller: 'yossarianEditdoc' 
+				controller: 'yossarianDocEdit' 
 			})
 			.when('/calendar', { 					// CALENDAR
 				templateUrl: '/partials/calendar/index' 

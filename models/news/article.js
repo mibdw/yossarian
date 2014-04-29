@@ -9,7 +9,10 @@ var articleSchema = new Schema({
 	dateCreated: Date,
 	editor: String,
 	dateModified: Date,
-	category: [String]
+	category: [{
+		name: String,
+		active: { type: Boolean, default: false }
+	}]
 });
 
 module.exports = mongoose.model('Article', articleSchema);

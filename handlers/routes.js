@@ -36,7 +36,20 @@ module.exports = function (app, res, req) {
 	app.get('/user/get/:userEmail', ensureAuthenticated, users.getUser);	
 	app.get('/user/current', ensureAuthenticated, function(req, res) { res.send(req.user); });
 
-	//DOCS
+	// NEWS
+	var news = require(__dirname + '/news/index');
+	
+	app.get('/news/list', ensureAuthenticated, news.getArticleList);
+	app.get('/news/detail/:articleSlug', ensureAuthenticated, news.getArticle);
+	app.get('/news/edit/:articleSlug', ensureAuthenticated, news.editArticle);
+	app.get('/news/categories', ensureAuthenticated, news.getCategories);
+
+	app.post('/news/delete', ensureAuthenticated, news.deleteArticle);
+	app.post('/news/post', ensureAuthenticated, news.postArticle);
+	app.post('/news/update', ensureAuthenticated, news.updateArticle);
+	app.post('/news/preview', ensureAuthenticated, news.previewArticle);
+
+	// DOCS
 	var docs = require(__dirname + '/docs/index');
 	
 	app.get('/docs/get/:docSlug', ensureAuthenticated, docs.getDoc);

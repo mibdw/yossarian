@@ -1,7 +1,7 @@
 var ctrl = angular.module('yossarianDocs', []);
 
 // DOCS
-ctrl.controller('yossarianDocs', ['$scope', '$rootScope', '$sce', '$routeParams', '$http', '$window',
+ctrl.controller('yossarianDocIndex', ['$scope', '$rootScope', '$sce', '$routeParams', '$http', '$window',
 	function ($scope, $rootScope, $sce, $routeParams, $http, $window) {	
 
 		$scope.activeSubnav = $routeParams.subdoc;
@@ -39,7 +39,7 @@ ctrl.controller('yossarianDocs', ['$scope', '$rootScope', '$sce', '$routeParams'
 ]);
 
 // DOCS / NEW DOC
-ctrl.controller('yossarianPostdoc', ['$scope', '$sce', '$rootScope', '$routeParams', '$http', '$window',
+ctrl.controller('yossarianDocPost', ['$scope', '$sce', '$rootScope', '$routeParams', '$http', '$window',
 	function ($scope, $sce, $rootScope, $routeParams, $http, $window) {
 
 		$rootScope.subTitle = "\u00BB New document";	
@@ -70,7 +70,7 @@ ctrl.controller('yossarianPostdoc', ['$scope', '$sce', '$rootScope', '$routePara
 ]);
 
 // DOCS / EDIT DOC
-ctrl.controller('yossarianEditdoc', ['$scope', '$sce', '$rootScope', '$routeParams', '$http', '$window',
+ctrl.controller('yossarianDocEdit', ['$scope', '$sce', '$rootScope', '$routeParams', '$http', '$window',
 	function ($scope, $sce, $rootScope, $routeParams, $http, $window) {
 
 		var docSlug = $routeParams.subsubdoc || $routeParams.subdoc;

@@ -25,6 +25,13 @@
 		</div>
 
 		<label for="article-parent">Category</label>
+		<ul class="form-options article-categories">
+			<li ng-repeat="category in newArticle.category">
+				<a ng-click="articleCategoryToggle($index)">
+					<i class="fa" ng-class="{true: 'fa-check-circle', false: 'fa-circle-o'}[newArticle.category[$index].active]"></i> {{category.name}}
+				</a>
+			</li>	
+		</ul>
 
 		<label>Options</label>
 		<ul class="form-options">

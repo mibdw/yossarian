@@ -200,7 +200,14 @@ body {
 		.sidebar-nav, .sidebar-options {
 			list-style-type: none;
 			margin: 0;
-			padding: 15px 0;
+			padding: 7px 0 7px;
+
+			h3 {
+				font-size: 1em;
+				font-style: italic;
+				color: lighten(@general-text, 50%);
+				margin: 0 0 .3em;
+			}
 
 			li {
 
@@ -296,12 +303,13 @@ body {
 					margin-left: 1em;
 				}
 
-				.article-categories li a {
+				.article-categories li a, .article-archive li a {
 					padding: 3px 5px;
 				}
+
 			}
 
-			h1 { margin-right: 22%; }
+			.articles-header { margin-right: 22%; }
 
 			article {
 				float: left;
@@ -337,6 +345,19 @@ body {
 				small {
 					margin-left: 29%;
 					color: lighten(@general-text, 50%);
+
+					.article-categories {
+						display: inline;
+						list-style-type: none;
+						padding: 0;
+
+						li {
+							display: inline;
+
+							&:after { content: ", "; }
+							&:last-child:after { content: ""; }
+						}
+					}
 				}
 
 				&:hover {
@@ -348,6 +369,9 @@ body {
 
 				}
 			}
+
+
+			.form-options.article-categories li a { padding: 2px 5px; }
 			
 		}
 
@@ -401,7 +425,7 @@ body {
 						font-weight: bold;
 					}
 				}
-			}
+			}				
 		}	
 	}
 

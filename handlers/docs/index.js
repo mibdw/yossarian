@@ -1,7 +1,8 @@
 var mongoose = require('mongoose');
-var Doc = require(__dirname + '/../../models/docs/doc.js');
 var marked = require('marked');
 var moment = require('moment');
+
+var Doc = require(__dirname + '/../../models/docs/doc.js');
 
 marked.setOptions({
 	gfm: true,
@@ -27,7 +28,6 @@ exports.getDoc =  function(req, res, next) {
 			doc.body = marked(doc.body);
 			return res.send(doc);
 		});
-
 	}
 };
 
