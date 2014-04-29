@@ -24,6 +24,7 @@ ctrl.controller('yossarianArticleIndex', ['$scope', '$rootScope', '$http',
 				$scope.articleList[i].dateCreatedFromNow = moment($scope.articleList[i].dateCreated, "YYYY-MM-DDTHH:mm:ssZ").fromNow();
 				$scope.articleList[i].dateCreatedPretty = moment($scope.articleList[i].dateCreated, "YYYY-MM-DDTHH:mm:ssZ").format('dddd, DD MMMM YYYY HH:mm:ss');
 				$scope.articleList[i].excerpt = $scope.articleList[i].body.substr(0, 300);
+				$scope.articleList[i].indexNo = i;
 
 				$http.get('/user/get/' + $scope.articleList[i].author).success( function (hero) {
 					$scope.articleList[i].hero = hero;
@@ -32,13 +33,13 @@ ctrl.controller('yossarianArticleIndex', ['$scope', '$rootScope', '$http',
 		});
 
 		$scope.articleDetail = function (index) {
-			alert("Let's go to the article!");
+			alert($scope.articleList[index].slug);
 		};
 	}
 ]);
 
-ctrl.controller('yossarianArticlePost', ['$scope', '$rootScope', '$http',
-	function ($scope, $rootScope, $http) {	
+ctrl.controller('yossarianArticlePost', ['$scope', '$rootScope', '$http', '$window',
+	function ($scope, $rootScope, $http, $window) {	
 
 		$rootScope.subTitle = "\u00BB New article";
 		$scope.newArticle = {};
@@ -53,6 +54,10 @@ ctrl.controller('yossarianArticlePost', ['$scope', '$rootScope', '$http',
 
 		$scope.articleCategoryToggle = function (index) {
 			$scope.newArticle.category[index].active = !$scope.newArticle.category[index].active;
+
+			if (index != uncategorizedIndex) {
+				$scope.newArticle.category[uncategorizedIndex].active = false;
+			}
 		};
 
 		$scope.postArticle = function () {
@@ -70,7 +75,7 @@ ctrl.controller('yossarianArticlePost', ['$scope', '$rootScope', '$http',
 
 			$http.post('/news/post', $scope.newArticle)
 			.success(function (data) { 
-				$window.location.href = "/#/news/" + data.success; 
+				$window.location.href = "/#/news"; 
 			})
 			.error(function () { 
 				$scope.errorMessage = "Something went wrong dude. Get your shit together!"; 

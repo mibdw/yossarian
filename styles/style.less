@@ -346,6 +346,10 @@ body {
 					margin-left: 29%;
 					color: lighten(@general-text, 50%);
 
+					time {
+						font-weight: bold;
+					}
+
 					.article-categories {
 						display: inline;
 						list-style-type: none;
@@ -353,8 +357,13 @@ body {
 
 						li {
 							display: inline;
+							font-style: italic;
 
-							&:after { content: ", "; }
+							&:after { 
+								content: ", ";
+								font-style: normal;
+							}
+
 							&:last-child:after { content: ""; }
 						}
 					}

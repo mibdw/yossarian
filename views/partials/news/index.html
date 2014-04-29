@@ -24,7 +24,7 @@
 
 <h1 class="articles-header">News</h1>
 
-<article ng-click="articleDetail($index)" ng-repeat="article in articleList | orderBy: '-dateCreated'">
+<article ng-click="articleDetail(article.indexNo)" ng-repeat="article in articleList | orderBy: '-dateCreated'">
 	<time class="article-time" datetime="{{article.dateCreated}}">{{article.dateCreatedPretty}}</time>
 
 	<h2>{{article.title}}</h2>

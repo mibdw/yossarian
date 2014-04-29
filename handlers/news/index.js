@@ -16,11 +16,9 @@ function slugify(text) {
 
 exports.getArticleList = function(req, res, next) {
 
-	console.log("request received");
 	Article.find({}, function (err, articleList) {
 		if (err) return handleError(err);
 
-		console.log(articleList);
 		return res.send(articleList);
 	});
 };
@@ -48,11 +46,8 @@ exports.postArticle = function(req, res, next) {
 
 	article.save(function (err) {
 		if (err) return handleError(err);
-		Article.findById(article, function (err, data) {
-			if (err) return handleError(err);
- 			
- 			res.send({ success: slug });
-		});
+ 		console.log("yoyoyo");
+ 		res.send("yoyoyo");
 	})
 };
 
