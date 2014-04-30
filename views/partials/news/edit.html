@@ -36,6 +36,7 @@
 		<label>Options</label>
 		<ul class="form-options">
 			<li><a ng-click="previewArticle()"><i class="fa fa-file-o"></i> Preview article</a></li>
+			<li><a ng-click="confirmDelete()"><i class="fa fa-trash-o"></i> Delete document</a></li>
 			<li><a href="http://www.daringfireball.net/markdown" target="_blank"><i class="fa fa-code"></i> Markdown guide</a></li>
 			<li>&nbsp;</li>
 			<li><a href="/#/news"><i class="fa fa-arrow-left"></i> Back to overview</a></li>
@@ -58,4 +59,10 @@
 		<h1>{{editArticle.title}}</h1>
 		<div ng-bind-html="previewBody"></div>
 	</div>
+</div>
+
+<div class="confirm" ng-show="confirmMessage">
+	{{confirmMessage}}
+	<button class="rejection" ng-click="confirmMessage = !confirmMessage">Nope</button>
+	<button class="confirmation" ng-click="deleteArticle()">Sure!</button>
 </div>

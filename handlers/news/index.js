@@ -42,7 +42,12 @@ exports.editArticle = function(req, res, next) {
 
 };
 
-exports.deleteArticle = function(req, res, next) { };
+exports.deleteArticle = function(req, res, next) {
+
+	Article.findByIdAndRemove(req.body.id, function() {
+		res.send({ success: 'yay!' });
+	});
+};
 
 exports.postArticle = function(req, res, next) {
 
@@ -61,14 +66,40 @@ exports.postArticle = function(req, res, next) {
 
 	article.save(function (err) {
 		if (err) return handleError(err);
- 		res.send({'success': slug });
+ 		res.send(slug);
 	});
 
 
 };
 
-exports.updateArticle = function(req, res, next) { };
+exports.updateArticle = function(req, res, next) {
 
-exports.previewArticle = function(req, res, next) { };
+	var slug = slugify(req.body.title);
+	var editDate = moment().format();
+
+	Article.findByIdAndUpdate(req.body._id, { 
+
+		$set: { 
+			'title': req.body.title,
+			'slug': slug,
+			'body': req.body.body,
+			'category': req.body.category,
+			'editor': req.user._id,
+			'dateModified': editDate
+		}
+
+	}, function (err, data) {
+
+		if (err) return handleError(err);
+		res.send(slug);
+
+	});
+};
+
+exports.previewArticle = function(req, res, next) {
+
+	var preview = marked(req.body.previewBody);
+	res.send(preview);
+};
 
 exports.getCategories = function(req, res, next) { };

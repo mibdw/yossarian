@@ -87,14 +87,12 @@ exports.updateDoc =  function(req, res, next) {
 	Doc.findByIdAndUpdate(req.body._id, { 
 
 		$set: { 
-		
 			'title': req.body.title,
 			'slug': slug,
 			'body': req.body.body,
 			'parent': req.body.parent,
 			'editor': req.user._id,
 			'dateModified': editDate
-
 		}
 
 	}, function (err, data) {

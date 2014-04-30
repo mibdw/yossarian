@@ -55,8 +55,8 @@ ctrl.controller('yossarianArticleIndex', ['$scope', '$rootScope', '$http', '$win
 	}
 ]);
 
-ctrl.controller('yossarianArticlePost', ['$scope', '$rootScope', '$http', '$window',
-	function ($scope, $rootScope, $http, $window) {	
+ctrl.controller('yossarianArticlePost', ['$scope', '$rootScope', '$http', '$window', '$sce',
+	function ($scope, $rootScope, $http, $window, $sce) {	
 
 		$rootScope.subTitle = "\u00BB New article";
 		$scope.articlesCategories = categories;
@@ -91,13 +91,19 @@ ctrl.controller('yossarianArticlePost', ['$scope', '$rootScope', '$http', '$wind
 
 			$http.post('/news/post', $scope.newArticle)
 			.success(function (data) { 
-				$window.location.href = "/#/news"; 
+				$window.location.href = "/#/news/" + data; 
 			})
 			.error(function () { 
 				$scope.errorMessage = "Something went wrong dude. Get your shit together!"; 
-			});
+			});			
+		};
 
-			
+		$scope.previewArticle = function () {
+
+			$http.post('/news/preview', {'previewBody': $scope.newArticle.body})
+			.success(function (data) {
+				$scope.previewBody = $sce.trustAsHtml(data);
+			});
 		};
 	}
 ]);
@@ -121,7 +127,6 @@ ctrl.controller('yossarianArticleEdit', ['$scope', '$rootScope', '$http', '$wind
 
 		$http.get('/news/edit/' + $routeParams.articleSlug).success( function (data) {
 			$scope.editArticle = data;
-			$scope.editArticle.body = $sce.trustAsHtml($scope.editArticle.body);
 			$scope.editArticle.dateCreatedFromNow = moment($scope.editArticle.dateCreated, "YYYY-MM-DDTHH:mm:ssZ").fromNow();
 			$scope.editArticle.dateCreatedPretty = moment($scope.editArticle.dateCreated, "YYYY-MM-DDTHH:mm:ssZ").format('dddd, DD MMMM YYYY HH:mm:ss');
 			$rootScope.subTitle = "\u00BB " + $scope.editArticle.title;	
@@ -151,6 +156,39 @@ ctrl.controller('yossarianArticleEdit', ['$scope', '$rootScope', '$http', '$wind
 				if (uncatIndex >= 0) { $scope.editArticle.category.splice(uncatIndex, 1); }
 				
 			}
+		};
+
+		$scope.updateArticle = function () { 
+
+			$http.post('/news/update', $scope.editArticle)
+			.success(function (data) {
+				$window.location.href = "/#/news/" + data;				
+			})
+			.error(function () { 
+				$scope.errorMessage = "Something went horribly wrong. Don't panic, contact professional help!"; 
+			});
+		};
+
+		$scope.confirmDelete = function() {
+			$scope.confirmMessage = "Are you sure you want to delete this article?";
+		};
+
+		$scope.deleteArticle = function () { 
+
+			$scope.confirmMessage = "";
+
+			$http.post('/news/delete', { 'id': $scope.editArticle._id })
+			.success(function (data) {
+				$window.location.href = "/#/news";
+			});
+		};
+
+		$scope.previewArticle = function () {
+
+			$http.post('/news/preview', {'previewBody': $scope.editArticle.body})
+			.success(function (data) {
+				$scope.previewBody = $sce.trustAsHtml(data);
+			});
 		};
 
 	}

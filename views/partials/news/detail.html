@@ -12,6 +12,16 @@
 		<span class="author writer-email">{{article.author.email}}</span>
 	</div>
 
+	<ul class="sidebar-options article-categories">
+		<h3 ng-if="article.category.length >= 2">Categories</h3>
+		<h3 ng-if="article.category.length <= 1">Category</h3>
+		<li ng-repeat="category in article.category">
+			<a>
+				<i class="fa fa-tag"></i> {{category}}
+			</a>
+		</li>	
+	</ul>
+
 </aside>
 
 <h1 class="articles-header">News article</h1>	
