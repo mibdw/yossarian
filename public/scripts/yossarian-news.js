@@ -1,20 +1,23 @@
 var ctrl = angular.module('yossarianArticles', []);
-var categories = [
-	{ 'slug': 'uncategorized', 'name': 'Uncategorized', 'active': false },
-	{ 'slug': 'publishers', 'name': 'Publishers', 'active': false },
-	{ 'slug': 'customers', 'name': 'Customers', 'active': false },
-	{ 'slug': 'events', 'name': 'Events', 'active': false },
-	{ 'slug': 'it', 'name': 'IT', 'active': false }
-];
+var categories = ['Uncategorized', 'Publishers', 'Customers', 'Events', 'IT'];
 
 // NEWS
-ctrl.controller('yossarianArticleIndex', ['$scope', '$rootScope', '$http',
-	function ($scope, $rootScope, $http) {	
+ctrl.controller('yossarianArticleIndex', ['$scope', '$rootScope', '$http', '$window',
+	function ($scope, $rootScope, $http, $window) {	
 
-		$scope.articleCategories = categories;
+		$rootScope.subTitle = "";
+		$scope.articlesCategories = categories;
+		$scope.articlesActiveCategories = [];
+		$scope.articlesVisible = 10;
 
 		$scope.articleCategoryToggle = function (index) {
-			$scope.articleCategories[index].active = !$scope.articleCategories[index].active;
+		
+			var catIndex = $scope.articlesActiveCategories.indexOf($scope.articlesCategories[index]);
+			if (catIndex >= 0) {
+				$scope.articlesActiveCategories.splice(catIndex, 1);
+			} else {
+				$scope.articlesActiveCategories.push($scope.articlesCategories[index]);
+			}
 		};
 
 		$http.get('/news/list').success( function (data) {
@@ -25,15 +28,29 @@ ctrl.controller('yossarianArticleIndex', ['$scope', '$rootScope', '$http',
 				$scope.articleList[i].dateCreatedPretty = moment($scope.articleList[i].dateCreated, "YYYY-MM-DDTHH:mm:ssZ").format('dddd, DD MMMM YYYY HH:mm:ss');
 				$scope.articleList[i].excerpt = $scope.articleList[i].body.substr(0, 300);
 				$scope.articleList[i].indexNo = i;
-
-				$http.get('/user/get/' + $scope.articleList[i].author).success( function (hero) {
-					$scope.articleList[i].hero = hero;
-				});
 			}
 		});
 
+		$scope.articleFilter = function (article) {
+
+			if ($scope.articlesActiveCategories == 0) { 
+				
+				return true; 
+
+			} else {
+
+				for (i in article.category) {
+					var activeCatIndex = $scope.articlesActiveCategories.indexOf(article.category[i]);
+
+					if (activeCatIndex >= 0) { return true; }
+				}
+			}
+
+			return false;
+		}
+
 		$scope.articleDetail = function (index) {
-			alert($scope.articleList[index].slug);
+			$window.location.href = "/#/news/" + $scope.articleList[index].slug;
 		};
 	}
 ]);
@@ -42,36 +59,35 @@ ctrl.controller('yossarianArticlePost', ['$scope', '$rootScope', '$http', '$wind
 	function ($scope, $rootScope, $http, $window) {	
 
 		$rootScope.subTitle = "\u00BB New article";
+		$scope.articlesCategories = categories;
 		$scope.newArticle = {};
-		$scope.newArticle.category = categories;
-
-		for (i in $scope.newArticle.category) {
-			if ($scope.newArticle.category[i].slug == 'uncategorized') {
-				$scope.newArticle.category[i].active = true;
-				var uncategorizedIndex = i;
-			}
-		}
+		$scope.newArticle.category = ['Uncategorized'];
 
 		$scope.articleCategoryToggle = function (index) {
-			$scope.newArticle.category[index].active = !$scope.newArticle.category[index].active;
+		
+			var catIndex = $scope.newArticle.category.indexOf($scope.articlesCategories[index]);
+			
+			if (catIndex >= 0) {
+				$scope.newArticle.category.splice(catIndex, 1);
+			} else {
+				$scope.newArticle.category.push($scope.articlesCategories[index]);
+			}
 
-			if (index != uncategorizedIndex) {
-				$scope.newArticle.category[uncategorizedIndex].active = false;
+			var catAmount = $scope.newArticle.category.length;
+
+			if (catAmount == 0) {
+
+				$scope.newArticle.category.push('Uncategorized');
+
+			} else if (catAmount >= 2) {
+
+				var uncatIndex = $scope.newArticle.category.indexOf('Uncategorized');
+				if (uncatIndex >= 0) { $scope.newArticle.category.splice(uncatIndex, 1); }
+				
 			}
 		};
 
 		$scope.postArticle = function () {
-
-			var activeCategories = 0;
-			for (i in $scope.newArticle.category) {
-				if ($scope.newArticle.category[i].active == true) {
-					activeCategories++;
-				}
-			}
-
-			if (activeCategories == 0) { 
-				$scope.newArticle.category[uncategorizedIndex].active = true;
-			}
 
 			$http.post('/news/post', $scope.newArticle)
 			.success(function (data) { 
@@ -83,5 +99,59 @@ ctrl.controller('yossarianArticlePost', ['$scope', '$rootScope', '$http', '$wind
 
 			
 		};
+	}
+]);
+
+ctrl.controller('yossarianArticleDetail', ['$scope', '$rootScope', '$http', '$window', '$routeParams', '$sce',
+	function ($scope, $rootScope, $http, $window, $routeParams, $sce) {	
+
+		$http.get('/news/detail/' + $routeParams.articleSlug).success( function (data) {
+			$scope.article = data;
+			$scope.article.body = $sce.trustAsHtml($scope.article.body);
+			$scope.article.dateCreatedFromNow = moment($scope.article.dateCreated, "YYYY-MM-DDTHH:mm:ssZ").fromNow();
+			$scope.article.dateCreatedPretty = moment($scope.article.dateCreated, "YYYY-MM-DDTHH:mm:ssZ").format('dddd, DD MMMM YYYY HH:mm:ss');
+			$rootScope.subTitle = "\u00BB " + $scope.article.title;	
+		});
+
+	}
+]);
+
+ctrl.controller('yossarianArticleEdit', ['$scope', '$rootScope', '$http', '$window', '$routeParams', '$sce',
+	function ($scope, $rootScope, $http, $window, $routeParams, $sce) {	
+
+		$http.get('/news/edit/' + $routeParams.articleSlug).success( function (data) {
+			$scope.editArticle = data;
+			$scope.editArticle.body = $sce.trustAsHtml($scope.editArticle.body);
+			$scope.editArticle.dateCreatedFromNow = moment($scope.editArticle.dateCreated, "YYYY-MM-DDTHH:mm:ssZ").fromNow();
+			$scope.editArticle.dateCreatedPretty = moment($scope.editArticle.dateCreated, "YYYY-MM-DDTHH:mm:ssZ").format('dddd, DD MMMM YYYY HH:mm:ss');
+			$rootScope.subTitle = "\u00BB " + $scope.editArticle.title;	
+		});
+
+		$scope.articlesCategories = categories;
+
+		$scope.articleCategoryToggle = function (index) {
+		
+			var catIndex = $scope.editArticle.category.indexOf($scope.articlesCategories[index]);
+			
+			if (catIndex >= 0) {
+				$scope.editArticle.category.splice(catIndex, 1);
+			} else {
+				$scope.editArticle.category.push($scope.articlesCategories[index]);
+			}
+
+			var catAmount = $scope.editArticle.category.length;
+
+			if (catAmount == 0) {
+
+				$scope.editArticle.category.push('Uncategorized');
+
+			} else if (catAmount >= 2) {
+
+				var uncatIndex = $scope.editArticle.category.indexOf('Uncategorized');
+				if (uncatIndex >= 0) { $scope.editArticle.category.splice(uncatIndex, 1); }
+				
+			}
+		};
+
 	}
 ]);

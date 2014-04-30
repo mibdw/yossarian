@@ -22,7 +22,7 @@ exports.getDoc =  function(req, res, next) {
 
 	} else {
 
-		Doc.findOne({ 'slug': req.params.docSlug }, function (err, doc) {
+		Doc.findOne({ 'slug': req.params.docSlug }).populate('author editor', 'name email').exec(function (err, doc) {
 			if (err) return handleError(err);
 
 			doc.body = marked(doc.body);
@@ -32,7 +32,7 @@ exports.getDoc =  function(req, res, next) {
 };
 
 exports.editDoc =  function(req, res, next) { 
-	Doc.findOne({ 'slug': req.params.docSlug }, function (err, doc) {
+	Doc.findOne({ 'slug': req.params.docSlug }).populate('author editor', 'name email').exec(function (err, doc) {
 		if (err) return handleError(err);
 
 		return res.send(doc);
@@ -59,7 +59,7 @@ exports.postDoc =  function(req, res, next) {
 		'slug': slug,
 		'body': req.body.body,
 		'parent': req.body.parent,
-		'author': req.user.email,
+		'author': req.user._id,
 		'dateCreated': postDate
 
 	});
@@ -92,7 +92,7 @@ exports.updateDoc =  function(req, res, next) {
 			'slug': slug,
 			'body': req.body.body,
 			'parent': req.body.parent,
-			'editor': req.user.email,
+			'editor': req.user._id,
 			'dateModified': editDate
 
 		}

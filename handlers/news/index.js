@@ -3,7 +3,6 @@ var marked = require('marked');
 var moment = require('moment');
 
 var Article = require(__dirname + '/../../models/news/article.js');
-var Category = require(__dirname + '/../../models/news/category.js');
 
 marked.setOptions({
 	gfm: true,
@@ -16,16 +15,32 @@ function slugify(text) {
 
 exports.getArticleList = function(req, res, next) {
 
-	Article.find({}, function (err, articleList) {
+	Article.find({}).populate('author', 'name').exec(function (err, articleList) {
 		if (err) return handleError(err);
 
 		return res.send(articleList);
 	});
 };
 
-exports.getArticle = function(req, res, next) { };
+exports.getArticle = function(req, res, next) { 
 
-exports.editArticle = function(req, res, next) { };
+	Article.findOne({ 'slug': req.params.articleSlug }).populate('author editor', 'name email').exec(function (err, article) {
+		if (err) return handleError(err);
+
+		article.body = marked(article.body);
+		return res.send(article);
+	});
+
+};
+
+exports.editArticle = function(req, res, next) { 
+
+	Article.findOne({ 'slug': req.params.articleSlug }).populate('author editor', 'name email').exec(function (err, article) {
+		if (err) return handleError(err);
+		return res.send(article);
+	});
+
+};
 
 exports.deleteArticle = function(req, res, next) { };
 
@@ -39,16 +54,17 @@ exports.postArticle = function(req, res, next) {
 		'title': req.body.title,
 		'slug': slug,
 		'body': req.body.body,
-		'author': req.user.email,
+		'author': req.user._id,
 		'category': req.body.category,
 		'dateCreated': postDate
-	});
+	}); 
 
 	article.save(function (err) {
 		if (err) return handleError(err);
- 		console.log("yoyoyo");
- 		res.send("yoyoyo");
-	})
+ 		res.send({'success': slug });
+	});
+
+
 };
 
 exports.updateArticle = function(req, res, next) { };

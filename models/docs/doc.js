@@ -5,11 +5,13 @@ var docSchema = new Schema({
 	title: { type: String, require: true, unique: true },
 	slug: String,
 	body: String,
-	author: String,
+	author: { type: String, ref: 'User' },
 	dateCreated: Date,
-	editor: String,
+	editor: { type: String, ref: 'User' },
 	dateModified: Date,
 	parent: String
 });
+
+var User = require(__dirname + '/../users/user');
 
 module.exports = mongoose.model('Doc', docSchema);

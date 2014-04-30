@@ -19,14 +19,14 @@
 		<div class="form-users">
 			<i class="fa fa-user avatar"></i>
 			<small class="author writer-label">Created <time datetime="{{editDoc.dateCreated}}">{{editDoc.dateCreatedFromNow}}</time> by</small>
-			<span class="author writer-name">{{author.name.first}} {{author.name.last}}</span>
-			<span class="author writer-email">{{author.email}}</span>
+			<span class="author writer-name">{{editDoc.author.name.first}} {{editDoc.author.name.last}}</span>
+			<span class="author writer-email">{{editDoc.author.email}}</span>
 
-			<span ng-show="editor">
+			<span ng-show="editDoc.editor">
 				<i class="fa fa-user avatar"></i>
 				<small class="editor writer-label">Last edited <time datetime="{{editDoc.dateModified}}">{{editDoc.dateModifiedFromNow}}</time> by</small>
-				<span class="editor writer-name">{{editor.name.first}} {{editor.name.last}}</span>
-				<span class="editor writer-email">{{editor.email}}</span>
+				<span class="editor writer-name">{{editDoc.editor.name.first}} {{editDoc.editor.name.last}}</span>
+				<span class="editor writer-email">{{editDoc.editor.email}}</span>
 			</span>
 		</div>
 

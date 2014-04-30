@@ -1,12 +1,12 @@
 <h1>{{subTitle.substr(2)}}</h1>
-<form ng-submit="postArticle()">
+<form ng-submit="updateArticle()">
 	
 	<div class="form-main">
 		<label for="article-title">Title</label>
-		<input id="article-title" type="text" autofocus ng-model="newArticle.title">
+		<input id="article-title" type="text" autofocus ng-model="editArticle.title">
 
 		<label for="article-content">Content</label>
-		<textarea id="article-content" placeholder="Please use Markdown to create lists, headings, tables, etc." ng-model="newArticle.body"></textarea>
+		<textarea id="article-content" placeholder="Please use Markdown to create lists, headings, tables, etc." ng-model="editArticle.body"></textarea>
 	</div>
 
 	<div class="form-sidebar">
@@ -28,7 +28,7 @@
 		<ul class="form-options article-categories">
 			<li ng-repeat="category in articlesCategories">
 				<a ng-click="articleCategoryToggle($index)">
-					<i class="fa" ng-class="{'fa-check-circle': newArticle.category.indexOf(category) != -1, 'fa-circle-o': newArticle.category.indexOf(category) == -1}"></i> {{category}}
+					<i class="fa" ng-class="{'fa-check-circle': editArticle.category.indexOf(category) != -1, 'fa-circle-o': editArticle.category.indexOf(category) == -1}"></i> {{category}}
 				</a>
 			</li>	
 		</ul>
@@ -55,7 +55,7 @@
 		<span class="modal-close" ng-click="previewBody = !previewBody">&times;</span>
 	</div>
 	<div class="modal-body">
-		<h1>{{newArticle.title}}</h1>
+		<h1>{{editArticle.title}}</h1>
 		<div ng-bind-html="previewBody"></div>
 	</div>
 </div>

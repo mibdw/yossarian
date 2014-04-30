@@ -1,0 +1,24 @@
+
+<aside>
+	<ul class="sidebar-options">
+		<li><a href="/#/news/{{article.slug}}/edit"><i class="fa fa-pencil"></i> Edit article</a></li>
+		<li><a href="/#/news"><i class="fa fa-arrow-left"></i> Back to news</a>
+	</ul>
+
+	<div class="article-authors">
+		<i class="fa fa-user avatar"></i>
+		<small class="author writer-label">Created <time datetime="{{editDoc.dateCreated}}">{{article.dateCreatedFromNow}}</time> by</small>
+		<span class="author writer-name">{{article.author.name.first}} {{article.author.name.last}}</span>
+		<span class="author writer-email">{{article.author.email}}</span>
+	</div>
+
+</aside>
+
+<h1 class="articles-header">News article</h1>	
+
+<article>
+	<time class="article-time" datetime="{{article.dateCreated}}" >{{article.dateCreatedPretty}}</time>
+
+	<h2>{{article.title}}</h2>
+	<div ng-bind-html="article.body" class="article-body">{{article.body}}</div>
+</article>

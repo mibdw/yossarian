@@ -5,14 +5,13 @@ var articleSchema = new Schema({
 	title: { type: String, require: true, unique: true },
 	slug: String,
 	body: String,
-	author: String,
+	author: { type: String, ref: 'User' },
 	dateCreated: Date,
-	editor: String,
+	editor: { type: String, ref: 'User' },
 	dateModified: Date,
-	category: [{
-		name: String,
-		active: { type: Boolean, default: false }
-	}]
+	category: [String]
 });
+
+var User = require(__dirname + '/../users/user');
 
 module.exports = mongoose.model('Article', articleSchema);

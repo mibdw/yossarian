@@ -31,9 +31,6 @@ module.exports = function (app, res, req) {
 	});
 
 	// USERS
-	var users = require(__dirname + '/users/index');
-
-	app.get('/user/get/:userEmail', ensureAuthenticated, users.getUser);	
 	app.get('/user/current', ensureAuthenticated, function(req, res) { res.send(req.user); });
 
 	// NEWS

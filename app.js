@@ -16,7 +16,7 @@ var User = require(__dirname + '/models/users/user');
 mongoose.connect('mongodb://localhost/yossarian');
 mongoose.connection.on('error', console.error.bind(console, 'Connection error:'));
 mongoose.connection.once('open', function callback() {
-	  console.log(moment().format(dateFormat) + ' - Connection to the Mongo database established. Ready for launch.');
+	console.log(moment().format(dateFormat) + ' - Connection to the Mongo database established. Ready for launch.');
 });
 
 // PASSPORT CONNECTION

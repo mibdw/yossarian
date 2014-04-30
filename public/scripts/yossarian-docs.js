@@ -20,15 +20,7 @@ ctrl.controller('yossarianDocIndex', ['$scope', '$rootScope', '$sce', '$routePar
 				$scope.doc.body = $sce.trustAsHtml($scope.doc.body);
 				$scope.doc.dateCreatedFromNow = moment($scope.doc.dateCreated, "YYYY-MM-DDTHH:mm:ssZ").fromNow();
 				$scope.doc.dateModifiedFromNow = moment($scope.doc.dateModified, "YYYY-MM-DDTHH:mm:ssZ").fromNow();
-				$rootScope.subTitle = "\u00BB " + $scope.doc.title;			
-
-				$http.get('/user/get/' + data.author).success( function (hero) {
-					$scope.author = hero;
-				});
-
-				$http.get('/user/get/' + data.editor).success( function (hero) {
-					$scope.editor = hero;
-				});
+				$rootScope.subTitle = "\u00BB " + $scope.doc.title;	
 			});
 		}
 
@@ -80,15 +72,6 @@ ctrl.controller('yossarianDocEdit', ['$scope', '$sce', '$rootScope', '$routePara
 			$rootScope.subTitle = "\u00BB Edit document";
 			$scope.editDoc.dateCreatedFromNow = moment($scope.editDoc.dateCreated, "YYYY-MM-DDTHH:mm:ssZ").fromNow();
 			$scope.editDoc.dateModifiedFromNow = moment($scope.editDoc.dateModified, "YYYY-MM-DDTHH:mm:ssZ").fromNow();
-
-			$http.get('/user/get/' + data.author).success( function (hero) {
-				$scope.author = hero;
-			});
-
-			$http.get('/user/get/' + data.editor).success( function (hero) {
-				$scope.editor = hero;
-			});
-
 			$scope.originalSlug = data.slug;
 		});
 
