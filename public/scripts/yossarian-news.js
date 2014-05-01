@@ -6,9 +6,10 @@ ctrl.controller('yossarianArticleIndex', ['$scope', '$rootScope', '$http', '$win
 	function ($scope, $rootScope, $http, $window) {	
 
 		$rootScope.subTitle = "";
-		$scope.articlesCategories = categories;
 		$scope.articlesActiveCategories = [];
 		$scope.articlesVisible = 10;
+
+		$http.get('/news/categories').success( function (categories) { $scope.articlesCategories = categories.categories; });
 
 		$scope.articleCategoryToggle = function (index) {
 		
@@ -52,6 +53,26 @@ ctrl.controller('yossarianArticleIndex', ['$scope', '$rootScope', '$http', '$win
 		$scope.articleDetail = function (index) {
 			$window.location.href = "/#/news/" + $scope.articleList[index].slug;
 		};
+
+		$scope.confirmDelete = function(title, deleteID) {
+			$scope.confirmMessage = "Are you sure you want to delete \'" + title +"\'?";
+			$scope.deleteID = deleteID;
+
+			alert(title + deleteID);
+		};
+
+		$scope.deleteArticle = function () { 
+
+			$scope.confirmMessage = "";
+
+			$http.post('/news/delete', { 'id': $scope.deleteID })
+			.success(function (data) {
+				$window.location.href = "/#/news";
+			});
+
+			$scope.deleteID = "";
+		};
+
 	}
 ]);
 
@@ -59,9 +80,10 @@ ctrl.controller('yossarianArticlePost', ['$scope', '$rootScope', '$http', '$wind
 	function ($scope, $rootScope, $http, $window, $sce) {	
 
 		$rootScope.subTitle = "\u00BB New article";
-		$scope.articlesCategories = categories;
 		$scope.newArticle = {};
 		$scope.newArticle.category = ['Uncategorized'];
+
+		$http.get('/news/categories').success( function (categories) { $scope.articlesCategories = categories.categories; });
 
 		$scope.articleCategoryToggle = function (index) {
 		
@@ -100,6 +122,8 @@ ctrl.controller('yossarianArticlePost', ['$scope', '$rootScope', '$http', '$wind
 
 		$scope.previewArticle = function () {
 
+			if (!$scope.newArticle.body) { $scope.errorMessage = "Preview a vaccuum? Interesting concept, but impossible." }
+
 			$http.post('/news/preview', {'previewBody': $scope.newArticle.body})
 			.success(function (data) {
 				$scope.previewBody = $sce.trustAsHtml(data);
@@ -116,9 +140,10 @@ ctrl.controller('yossarianArticleDetail', ['$scope', '$rootScope', '$http', '$wi
 			$scope.article.body = $sce.trustAsHtml($scope.article.body);
 			$scope.article.dateCreatedFromNow = moment($scope.article.dateCreated, "YYYY-MM-DDTHH:mm:ssZ").fromNow();
 			$scope.article.dateCreatedPretty = moment($scope.article.dateCreated, "YYYY-MM-DDTHH:mm:ssZ").format('dddd, DD MMMM YYYY HH:mm:ss');
+			$scope.article.dateModifiedFromNow = moment($scope.article.dateModified, "YYYY-MM-DDTHH:mm:ssZ").fromNow();
+			$scope.article.dateModifiedPretty = moment($scope.article.dateModified, "YYYY-MM-DDTHH:mm:ssZ").format('dddd, DD MMMM YYYY HH:mm:ss');
 			$rootScope.subTitle = "\u00BB " + $scope.article.title;	
 		});
-
 	}
 ]);
 
@@ -129,10 +154,12 @@ ctrl.controller('yossarianArticleEdit', ['$scope', '$rootScope', '$http', '$wind
 			$scope.editArticle = data;
 			$scope.editArticle.dateCreatedFromNow = moment($scope.editArticle.dateCreated, "YYYY-MM-DDTHH:mm:ssZ").fromNow();
 			$scope.editArticle.dateCreatedPretty = moment($scope.editArticle.dateCreated, "YYYY-MM-DDTHH:mm:ssZ").format('dddd, DD MMMM YYYY HH:mm:ss');
+			$scope.editArticle.dateModifiedFromNow = moment($scope.editArticle.dateModified, "YYYY-MM-DDTHH:mm:ssZ").fromNow();
+			$scope.editArticle.dateModifiedPretty = moment($scope.editArticle.dateModified, "YYYY-MM-DDTHH:mm:ssZ").format('dddd, DD MMMM YYYY HH:mm:ss');
 			$rootScope.subTitle = "\u00BB " + $scope.editArticle.title;	
 		});
-
-		$scope.articlesCategories = categories;
+		
+		$http.get('/news/categories').success( function (categories) { $scope.articlesCategories = categories.categories; });
 
 		$scope.articleCategoryToggle = function (index) {
 		
@@ -185,11 +212,55 @@ ctrl.controller('yossarianArticleEdit', ['$scope', '$rootScope', '$http', '$wind
 
 		$scope.previewArticle = function () {
 
+			if (!$scope.editArticle.body) { $scope.errorMessage = "Preview a vaccuum? Interesting concept, but impossible." }
+
 			$http.post('/news/preview', {'previewBody': $scope.editArticle.body})
 			.success(function (data) {
 				$scope.previewBody = $sce.trustAsHtml(data);
 			});
 		};
 
+	}
+]);
+
+
+ctrl.controller('yossarianArticleCategories', ['$scope', '$rootScope', '$http', '$window',
+	function ($scope, $rootScope, $http, $window) {	
+
+		$http.get('/news/categories').success( function (categories) { $scope.categoryList = categories.categories; });
+
+		$scope.deleteCategory = function (category) {
+
+			if (category == "Uncategorized") {
+
+				alert('No way dude!');
+
+			} else {
+
+				$http.post('/news/categories/delete', {'deleteCategory': category })
+				.success( function (categories) {
+					$scope.categoryList = categories.categories;
+					$scope.newCategory = "";
+				});
+			}
+		};
+
+		$scope.addCategory = function () {
+
+			var catIndex = $scope.categoryList.indexOf($scope.newCategory);
+
+			if (catIndex >= 0) {
+
+				alert('No way dude!');
+
+			} else {
+
+				$http.post('/news/categories/add', {'newCategory': $scope.newCategory})
+				.success( function (categories) {
+					$scope.categoryList = categories.categories;
+					$scope.newCategory = "";
+				});
+			}
+		};
 	}
 ]);

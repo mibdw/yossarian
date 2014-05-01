@@ -352,8 +352,6 @@ body {
 
 				.article-time {
 					float: left;
-					display: block;
-					width: 27%;
 					margin-top: .5em;
 
 					color: lighten(@general-text, 50%);
@@ -401,17 +399,23 @@ body {
 								font-style: normal;
 							}
 
-							&:last-child:after { content: ""; }
+							&:last-child:after { content: ". "; }
 						}
 					}
 				}
 
-				&.article-link:hover {
-					cursor: pointer;
-					border-bottom-color: @general-line;
+				&.article-link {
+					
+					h2:hover {
+						cursor: pointer;
+						color: @brand-color;
+					}
 
-					h2 { color: @brand-color; }
-					.article-time, .article-excerpt, small { color: @general-text; }
+					&:hover {
+						border-bottom-color: @general-line;
+
+						.article-time, .article-excerpt, small { color: @general-text; }
+					}
 
 				}
 			}

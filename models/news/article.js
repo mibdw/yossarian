@@ -9,7 +9,12 @@ var articleSchema = new Schema({
 	dateCreated: Date,
 	editor: { type: String, ref: 'User' },
 	dateModified: Date,
-	category: [String]
+	category: [String],
+	comments: [{
+		author: { type: String, ref: 'User' },
+		body: String,
+		dateCreated: Date
+	}]
 });
 
 var User = require(__dirname + '/../users/user');

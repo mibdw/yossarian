@@ -19,14 +19,21 @@
 		<div class="form-users">
 		
 			<i class="fa fa-user avatar"></i>
-			<small class="author writer-label">Author</small>
-			<span class="author writer-name">{{user.name.first}} {{user.name.last}}</span>
-			<span class="author writer-email">{{user.email}}</span>			
+			<small class="author writer-label">Created by <time datetime="{{editArticle.dateModified}}">{{editArticle.dateCreatedFromNow}}</time> by</small>
+			<span class="author writer-name">{{editArticle.author.name.first}} {{editArticle.author.name.last}}</span>
+			<span class="author writer-email">{{editArticle.author.email}}</span>	
+
+			<span ng-if="editArticle.editor">
+				<i class="fa fa-user avatar"></i>
+				<small class="editor writer-label">Last modified <time datetime="{{editArticle.dateModified}}">{{editArticle.dateModifiedFromNow}}</time> by</small>
+				<span class="editor writer-name">{{editArticle.editor.name.first}} {{editArticle.editor.name.last}}</span>
+				<span class="editor writer-email">{{editArticle.editor.email}}</span>
+			</span>		
 		</div>
 
 		<label for="article-parent">Category</label>
 		<ul class="form-options article-categories">
-			<li ng-repeat="category in articlesCategories">
+			<li ng-repeat="category in articlesCategories.sort()">
 				<a ng-click="articleCategoryToggle($index)">
 					<i class="fa" ng-class="{'fa-check-circle': editArticle.category.indexOf(category) != -1, 'fa-circle-o': editArticle.category.indexOf(category) == -1}"></i> {{category}}
 				</a>

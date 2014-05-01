@@ -14,6 +14,10 @@ app.config(['$routeProvider',
 				templateUrl: '/partials/news/add',
 				controller: 'yossarianArticlePost'
 			})
+			.when('/news/categories', {
+				templateUrl: '/partials/news/categories',
+				controller: 'yossarianArticleCategories'
+			})
 			.when('/news/:articleSlug', {
 				templateUrl: '/partials/news/detail',
 				controller: 'yossarianArticleDetail'

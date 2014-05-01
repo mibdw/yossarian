@@ -7,15 +7,22 @@
 
 	<div class="article-authors">
 		<i class="fa fa-user avatar"></i>
-		<small class="author writer-label">Created <time datetime="{{editDoc.dateCreated}}">{{article.dateCreatedFromNow}}</time> by</small>
+		<small class="author writer-label">Created <time datetime="{{article.dateCreated}}">{{article.dateCreatedFromNow}}</time> by</small>
 		<span class="author writer-name">{{article.author.name.first}} {{article.author.name.last}}</span>
 		<span class="author writer-email">{{article.author.email}}</span>
+
+		<span ng-if="article.editor">
+			<i class="fa fa-user avatar"></i>
+			<small class="editor writer-label">Last modified <time datetime="{{article.dateModified}}">{{article.dateModifiedFromNow}}</time> by</small>
+			<span class="editor writer-name">{{article.editor.name.first}} {{article.editor.name.last}}</span>
+			<span class="editor writer-email">{{article.editor.email}}</span>
+		</span>
 	</div>
 
 	<ul class="sidebar-options article-categories">
 		<h3 ng-if="article.category.length >= 2">Categories</h3>
 		<h3 ng-if="article.category.length <= 1">Category</h3>
-		<li ng-repeat="category in article.category">
+		<li ng-repeat="category in article.category.sort()">
 			<a>
 				<i class="fa fa-tag"></i> {{category}}
 			</a>
@@ -26,7 +33,7 @@
 
 <h1 class="articles-header">News article</h1>	
 
-<article>
+<article class="article-detail">
 	<time class="article-time" datetime="{{article.dateCreated}}" >{{article.dateCreatedPretty}}</time>
 
 	<h2>{{article.title}}</h2>

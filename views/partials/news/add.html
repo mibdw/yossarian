@@ -26,7 +26,7 @@
 
 		<label for="article-parent">Category</label>
 		<ul class="form-options article-categories">
-			<li ng-repeat="category in articlesCategories">
+			<li ng-repeat="category in articlesCategories.sort()">
 				<a ng-click="articleCategoryToggle($index)">
 					<i class="fa" ng-class="{'fa-check-circle': newArticle.category.indexOf(category) != -1, 'fa-circle-o': newArticle.category.indexOf(category) == -1}"></i> {{category}}
 				</a>
