@@ -50,6 +50,9 @@ module.exports = function (app, res, req) {
 	app.post('/news/categories/add', ensureAuthenticated, news.postCategories);
 	app.post('/news/categories/delete', ensureAuthenticated, news.deleteCategories);
 
+	app.post('/news/comment/add', ensureAuthenticated, news.postComment);
+	app.post('/news/comment/delete', ensureAuthenticated, news.deleteComment);
+
 	// DOCS
 	var docs = require(__dirname + '/docs/index');
 	

@@ -1,14 +1,20 @@
 <h1>News categories</h1>
 
-<form ng-submit="addCategory()">
-
-	<input type="text" ng-model="newCategory">
-	<button type="submit">Submit</button>
-</form>
-
 <ul class="category-list">
 	<li ng-repeat="category in categoryList.sort()">
 		{{category}}
 		<i class="fa fa-trash-o" ng-click="deleteCategory(category)"></i>
 	</li>
 </ul>
+
+<form ng-submit="addCategory()" class="category-new">
+	<input type="text" ng-model="newCategory">
+	<button type="submit">Submit</button>
+</form>
+
+<a href="/#/news">Back to the news</a>
+
+<div class="alert" ng-show="errorMessage">
+	{{errorMessage}}
+	<span class="close" ng-click="errorMessage = !errorMessage">&times;</span>
+</div>

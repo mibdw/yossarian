@@ -29,6 +29,15 @@ ctrl.controller('yossarianArticleIndex', ['$scope', '$rootScope', '$http', '$win
 				$scope.articleList[i].dateCreatedPretty = moment($scope.articleList[i].dateCreated, "YYYY-MM-DDTHH:mm:ssZ").format('dddd, DD MMMM YYYY HH:mm:ss');
 				$scope.articleList[i].excerpt = $scope.articleList[i].body.substr(0, 300);
 				$scope.articleList[i].indexNo = i;
+
+				var commentsAmount = $scope.articleList[i].comments.length;
+				if (commentsAmount == 0) {
+					$scope.articleList[i].commentNo = "No comments";
+				} else if (commentsAmount == 1) {
+					$scope.articleList[i].commentNo = "1 comment";
+				} else {
+					$scope.articleList[i].commentNo = commentsAmount + " comments";
+				}
 			}
 		});
 
@@ -144,6 +153,23 @@ ctrl.controller('yossarianArticleDetail', ['$scope', '$rootScope', '$http', '$wi
 			$scope.article.dateModifiedPretty = moment($scope.article.dateModified, "YYYY-MM-DDTHH:mm:ssZ").format('dddd, DD MMMM YYYY HH:mm:ss');
 			$rootScope.subTitle = "\u00BB " + $scope.article.title;	
 		});
+
+		$scope.postComment = function () {
+
+			var commentBody = { 
+				'articleId': $scope.article._id,
+				'commentBody': $scope.commentBody 
+			};
+
+			$http.post('/news/comment/add', commentBody)
+			.success(function (data) {
+				$scope.article.comments = data;	
+				$scope.commentBody = "";		
+			})
+			.error(function () { 
+				$scope.errorMessage = "Something went horribly wrong. Don't panic, contact professional help!"; 
+			});
+		};
 	}
 ]);
 
@@ -156,7 +182,7 @@ ctrl.controller('yossarianArticleEdit', ['$scope', '$rootScope', '$http', '$wind
 			$scope.editArticle.dateCreatedPretty = moment($scope.editArticle.dateCreated, "YYYY-MM-DDTHH:mm:ssZ").format('dddd, DD MMMM YYYY HH:mm:ss');
 			$scope.editArticle.dateModifiedFromNow = moment($scope.editArticle.dateModified, "YYYY-MM-DDTHH:mm:ssZ").fromNow();
 			$scope.editArticle.dateModifiedPretty = moment($scope.editArticle.dateModified, "YYYY-MM-DDTHH:mm:ssZ").format('dddd, DD MMMM YYYY HH:mm:ss');
-			$rootScope.subTitle = "\u00BB " + $scope.editArticle.title;	
+			$rootScope.subTitle = "\u00BB Edit article";	
 		});
 		
 		$http.get('/news/categories').success( function (categories) { $scope.articlesCategories = categories.categories; });
@@ -227,13 +253,15 @@ ctrl.controller('yossarianArticleEdit', ['$scope', '$rootScope', '$http', '$wind
 ctrl.controller('yossarianArticleCategories', ['$scope', '$rootScope', '$http', '$window',
 	function ($scope, $rootScope, $http, $window) {	
 
+		$rootScope.subTitle = "\u00BB News categories";
+
 		$http.get('/news/categories').success( function (categories) { $scope.categoryList = categories.categories; });
 
 		$scope.deleteCategory = function (category) {
 
 			if (category == "Uncategorized") {
 
-				alert('No way dude!');
+				$scope.errorMessage = 'Pardon me, but I cannot let you do that!';
 
 			} else {
 
@@ -251,7 +279,7 @@ ctrl.controller('yossarianArticleCategories', ['$scope', '$rootScope', '$http', 
 
 			if (catIndex >= 0) {
 
-				alert('No way dude!');
+				$scope.errorMessage = 'That category already exists';
 
 			} else {
 

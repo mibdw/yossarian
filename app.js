@@ -97,7 +97,7 @@ user.save(function(err) {
 });
 
 var Category = require(__dirname + '/models/news/category.js');
-var category = new Category({ categories: ['Uncategorized', 'Publishers', 'Events', 'IT', 'Customers'] });
+var category = new Category({ categories: ['Uncategorized'] });
 category.save(function(err) {
   if(err) {
     console.log(err);

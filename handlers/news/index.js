@@ -25,7 +25,7 @@ exports.getArticleList = function(req, res, next) {
 
 exports.getArticle = function(req, res, next) { 
 
-	Article.findOne({ 'slug': req.params.articleSlug }).populate('author editor', 'name email').exec(function (err, article) {
+	Article.findOne({ 'slug': req.params.articleSlug }).populate('author editor comments.author', 'name email').exec(function (err, article) {
 		if (err) return handleError(err);
 
 		article.body = marked(article.body);
@@ -162,4 +162,32 @@ exports.deleteCategories = function(req, res, next) {
 
 		});
 	});
+};
+
+// COMMENTS
+
+exports.postComment = function(req, res, next) {
+	
+	var datePosted = moment().format();
+
+	Article.findByIdAndUpdate(req.body.articleId, { 
+
+		$push: { 'comments': {
+			'dateCreated': datePosted,
+			'author': req.user.id,
+			'body': req.body.commentBody
+		}}
+
+	}, function () {
+
+		Article.findById(req.body.articleId).exec(function (err, article) {
+			if (err) return handleError(err);
+
+			res.send(article.comments);
+		});
+	});
+};
+
+exports.deleteComment = function(req, res, next) {
+
 };
