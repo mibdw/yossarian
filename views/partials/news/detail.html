@@ -44,7 +44,7 @@
 	<li ng-repeat="comment in article.comments | orderBy: '-dateCreated'">
 		{{comment.body}}<br>
 		{{comment.author.name.first}} {{comment.author.name.last}}<br>
-		{{comment.dateCreated}}<br>
+		{{comment.dateCreatedFromNow}}<br>
 	</li>
 </ol>
 

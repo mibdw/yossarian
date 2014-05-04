@@ -180,7 +180,7 @@ exports.postComment = function(req, res, next) {
 
 	}, function () {
 
-		Article.findById(req.body.articleId).exec(function (err, article) {
+		Article.findById(req.body.articleId).populate('comments.author', 'name email').exec(function (err, article) {
 			if (err) return handleError(err);
 
 			res.send(article.comments);

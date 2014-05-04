@@ -152,6 +152,10 @@ ctrl.controller('yossarianArticleDetail', ['$scope', '$rootScope', '$http', '$wi
 			$scope.article.dateModifiedFromNow = moment($scope.article.dateModified, "YYYY-MM-DDTHH:mm:ssZ").fromNow();
 			$scope.article.dateModifiedPretty = moment($scope.article.dateModified, "YYYY-MM-DDTHH:mm:ssZ").format('dddd, DD MMMM YYYY HH:mm:ss');
 			$rootScope.subTitle = "\u00BB " + $scope.article.title;	
+
+			for (i in $scope.article.comments) {
+				$scope.article.comments[i].dateCreatedFromNow = moment($scope.article.comments[i].dateCreated, "YYYY-MM-DDTHH:mm:ssZ").fromNow();
+			}
 		});
 
 		$scope.postComment = function () {
@@ -164,7 +168,11 @@ ctrl.controller('yossarianArticleDetail', ['$scope', '$rootScope', '$http', '$wi
 			$http.post('/news/comment/add', commentBody)
 			.success(function (data) {
 				$scope.article.comments = data;	
-				$scope.commentBody = "";		
+				$scope.commentBody = "";
+				
+				for (i in $scope.article.comments) {
+					$scope.article.comments[i].dateCreatedFromNow = moment($scope.article.comments[i].dateCreated, "YYYY-MM-DDTHH:mm:ssZ").fromNow();
+				}		
 			})
 			.error(function () { 
 				$scope.errorMessage = "Something went horribly wrong. Don't panic, contact professional help!"; 
