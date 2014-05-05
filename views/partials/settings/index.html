@@ -4,7 +4,7 @@
 	<h2>Users</h2>
 
 	<ul class="user-list">
-		<li ng-repeat="user in userList.sort()" class="user-vcard">
+		<li ng-repeat="user in userList.sort() | orderBy: 'name.first'" class="user-vcard">
 			<i class="fa fa-user avatar"></i>
 			<small class="user user-label">Created <time datetime="{{user.dateCreated}}">{{user.dateCreatedFromNow}}</time></small>
 			<span class="user user-name">{{user.name.first}} {{user.name.last}}</span>

@@ -44,7 +44,11 @@ ctrl.controller('yossarianSettingsIndex', ['$scope', '$rootScope', '$http', '$wi
 		};
 
 		$http.get('/settings/users').success( function (users) { 
-			$scope.userList = users; 
+			$scope.userList = users;
+
+			for (i in $scope.userList) {
+				$scope.userList[i].dateCreatedFromNow = moment($scope.userList[i].dateCreated, "YYYY-MM-DDTHH:mm:ssZ").fromNow();
+			} 
 		});
 
 		$scope.addUser = function () {
@@ -52,6 +56,11 @@ ctrl.controller('yossarianSettingsIndex', ['$scope', '$rootScope', '$http', '$wi
 			$http.post('/settings/users/add', $scope.newUser)
 			.success( function (users) {
 				$scope.userList = users; 
+
+				for (i in $scope.userList) {
+					$scope.userList[i].dateCreatedFromNow = moment($scope.userList[i].dateCreated, "YYYY-MM-DDTHH:mm:ssZ").fromNow();
+				} 
+				
 				$scope.newUser = {};
 			});
 

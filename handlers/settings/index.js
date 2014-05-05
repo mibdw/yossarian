@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+var moment = require('moment');
 
 var Article = require(__dirname + '/../../models/news/article.js');
 var Category = require(__dirname + '/../../models/news/category.js');
@@ -69,7 +70,7 @@ exports.deleteCategories = function(req, res, next) {
 
 exports.getUserList = function(req, res, next) {
 	
-	User.find({}, 'name email _id').exec(function (err, users) {
+	User.find({}, 'name email _id dateCreated').exec(function (err, users) {
 		if (err) return handleError(err);
 		res.send(users);
 	});
@@ -77,23 +78,24 @@ exports.getUserList = function(req, res, next) {
 
 exports.postUser = function(req, res, next) {
 
+	var postDate = moment().format();
+
 	var user = new User({ 
 		email: req.body.email, 
 		password: req.body.password, 
 		name: { 
 			first: req.body.name.first, 
 			last: req.body.name.last 
-		} 
+		},
+		dateCreated: postDate
 	});
-
-	console.log(user);
 
 	user.save(function(err) {
 		if(err) {
 			console.log(err);
 		} else {
 
-			User.find({}, 'name email _id').exec(function (err, users) {
+			User.find({}, 'name email _id dateCreated').exec(function (err, users) {
 				if (err) return handleError(err);
 				res.send(users);
 			});

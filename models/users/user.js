@@ -8,7 +8,9 @@ var userSchema = mongoose.Schema({
 	name: {
 		first: { type: String, required: true },
 		last: { type: String, required: true },
-	}
+	},
+	dateCreated: Date,
+	dateModified: Date
 });
 
 userSchema.pre('save', function(next) {
