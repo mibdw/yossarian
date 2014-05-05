@@ -1,5 +1,4 @@
 var ctrl = angular.module('yossarianArticles', []);
-var categories = ['Uncategorized', 'Publishers', 'Customers', 'Events', 'IT'];
 
 // NEWS
 ctrl.controller('yossarianArticleIndex', ['$scope', '$rootScope', '$http', '$window',
@@ -9,7 +8,7 @@ ctrl.controller('yossarianArticleIndex', ['$scope', '$rootScope', '$http', '$win
 		$scope.articlesActiveCategories = [];
 		$scope.articlesVisible = 10;
 
-		$http.get('/news/categories').success( function (categories) { $scope.articlesCategories = categories.categories; });
+		$http.get('/settings/categories').success( function (categories) { $scope.articlesCategories = categories.categories; });
 
 		$scope.articleCategoryToggle = function (index) {
 		
@@ -92,7 +91,7 @@ ctrl.controller('yossarianArticlePost', ['$scope', '$rootScope', '$http', '$wind
 		$scope.newArticle = {};
 		$scope.newArticle.category = ['Uncategorized'];
 
-		$http.get('/news/categories').success( function (categories) { $scope.articlesCategories = categories.categories; });
+		$http.get('/settings/categories').success( function (categories) { $scope.articlesCategories = categories.categories; });
 
 		$scope.articleCategoryToggle = function (index) {
 		
@@ -217,7 +216,7 @@ ctrl.controller('yossarianArticleEdit', ['$scope', '$rootScope', '$http', '$wind
 			$rootScope.subTitle = "\u00BB Edit article";	
 		});
 		
-		$http.get('/news/categories').success( function (categories) { $scope.articlesCategories = categories.categories; });
+		$http.get('/settings/categories').success( function (categories) { $scope.articlesCategories = categories.categories; });
 
 		$scope.articleCategoryToggle = function (index) {
 		
@@ -278,49 +277,5 @@ ctrl.controller('yossarianArticleEdit', ['$scope', '$rootScope', '$http', '$wind
 			});
 		};
 
-	}
-]);
-
-
-ctrl.controller('yossarianArticleCategories', ['$scope', '$rootScope', '$http', '$window',
-	function ($scope, $rootScope, $http, $window) {	
-
-		$rootScope.subTitle = "\u00BB News categories";
-
-		$http.get('/news/categories').success( function (categories) { $scope.categoryList = categories.categories; });
-
-		$scope.deleteCategory = function (category) {
-
-			if (category == "Uncategorized") {
-
-				$scope.errorMessage = 'Pardon me, but I cannot let you do that!';
-
-			} else {
-
-				$http.post('/news/categories/delete', {'deleteCategory': category })
-				.success( function (categories) {
-					$scope.categoryList = categories.categories;
-					$scope.newCategory = "";
-				});
-			}
-		};
-
-		$scope.addCategory = function () {
-
-			var catIndex = $scope.categoryList.indexOf($scope.newCategory);
-
-			if (catIndex >= 0) {
-
-				$scope.errorMessage = 'That category already exists';
-
-			} else {
-
-				$http.post('/news/categories/add', {'newCategory': $scope.newCategory})
-				.success( function (categories) {
-					$scope.categoryList = categories.categories;
-					$scope.newCategory = "";
-				});
-			}
-		};
 	}
 ]);

@@ -110,66 +110,6 @@ exports.previewArticle = function(req, res, next) {
 	res.send(preview);
 };
 
-// CATEGORIES
-
-exports.getCategories = function(req, res, next) {
-	
-	Category.findOne({}).exec(function (err, category) {
-		if (err) return handleError(err);
-
-		res.send(category);
-	});
-};
-
-exports.postCategories = function(req, res, next) {
-	
-	Category.findOne({}).exec(function (err, category) {
-		if (err) return handleError(err);
-
-		var newCategoryList = category.categories;
-		newCategoryList.push(req.body.newCategory);
-
-		Category.findByIdAndUpdate(category._id, { 
-
-			$set: { 'categories': newCategoryList }
-
-		}, function (err, data) {
-
-			if (err) return handleError(err);
-			Category.findOne({}).exec(function (err, category) {
-				if (err) return handleError(err);
-
-				res.send(category);
-			});
-		});
-	});
-};
-
-exports.deleteCategories = function(req, res, next) {
-	
-	Category.findOne({}).exec(function (err, category) {
-		if (err) return handleError(err);
-
-		var newCategoryList = category.categories;
-		var deleteCatIndex = newCategoryList.indexOf(req.body.deleteCategory);
-		newCategoryList.splice(deleteCatIndex, 1);
-
-		Category.findByIdAndUpdate(category._id, { 
-
-			$set: { 'categories': newCategoryList }
-
-		}, function (err, data) {
-
-			if (err) return handleError(err);
-			Category.findOne({}).exec(function (err, category) {
-				if (err) return handleError(err);
-
-				res.send(category);
-			});
-
-		});
-	});
-};
 
 // COMMENTS
 

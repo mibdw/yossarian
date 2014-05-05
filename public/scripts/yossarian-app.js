@@ -1,12 +1,12 @@
-var app = angular.module('yossarianApp', ['ngRoute', 'ngAnimate', 'yossarianControllers', 'yossarianArticles', 'yossarianDocs']);
+var app = angular.module('yossarianApp', ['ngRoute', 'ngAnimate', 'yossarianControllers', 'yossarianArticles', 'yossarianDocs', 'yossarianCalendar', 'yossarianProjects', 'yossarianSettings']);
 
 app.config(['$routeProvider',
 	function($routeProvider) {
 		$routeProvider
 			.when('/' , { 
 				templateUrl: '/partials/dashboard/index' 
-			})
-			.when('/news', { 						// NEWS
+			}) // NEWS
+			.when('/news', { 						
 				templateUrl: '/partials/news/index',
 				controller: 'yossarianArticleIndex'
 			})
@@ -50,13 +50,16 @@ app.config(['$routeProvider',
 				controller: 'yossarianDocEdit' 
 			})
 			.when('/calendar', { 					// CALENDAR
-				templateUrl: '/partials/calendar/index' 
+				templateUrl: '/partials/calendar/index', 
+				controller: 'yossarianCalendarEvents'  
 			})
 			.when('/projects', { 					// PROJECTS
-				templateUrl: '/partials/projects/index' 
+				templateUrl: '/partials/projects/index', 
+				controller: 'yossarianProjectsIndex'  
 			})
 			.when('/settings', {					// SETTINGS 
-				templateUrl: '/partials/settings/index' 
+				templateUrl: '/partials/settings/index',
+				controller: 'yossarianSettingsIndex'  
 			})
 			.when('/profile', { 
 				templateUrl: '/partials/user/profile' 

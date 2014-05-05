@@ -44,11 +44,6 @@ module.exports = function (app, res, req) {
 	app.post('/news/post', ensureAuthenticated, news.postArticle);
 	app.post('/news/update', ensureAuthenticated, news.updateArticle);
 	app.post('/news/preview', ensureAuthenticated, news.previewArticle);
-	
-	app.get('/news/categories', ensureAuthenticated, news.getCategories);
-
-	app.post('/news/categories/add', ensureAuthenticated, news.postCategories);
-	app.post('/news/categories/delete', ensureAuthenticated, news.deleteCategories);
 
 	app.post('/news/comment/add', ensureAuthenticated, news.postComment);
 	app.post('/news/comment/delete', ensureAuthenticated, news.deleteComment);
@@ -64,6 +59,18 @@ module.exports = function (app, res, req) {
 	app.post('/docs/post', ensureAuthenticated, docs.postDoc);
 	app.post('/docs/update', ensureAuthenticated, docs.updateDoc);
 	app.post('/docs/preview', ensureAuthenticated, docs.previewDoc);
+
+	// SETTINGS
+	var settings = require(__dirname + '/settings/index');
+	
+	app.get('/settings/categories', ensureAuthenticated, settings.getCategories);
+
+	app.post('/settings/categories/add', ensureAuthenticated, settings.postCategories);
+	app.post('/settings/categories/delete', ensureAuthenticated, settings.deleteCategories);
+
+	app.get('/settings/users', ensureAuthenticated, settings.getUserList);
+
+	app.post('/settings/users/add', ensureAuthenticated, settings.postUser);
 
 }
 
