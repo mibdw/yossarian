@@ -155,6 +155,7 @@ ctrl.controller('yossarianArticleDetail', ['$scope', '$rootScope', '$http', '$wi
 
 			for (i in $scope.article.comments) {
 				$scope.article.comments[i].dateCreatedFromNow = moment($scope.article.comments[i].dateCreated, "YYYY-MM-DDTHH:mm:ssZ").fromNow();
+				$scope.article.comments[i].body = $sce.trustAsHtml($scope.article.comments[i].body);
 			}
 		});
 
@@ -172,6 +173,29 @@ ctrl.controller('yossarianArticleDetail', ['$scope', '$rootScope', '$http', '$wi
 				
 				for (i in $scope.article.comments) {
 					$scope.article.comments[i].dateCreatedFromNow = moment($scope.article.comments[i].dateCreated, "YYYY-MM-DDTHH:mm:ssZ").fromNow();
+					$scope.article.comments[i].body = $sce.trustAsHtml($scope.article.comments[i].body);
+				}		
+			})
+			.error(function () { 
+				$scope.errorMessage = "Something went horribly wrong. Don't panic, contact professional help!"; 
+			});
+		};
+
+		$scope.deleteComment = function (commentId) {
+
+			var commentPackage = { 
+				'articleId': $scope.article._id,
+				'commentId': commentId
+			};
+
+			$http.post('/news/comment/delete', commentPackage)
+			.success(function (data) {
+				$scope.article.comments = data;	
+				$scope.commentBody = "";
+				
+				for (i in $scope.article.comments) {
+					$scope.article.comments[i].dateCreatedFromNow = moment($scope.article.comments[i].dateCreated, "YYYY-MM-DDTHH:mm:ssZ").fromNow();
+					$scope.article.comments[i].body = $sce.trustAsHtml($scope.article.comments[i].body);
 				}		
 			})
 			.error(function () { 

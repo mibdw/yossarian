@@ -6,17 +6,19 @@
 	</ul>
 
 	<div class="article-authors">
-		<i class="fa fa-user avatar"></i>
-		<small class="author writer-label">Created <time datetime="{{article.dateCreated}}">{{article.dateCreatedFromNow}}</time> by</small>
-		<span class="author writer-name">{{article.author.name.first}} {{article.author.name.last}}</span>
-		<span class="author writer-email">{{article.author.email}}</span>
-
-		<span ng-if="article.editor">
+		<div class="user-vcard">
 			<i class="fa fa-user avatar"></i>
-			<small class="editor writer-label">Last modified <time datetime="{{article.dateModified}}">{{article.dateModifiedFromNow}}</time> by</small>
-			<span class="editor writer-name">{{article.editor.name.first}} {{article.editor.name.last}}</span>
-			<span class="editor writer-email">{{article.editor.email}}</span>
-		</span>
+			<small class="user user-label">Created <time datetime="{{article.dateCreated}}">{{article.dateCreatedFromNow}}</time> by</small>
+			<span class="user user-name">{{article.author.name.first}} {{article.author.name.last}}</span>
+			<span class="user user-email">{{article.author.email}}</span>
+		</div>
+
+		<div ng-show="article.editor" class="user-vcard">
+			<i class="fa fa-user avatar"></i>
+			<small class="user user-label">Last modified <time datetime="{{article.dateModified}}">{{article.dateModifiedFromNow}}</time> by</small>
+			<span class="user user-name">{{article.editor.name.first}} {{article.editor.name.last}}</span>
+			<span class="user user-email">{{article.editor.email}}</span>
+		</div>
 	</div>
 
 	<ul class="sidebar-options article-categories">
@@ -28,7 +30,6 @@
 			</a>
 		</li>	
 	</ul>
-
 </aside>
 
 <h1 class="articles-header">News article</h1>	
@@ -40,17 +41,28 @@
 	<div ng-bind-html="article.body" class="article-body">{{article.body}}</div>
 </article>
 
-<ol ng-show="article.comments" class="article-comments">
+<ol class="article-comments">
+	<h1>Comments</h1>
 	<li ng-repeat="comment in article.comments | orderBy: '-dateCreated'">
-		{{comment.body}}<br>
-		{{comment.author.name.first}} {{comment.author.name.last}}<br>
-		{{comment.dateCreatedFromNow}}<br>
+		<div class="comment-author user-vcard">
+			<i class="fa fa-user avatar"></i>
+			<small class="user user-label">Created <time datetime="{{comment.dateCreated}}">{{comment.dateCreatedFromNow}}</time> by</small>
+			<span class="user user-name">{{comment.author.name.first}} {{comment.author.name.last}}</span>
+			<span class="user user-email">{{comment.author.email}}</span>
+		</div>
+		<div class="comment-body" ng-bind-html="comment.body"></div>
+		<a ng-click="deleteComment(comment._id)" class="comment-delete">Delete comment</a>
+	</li>
+	<li class="article-comment">
+		<div class="comment-author user-vcard">
+			<i class="fa fa-user avatar"></i>
+			<small class="user user-label">Post new comment</small>
+			<span class="user user-name">{{user.name.first}} {{user.name.last}}</span>
+			<span class="user user-email">{{user.email}}</span>
+		</div>
+		<form class="comment-body" ng-submit="postComment()">
+			<textarea ng-model="commentBody" placeholder="Let them know what you think. And use Markdown for style!"></textarea>
+			<button type="submit">Save</button>
+		</form>
 	</li>
 </ol>
-
-<section class="article-comment">
-	<form ng-submit="postComment()">
-		<textarea ng-model="commentBody" placeholder="Comment, please keep it tasteful"></textarea>
-		<button type="submit">Save</button>
-	</form>	
-</section>

@@ -29,6 +29,13 @@ exports.getArticle = function(req, res, next) {
 		if (err) return handleError(err);
 
 		article.body = marked(article.body);
+
+		for (i in article.comments) {
+			if (article.comments[i].body) {
+				article.comments[i].body = marked(article.comments[i].body);
+			}
+		}
+
 		return res.send(article);
 	});
 
@@ -183,11 +190,37 @@ exports.postComment = function(req, res, next) {
 		Article.findById(req.body.articleId).populate('comments.author', 'name email').exec(function (err, article) {
 			if (err) return handleError(err);
 
+			for (i in article.comments) {
+				if (article.comments[i].body) {
+					article.comments[i].body = marked(article.comments[i].body);
+				}
+			}
+
 			res.send(article.comments);
 		});
 	});
 };
 
 exports.deleteComment = function(req, res, next) {
+	
+	Article.findByIdAndUpdate(req.body.articleId, { 
 
+		$pull: { 'comments': {
+			'_id': req.body.commentId,
+		}}
+
+	}, function () {
+
+		Article.findById(req.body.articleId).populate('comments.author', 'name email').exec(function (err, article) {
+			if (err) return handleError(err);
+
+			for (i in article.comments) {
+				if (article.comments[i].body) {
+					article.comments[i].body = marked(article.comments[i].body);
+				}
+			}
+
+			res.send(article.comments);
+		});
+	});
 };
