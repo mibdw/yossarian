@@ -82,28 +82,3 @@ var routes = require(__dirname + '/handlers/routes')(app);
 app.listen(3000, function() {
 	console.log('\n----------\nYOSSARIAN\n----------\n\n'+ moment().format(dateFormat) + ' - Let\'s get this party started (http://localhost:3000)!');
 });
-
-/* 
-
-// SEED DATA  (uncomment for first run, then remove)
-
-var user = new User({ email: 'admin@example.com', password: 'secret', name: { first: 'Don', last: 'Draper' } });
-user.save(function(err) {
-  if(err) {
-    console.log(err);
-  } else {
-    console.log('user: ' + user.email + " saved.");
-  }
-});
-
-var Category = require(__dirname + '/models/news/category.js');
-var category = new Category({ categories: ['Uncategorized'] });
-category.save(function(err) {
-  if(err) {
-    console.log(err);
-  } else {
-    console.log("Category saved.");
-  }
-});
-
- */

@@ -35,7 +35,6 @@ userSchema.methods.comparePassword = function(candidatePassword, cb) {
 		if(err) return cb(err);
 		cb(null, isMatch);
 	});
-
 };
 
 module.exports = mongoose.model('User', userSchema);

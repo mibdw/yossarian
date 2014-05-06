@@ -1,5 +1,9 @@
 module.exports = function (app, res, req) {
 
+	// SEED DATA 
+	// var firstrun = require(__dirname + '/firstrun');
+	// firstrun.gogogo();
+
 	// BASE
 	app.get('/', ensureAuthenticated, function(req, res) {
 		res.render('index.html');
