@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 var marked = require('marked');
 var moment = require('moment');
 
-var Doc = require(__dirname + '/../../models/docs/doc.js');
+var Doc = require(__dirname + '/../../models/doc.js');
 
 marked.setOptions({
 	gfm: true,

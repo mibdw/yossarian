@@ -5,7 +5,7 @@ app.config(['$routeProvider',
 		$routeProvider
 			.when('/' , { 
 				templateUrl: '/partials/dashboard/index' 
-			}) // NEWS
+			}) // =========================================== >>> NEWS
 			.when('/news', { 						
 				templateUrl: '/partials/news/index',
 				controller: 'yossarianArticleIndex'
@@ -25,8 +25,8 @@ app.config(['$routeProvider',
 			.when('/news/:articleSlug/edit', {
 				templateUrl: '/partials/news/edit',
 				controller: 'yossarianArticleEdit'
-			})
-			.when('/docs', {						// DOCUMENTS
+			}) // =========================================== >>> DOCS
+			.when('/docs', {
 				redirectTo: '/docs/overview' 
 			})
 			.when('/docs/add', {
@@ -48,16 +48,16 @@ app.config(['$routeProvider',
 			.when('/docs/:subdoc/:subsubdoc/edit', { 
 				templateUrl: '/partials/docs/edit', 
 				controller: 'yossarianDocEdit' 
-			})
-			.when('/calendar', { 					// CALENDAR
+			}) // =========================================== >>> CALENDAR
+			.when('/calendar', {
 				templateUrl: '/partials/calendar/index', 
 				controller: 'yossarianCalendarEvents'  
-			})
-			.when('/projects', { 					// PROJECTS
+			}) // =========================================== >>> PROJECTS
+			.when('/projects', {
 				templateUrl: '/partials/projects/index', 
 				controller: 'yossarianProjectsIndex'  
-			})
-			.when('/settings', {					// SETTINGS 
+			}) // =========================================== >>> SETTINGS
+			.when('/settings', {
 				templateUrl: '/partials/settings/index',
 				controller: 'yossarianSettingsIndex'  
 			})

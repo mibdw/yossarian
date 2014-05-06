@@ -64,6 +64,28 @@ module.exports = function (app, res, req) {
 	app.post('/docs/update', ensureAuthenticated, docs.updateDoc);
 	app.post('/docs/preview', ensureAuthenticated, docs.previewDoc);
 
+	// PROJECTS
+	var projects = require(__dirname + '/projects/index');
+	
+	app.get('/projects/list', ensureAuthenticated, projects.getProjectList);
+	app.get('/projects/detail/:projectSlug', ensureAuthenticated, projects.getProject);
+	app.get('/projects/edit/:projectSlug', ensureAuthenticated, projects.editProject);
+
+	app.post('/projects/delete', ensureAuthenticated, projects.deleteProject);
+	app.post('/projects/post', ensureAuthenticated, projects.postProject);
+	app.post('/projects/update', ensureAuthenticated, projects.updateProject);
+	app.post('/projects/preview', ensureAuthenticated, projects.previewProject);
+
+	app.post('/projects/issue/delete', ensureAuthenticated, projects.deleteIssue);
+	app.post('/projects/issue/post', ensureAuthenticated, projects.postIssue);
+	app.post('/projects/issue/update', ensureAuthenticated, projects.updateIssue);
+	app.post('/projects/issue/preview', ensureAuthenticated, projects.previewIssue);
+
+	app.post('/projects/note/delete', ensureAuthenticated, projects.deleteNote);
+	app.post('/projects/note/post', ensureAuthenticated, projects.postNote);
+	app.post('/projects/note/update', ensureAuthenticated, projects.updateNote);
+	app.post('/projects/note/preview', ensureAuthenticated, projects.previewNote);
+
 	// SETTINGS
 	var settings = require(__dirname + '/settings/index');
 	

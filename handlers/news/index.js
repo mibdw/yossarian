@@ -2,8 +2,8 @@ var mongoose = require('mongoose');
 var marked = require('marked');
 var moment = require('moment');
 
-var Article = require(__dirname + '/../../models/news/article.js');
-var Category = require(__dirname + '/../../models/news/category.js');
+var Article = require(__dirname + '/../../models/article.js');
+var Category = require(__dirname + '/../../models/categories.js');
 
 marked.setOptions({
 	gfm: true,

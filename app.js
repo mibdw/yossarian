@@ -10,7 +10,7 @@ var moment = require('moment');
 var dateFormat = "ddd MM-DD-YYYY HH:mm:ss";
 
 var utils = require(__dirname + '/handlers/auth/utils');
-var User = require(__dirname + '/models/users/user');
+var User = require(__dirname + '/models/user');
 
 // DATABASE CONNECTION
 mongoose.connect('mongodb://localhost/yossarian');

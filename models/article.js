@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-var docSchema = new Schema({
+var articleSchema = new Schema({
 	title: { type: String, require: true, unique: true },
 	slug: String,
 	body: String,
@@ -9,9 +9,14 @@ var docSchema = new Schema({
 	dateCreated: Date,
 	editor: { type: String, ref: 'User' },
 	dateModified: Date,
-	parent: String
+	category: [String],
+	comments: [{
+		author: { type: String, ref: 'User' },
+		body: String,
+		dateCreated: Date
+	}]
 });
 
-var User = require(__dirname + '/../users/user');
+var User = require(__dirname + '/user');
 
-module.exports = mongoose.model('Doc', docSchema);
+module.exports = mongoose.model('Article', articleSchema);
