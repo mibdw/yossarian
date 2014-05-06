@@ -32,7 +32,7 @@
 
 	<h2 ng-click="articleDetail(article.indexNo)">{{article.title}}</h2>
 	<div class="article-excerpt">{{article.excerpt}} ...</div>
-	<small>
+	<small class="article-footer">
 		Posted <time datetime="{{article.dateCreated}}">{{article.dateCreatedFromNow}}</time> by {{article.author.name.first}} {{article.author.name.last}}
 		in 
 		<ul class="article-categories">
@@ -40,6 +40,5 @@
 		</ul>
 
 		<span class="article-comments-amount">{{article.commentNo}}</span>
-		
 	</small>
 </article>

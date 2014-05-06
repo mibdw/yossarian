@@ -297,7 +297,7 @@ body {
 
 			aside {
 				float: right;
-				width: 21%;
+				width: 16%;
 				border-left: 1px solid @general-line;
 				margin: 26px 0 0 1.5%;
 				padding: 0 0 2em 1.5%;
@@ -314,12 +314,12 @@ body {
 				}
 			}
 
-			.articles-header { margin-right: 25%; }
+			.articles-header { margin-right: 20%; }
 
 			article {
 				float: left;
-				width: 75%; 
-				margin: 0 0 .5em 0;
+				width: 80%; 
+				margin: 0 0 1em 0;
 				padding-bottom: .5em;
 
 				.clearfix;
@@ -327,6 +327,10 @@ body {
 				.article-time {
 					float: left;
 					margin-top: .5em;
+					width: 23%;
+					overflow: hidden;
+					text-overflow: ellipsis;
+					white-space: nowrap;
 
 					color: lighten(@general-text, 50%);
 					font-style: italic;
@@ -334,26 +338,27 @@ body {
 				}
 
 				h2 {
-					margin: 0 0 .2em 29%;
+					margin: 0 0 .2em 25%;
 					font-size: 1.7em;
 					line-height: 1.1em;
 				}
 
 				.article-excerpt {
-					margin-left: 29%;
+					margin-left: 25%;
 					color: lighten(@general-text, 25%);
 				}
 
 				.article-body {
-					margin-left: 29%;
+					margin-left: 25%;
 
 					h2 { margin: .4em 0; }
 
 				}
 
 				small {
-					margin-left: 29%;
+					margin: .5em 0 0 25%;
 					color: lighten(@general-text, 50%);
+					display: block;
 
 					time {
 						font-weight: bold;
@@ -401,7 +406,7 @@ body {
 
 			.article-comments {
 				float: left;
-				width: 75%;
+				width: 80%;
 				margin: 0;
 				padding: 0;
 				list-style-type: none;
@@ -411,17 +416,19 @@ body {
 				li {
 					border-bottom: 1px solid @general-line;
 					padding-bottom: .6em;
-					margin-bottom: 1em;
+					margin: 0 0 1em 25%;
 					.clearfix;
 
 					.comment-author {
 						float: left;
-						width: 27%;
+						width: @avatar-size * 1.5;
 						overflow: hidden;
+
+						.user { display: none; }
 					}
 
 					.comment-body {
-						margin-left: 29%;
+						margin-left: @avatar-size * 1.5;
 
 						p:first-child { margin-top: 0; }
 
@@ -454,8 +461,8 @@ body {
 						border-bottom-width: 0;
 	
 						textarea {
-							min-height: 15em;
 							width: 100%;
+							min-height: 15em;
 							float: left;
 						}
 
