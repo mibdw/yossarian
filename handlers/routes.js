@@ -36,6 +36,10 @@ module.exports = function (app, res, req) {
 
 	// USERS
 	app.get('/user/current', ensureAuthenticated, function(req, res) { res.send(req.user); });
+	app.post('/user/avatar/upload', ensureAuthenticated, function(req, res) {
+		console.log(req.files);
+		res.send("ok")
+	});
 
 	// NEWS
 	var news = require(__dirname + '/news/index');
@@ -97,6 +101,8 @@ module.exports = function (app, res, req) {
 	app.get('/settings/users', ensureAuthenticated, settings.getUserList);
 
 	app.post('/settings/users/add', ensureAuthenticated, settings.postUser);
+	app.post('/settings/users/update', ensureAuthenticated, settings.updateUser);
+	app.post('/settings/users/delete', ensureAuthenticated, settings.deleteUser);
 
 }
 

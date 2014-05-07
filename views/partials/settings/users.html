@@ -1,0 +1,64 @@
+<h2>Users</h2>
+
+<ul class="user-list">
+	<li ng-repeat="user in userList.sort() | orderBy: 'name.first'" class="user-vcard" ng-class="{active: user._id == editUser._id}">
+		<i class="fa fa-user avatar"></i>
+		<small class="user user-label">Created <time datetime="{{user.dateCreated}}">{{user.dateCreatedFromNow}}</time></small>
+		<span class="user user-name">{{user.name.first}} {{user.name.last}}</span>
+		<span class="user user-email"><a href="mailto:{{user.email}}">{{user.email}}</a></span>	
+		<span class="user-options">
+			<a ng-click="confirmDelete(user.userIndex)"><i class="fa fa-trash-o"></i></a><br>				
+			<a ng-click="modifyUser(user.userIndex)"><i class="fa fa-pencil"></i></a>
+	</li>
+</ul>
+
+<form ng-submit="addUser()" class="user-new" ng-show="!editUser">
+	<h4>New user</h4>
+
+	<label for="user-name-first">Name</label>
+	<input type="text" id="user-name-first" ng-model="newUser.name.first" placeholder="First name">
+	<input type="text" id="user-name-last" ng-model="newUser.name.last" placeholder="Last name">
+	
+	<label for="user-email">E-mail</label>
+	<input type="text" id="user-email" ng-model="newUser.email" placeholder="draper@example.com">
+
+	<label for="user-password">Password</label>
+	<input type="password" id="user-password" ng-model="newUser.password">
+
+	<button type="submit">Save</button>
+</form>
+
+<form ng-submit="updateUser()" class="user-new" ng-show="editUser">
+	<h4>Edit user</h4>
+
+	<label for="user-name-first">Name</label>
+	<input type="text" id="user-name-first" ng-model="editUser.name.first" placeholder="First name">
+	<input type="text" id="user-name-last" ng-model="editUser.name.last" placeholder="Last name">
+	
+	<label for="user-email">E-mail</label>
+	<input type="text" id="user-email" ng-model="editUser.email" placeholder="draper@example.com">
+
+	<label for="user-password">Password</label>
+	<input type="password" id="user-password" ng-model="editUser.password">
+
+	<button type="submit">Save</button>
+
+	<a ng-click="editUser = ''">New user</a>
+</form>
+
+<form action="/user/avatar/upload" method="post" ng-show="editUser">
+	<h4>User image</h4>
+	<input type="file" id="user-avatar" name="userAvatar" ng-model="editUser.avatar">
+	<button type="submit">Save</button>
+</form>
+
+<div class="alert" ng-show="errorMessage">
+	{{errorMessage}}
+	<span class="close" ng-click="errorMessage = !errorMessage">&times;</span>
+</div>
+
+<div class="confirm" ng-show="confirmMessage">
+	{{confirmMessage}}
+	<button class="rejection" ng-click="confirmMessage = !confirmMessage">Nope</button>
+	<button ng-show="deleteUserId" class="confirmation" ng-click="deleteUser()">Sure!</button>
+</div>

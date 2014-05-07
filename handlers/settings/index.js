@@ -103,3 +103,58 @@ exports.postUser = function(req, res, next) {
 	});
 };
 
+exports.updateUser = function(req, res, next) {
+
+	if (!req.body.password) {
+		
+		User.findByIdAndUpdate(req.body._id, { 
+
+			$set: { 
+				email: req.body.email, 
+				name: { 
+					first: req.body.name.first, 
+					last: req.body.name.last 
+				} 
+			}
+
+		}, function (err, data) {
+
+			if (err) return handleError(err);
+			User.find({}, 'name email _id dateCreated').exec(function (err, users) {
+				if (err) return handleError(err);
+				res.send(users);
+			});
+		});
+
+	} else if (req.body.password) {
+
+		User.findById(req.body._id, function (err, user) {
+
+			user.email = req.body.email;
+			user.name.first = req.body.name.first;
+			user.name.last = req.body.name.last;
+			user.password = req.body.password;
+			
+			user.save(function(err) {
+				if(err) {
+					console.log(err);
+				} else {
+
+					User.find({}, 'name email _id dateCreated').exec(function (err, users) {
+						if (err) return handleError(err);
+						res.send(users);
+					});
+				}
+			});			
+		});
+	}
+};
+
+exports.deleteUser = function(req, res, next) {
+	User.findByIdAndRemove(req.body.deleteId, function() {
+		User.find({}, 'name email _id dateCreated').exec(function (err, users) {
+			if (err) return handleError(err);
+			res.send(users);
+		});
+	});
+};

@@ -1,52 +1,13 @@
 <h1>Settings</h1>
 
-<section class="users">
-	<h2>Users</h2>
-
-	<ul class="user-list">
-		<li ng-repeat="user in userList.sort() | orderBy: 'name.first'" class="user-vcard">
-			<i class="fa fa-user avatar"></i>
-			<small class="user user-label">Created <time datetime="{{user.dateCreated}}">{{user.dateCreatedFromNow}}</time></small>
-			<span class="user user-name">{{user.name.first}} {{user.name.last}}</span>
-			<span class="user user-email">{{user.email}}</span>	
+<aside>
+	<ul class="sidebar-nav">
+		<li ng-repeat="setting in settings" ng-class="{active: setting.slug == currentSetting.slug}">
+			<a ng-click="switchSetting($index)">{{setting.name}}</a>
 		</li>
 	</ul>
+</aside>
 
-	<form ng-submit="addUser()" class="user-new">
-		
-		<label for="user-email">E-mail</label>
-		<input type="text" id="user-email" ng-model="newUser.email" placeholder="draper@example.com">
+<section ng-include="currentSetting.url" ng-class="currentSetting.slug">
 
-		<label for="user-name-first">Name</label>
-		<input type="text" id="user-name-first" ng-model="newUser.name.first" placeholder="First name">
-		<input type="text" id="user-name-last" ng-model="newUser.name.last" placeholder="Last name">
-
-		<label for="user-password">Password</label>
-		<input type="password" id="user-password" ng-model="newUser.password">
-
-		<button type="submit">Save</button>
-	</form>	
-	
 </section>
-
-<section class="categories">
-	<h2>News categories</h2>
-
-	<ul class="category-list">
-		<li ng-repeat="category in categoryList.sort()">
-			{{category}} {{category.amount}}
-			<i class="fa fa-trash-o" ng-click="deleteCategory(category)"></i>
-		</li>
-	</ul>
-
-	<form ng-submit="addCategory()" class="category-new">
-		<input type="text" ng-model="newCategory" placeholder="New category name">
-		<button type="submit">Save</button>
-	</form>	
-</section>
-
-
-<div class="alert" ng-show="errorMessage">
-	{{errorMessage}}
-	<span class="close" ng-click="errorMessage = !errorMessage">&times;</span>
-</div>

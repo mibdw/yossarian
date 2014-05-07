@@ -59,6 +59,16 @@ h6 {
 	margin: .2em 0;
 }
 
+img {
+	max-width: 100%;
+	padding: 4px;
+	border: 1px solid @general-line;
+	background-color: @general-background;
+
+	.box-sizing (border-box);
+	.border-radius (3px);
+}
+
 table {
 
 	tr {
@@ -94,6 +104,24 @@ pre {
 	font-family: @font-stack-monospace;
 
 	.border-radius (5px);
+
+	code {
+		background-color: transparent;
+		border-width: 0;
+		padding: 0;
+		white-space: pre;
+		.border-radius (0);
+	}
+}
+
+
+code {
+	font-family: @font-stack-monospace;
+	background-color: darken(@general-background, 4%);
+	border: 1px solid darken(@general-background, 10%);
+	padding: 0 .3em;
+	white-space: nowrap;
+	.border-radius (2px);
 }
 
 blockquote {
@@ -101,10 +129,6 @@ blockquote {
 	border-left: 5px solid @brand-color;
 	padding: .3em 1em;
 	margin: 0 20px 1em;
-}
-
-code {
-	font-family: @font-stack-monospace;
 }
 
 // ALERTS
@@ -289,15 +313,18 @@ code {
 		text-overflow: ellipsis;
 		color: lighten(@general-text, 50%);
 
-		&.user-label { font-style: italic; }
+		&.user-label { 
+			font-size: .7em;
+			font-style: italic; 
+		}
 
 		&.user-name {
-			font-size: 1.1em;
-			line-height: 1.1em;
+			line-height: 1.3em;
 			font-weight: bold;
 		}
 
 		&.user-email {
+			font-size: .8em;
 			margin-bottom: .7em;
 		}
 	}

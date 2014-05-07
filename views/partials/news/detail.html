@@ -45,7 +45,7 @@
 	<h1>Comments</h1>
 	<li ng-repeat="comment in article.comments | orderBy: '-dateCreated'">
 		<div class="comment-author user-vcard">
-			<i class="fa fa-user avatar"></i>
+			<i class="fa fa-user avatar" title="{{comment.author.name.first}} {{comment.author.name.last}}"></i>
 			<small class="user user-label">Created <time datetime="{{comment.dateCreated}}">{{comment.dateCreatedFromNow}}</time> by</small>
 			<span class="user user-name">{{comment.author.name.first}} {{comment.author.name.last}}</span>
 			<span class="user user-email">{{comment.author.email}}</span>
@@ -55,7 +55,7 @@
 	</li>
 	<li class="article-comment">
 		<div class="comment-author user-vcard">
-			<i class="fa fa-user avatar"></i>
+			<i class="fa fa-user avatar" title="{{user.name.first}} {{user.name.last}}"></i>
 			<small class="user user-label">Post new comment</small>
 			<span class="user user-name">{{user.name.first}} {{user.name.last}}</span>
 			<span class="user user-email">{{user.email}}</span>
