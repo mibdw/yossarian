@@ -1,13 +1,16 @@
-<h2>News categories</h2>
+<div ng-controller="yossarianSettingsCategories">
+	
+	<h2>News categories</h2>
 
-<ul class="category-list">
-	<li ng-repeat="category in categoryList.sort()">
-		{{category}} {{category.amount}}
-		<i class="fa fa-trash-o" ng-click="deleteCategory(category)"></i>
-	</li>
-</ul>
+	<ul class="category-list">
+		<li ng-repeat="category in categoryList.sort()">
+			{{category}} {{category.amount}}
+			<i class="fa fa-trash-o" ng-click="deleteCategory(category)"></i>
+		</li>
+	</ul>
 
-<form ng-submit="addCategory()" class="category-new">
-	<input type="text" ng-model="newCategory" placeholder="New category name">
-	<button type="submit">Save</button>
-</form>	
+	<form ng-submit="addCategory()" class="category-new">
+		<input type="text" ng-model="newCategory" placeholder="New category name">
+		<button type="submit">Save</button>
+	</form>	
+</div>

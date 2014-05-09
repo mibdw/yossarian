@@ -13,11 +13,16 @@ ctrl.controller('yossarianSettingsIndex', ['$scope', '$rootScope', '$http', '$wi
 			$scope.currentSetting = $scope.settings[index];
 		};
 
-		$rootScope.subTitle = "";
-
 		$http.get('/settings/categories').success( function (categories) { 
 			$scope.categoryList = categories.categories; 
 		});
+	}
+]);
+
+ctrl.controller('yossarianSettingsCategories', ['$scope', '$rootScope', '$http', '$window',
+	function ($scope, $rootScope, $http, $window) {	
+
+		$rootScope.subTitle = "\u00BB Categories";
 
 		$scope.deleteCategory = function (category) {
 
@@ -52,6 +57,13 @@ ctrl.controller('yossarianSettingsIndex', ['$scope', '$rootScope', '$http', '$wi
 				});
 			}
 		};
+	}
+]);
+
+ctrl.controller('yossarianSettingsUsers', ['$scope', '$rootScope', '$http', '$window',
+	function ($scope, $rootScope, $http, $window) {	
+
+		$rootScope.subTitle = "\u00BB Users";
 
 		$http.get('/settings/users').success( function (users) { 
 			$scope.userList = users;
@@ -64,7 +76,7 @@ ctrl.controller('yossarianSettingsIndex', ['$scope', '$rootScope', '$http', '$wi
 
 		$scope.addUser = function () {
 
-			if (!$scope.newUser || !$scope.newUser.password || !$scope.newUser.email || !$scope.newUser.name.last || !$scope.newUser.name.first) {
+			if (!$scope.newUser.password || !$scope.newUser.email || !$scope.newUser.name.last || !$scope.newUser.name.first) {
 
 				$scope.errorMessage = "We cannot continue untill you have filled out every single field in the form. Understand?";
 
