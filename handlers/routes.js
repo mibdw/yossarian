@@ -44,10 +44,11 @@ module.exports = function (app, res, req) {
 	// NEWS
 	var news = require(__dirname + '/news/index');
 	
-	app.get('/news/list', ensureAuthenticated, news.getArticleList);
 	app.get('/news/detail/:articleSlug', ensureAuthenticated, news.getArticle);
 	app.get('/news/edit/:articleSlug', ensureAuthenticated, news.editArticle);
 
+	app.post('/news/list', ensureAuthenticated, news.listArticle);
+	app.post('/news/list/total', ensureAuthenticated, news.totalArticle);
 	app.post('/news/delete', ensureAuthenticated, news.deleteArticle);
 	app.post('/news/post', ensureAuthenticated, news.postArticle);
 	app.post('/news/update', ensureAuthenticated, news.updateArticle);

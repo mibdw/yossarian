@@ -21,10 +21,6 @@ body {
 		height: 60px;
 		padding: 0 0 0 20px;
 		margin: 0;
-		position: fixed;
-		top: 0;
-		left: 0;
-		right: 0;
 		border-bottom: 1px solid @header-line;
 		z-index: 666;
 
@@ -287,7 +283,7 @@ body {
 	// MAIN
 
 	main {
-		margin: 70px 0 0;
+		margin: 10px 0 0;
 		padding: 0 20px;
 		.clearfix;
 
@@ -306,12 +302,54 @@ body {
 					padding: 3px 5px;
 				}
 
+				.article-pagination {
+
+					li {
+						display: inline-block;
+						cursor: pointer;
+						background-color: lighten(@general-background, 20%);
+						color: lighten(@general-text, 50%);
+						padding: .4em .6em; 
+						border-width: 1px 0 1px 1px;
+						border-color: @general-line;
+						border-style: solid;
+						margin: 0;
+
+						&:hover {
+							background-color: darken(@general-background, 10%);
+							color: @general-text;
+						}
+
+						&:last-child {
+							border-width: 1px;
+							.border-radius (0 3px 3px 0);
+						}
+
+						&:first-child {
+							.border-radius (3px 0 0 3px);
+						}
+
+						&.pagination-previous {
+							margin-right: -4px;
+						}
+
+						&.pagination-next {
+							margin-left: -4px;
+						}
+
+						i { margin: 0; }
+					}
+
+				}
+
 				.article-authors {
 					border-top: 1px solid @general-line;
 					border-bottom: 1px solid @general-line;
 					margin-bottom: .5em;
 					padding: .8em 0 .4em;
 				}
+
+
 			}
 
 			.articles-header { margin-right: 20%; }
@@ -458,10 +496,20 @@ body {
 						color: lighten(@general-text, 60%);
 						font-size: .7em;
 						font-style: italic;
+						margin-left: 15px;
 
 						&:hover {
 							color: @general-text;
 						}
+					}
+
+					.comment-date {
+						float: right;
+						color: lighten(@general-text, 60%);
+						font-size: .7em;
+						font-style: italic;
+						line-height: 1.15em;
+
 					}
 
 					&.article-comment {
@@ -481,6 +529,57 @@ body {
 			}
 
 			.form-options.article-categories li a { padding: 2px 5px; }
+
+			.article-pagination {
+				display: block;
+				float: left;
+				width: 80%;
+				margin: 2em 0 0;
+				padding: 0;
+				text-align: center;
+
+				li {
+					display: inline-block;
+					cursor: pointer;
+					background-color: lighten(@general-background, 20%);
+					color: lighten(@general-text, 50%);
+					padding: .4em .6em; 
+					border-width: 1px 0 1px 1px;
+					border-color: @general-line;
+					border-style: solid;
+					margin: 0;
+
+					&:hover {
+						background-color: @brand-color;
+						color: @general-text;
+					}
+
+					&.active {
+						color: @general-text;
+						font-weight: bold;
+					}
+
+					&:last-child {
+						border-width: 1px;
+						.border-radius (0 3px 3px 0);
+					}
+
+					&:first-child {
+						.border-radius (3px 0 0 3px);
+					}
+
+					&.pagination-previous {
+						margin-right: -4px;
+					}
+
+					&.pagination-next {
+						margin-left: -4px;
+					}
+
+					i { margin: 0; }
+				}
+
+			}
 		}
 
 		// DOCUMENTS
@@ -489,7 +588,7 @@ body {
 
 			aside {
 				float: left;
-				width: 14.5%;
+				width: 20%;
 				border-right: 1px solid @general-line;
 				margin-top: 20px;
 
@@ -518,7 +617,7 @@ body {
 			}
 
 			article {
-				margin: 0 0 0 17%;
+				margin: 0 0 0 22.5%;
 
 				.document-body {
 					margin-bottom: 2em;
@@ -533,7 +632,7 @@ body {
 						font-weight: bold;
 					}
 				}
-			}				
+			}
 		}	
 
 		// SETTINGS
@@ -589,7 +688,7 @@ body {
 
 						li {
 							border-bottom: 1px dotted @general-line;
-							margin-bottom: .2em;
+							padding: .4em;
 							position: relative;
 
 							.user {
@@ -617,8 +716,13 @@ body {
 								border-bottom-width: 0;
 							}
 
+							&:hover {
+								cursor: pointer;
+								background-color: darken(@general-background, 5%); 
+							}
+
 							&.active {
-								background-color: darken(@general-background, 2%); 
+								background-color: darken(@general-background, 3%);
 							}
 						}
 					}
@@ -626,6 +730,15 @@ body {
 					.user-new {
 						display: inline-block;
 						width: 48%;
+
+						h2 .close {
+							float: right;
+							font-size: 1.4em;
+							color: lighten(@general-text, 70%);
+							cursor: pointer;
+
+							&:hover { color: @general-text; }
+						}
 
 						label { width: 20%; }
 
@@ -660,8 +773,10 @@ body {
 
 
 						li {
+							font-size: 1.2em;
 							border-bottom: 1px dotted @general-line;
 							margin-bottom: .2em;
+							padding: .2em 0;
 
 							&:hover {
 								border-bottom: 1px solid @general-line;

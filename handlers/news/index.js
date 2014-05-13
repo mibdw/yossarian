@@ -14,13 +14,61 @@ function slugify(text) {
 	return text.toString().toLowerCase().replace(/\s+/g, '-').replace(/[^\w\-]+/g, '').replace(/\-\-+/g, '-').replace(/^-+/, '').replace(/-+$/, '');
 }
 
-exports.getArticleList = function(req, res, next) {
+exports.listArticle = function(req, res, next) {
 
-	Article.find({}).populate('author', 'name').exec(function (err, articleList) {
-		if (err) return handleError(err);
+	var articlesSkip = (req.body.articlesPage - 1) * req.body.articlesVisible;
 
-		return res.send(articleList);
-	});
+	if (req.body.articlesActiveCategories.length < 1) {
+
+		Article.find({})
+		.limit(req.body.articlesVisible)
+		.skip(articlesSkip)
+		.sort(req.body.articlesSort)
+		.populate('author', 'name')
+		.exec(function (err, articleList) {
+			if (err) return handleError(err);
+
+			return res.send(articleList);
+		});
+
+	} else {
+
+		Article.find({})
+		.where('category').in(req.body.articlesActiveCategories)
+		.limit(req.body.articlesVisible)
+		.skip(articlesSkip)
+		.sort(req.body.articlesSort)
+		.populate('author', 'name')
+		.exec(function (err, articleList) {
+			if (err) return handleError(err);
+
+			return res.send(articleList);
+		});
+
+	}
+};
+
+exports.totalArticle = function(req, res, next) {
+	
+	if (req.body.articlesActiveCategories.length < 1) {
+
+		Article.count({})
+		.exec(function (err, totalArticles) {
+			if (err) return handleError(err);
+
+			return res.send({'totalArticles': totalArticles});
+		});
+
+	} else {
+
+		Article.count({})
+		.where('category').in(req.body.articlesActiveCategories)
+		.exec(function (err, totalArticles) {
+			if (err) return handleError(err);
+
+			return res.send({'totalArticles': totalArticles});
+		});
+	}
 };
 
 exports.getArticle = function(req, res, next) { 

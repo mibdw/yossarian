@@ -7,15 +7,14 @@
 		<h3>Categories</h3>
 		<li ng-repeat="category in articlesCategories.sort()">
 			<a ng-click="articleCategoryToggle($index)">
-				<i class="fa" ng-class="{'fa-check-circle': articlesActiveCategories.indexOf(category) != -1, 'fa-circle-o': articlesActiveCategories.indexOf(category) == -1}"></i> {{category}}
+				<i class="fa" ng-class="{'fa-check-circle': listCriteria.articlesActiveCategories.indexOf(category) != -1, 'fa-circle-o': listCriteria.articlesActiveCategories.indexOf(category) == -1}"></i> {{category}}
 			</a>
 		</li>	
 	</ul>
 	
 	<ul class="sidebar-options">
 		<h3>Options</h3>
-		<select ng-model="articlesVisible">
-			<option value="5">5 articles</option>
+		<select ng-model="listCriteria.articlesVisible" ng-change="newArticlesVisible()">
 			<option value="10">10 articles</option>
 			<option value="25">25 articles</option>
 			<option value="50">50 articles</option>
@@ -27,7 +26,7 @@
 
 <h1 class="articles-header">News</h1>
 
-<article ng-repeat="article in articleList | filter: articleFilter | orderBy: '-dateCreated' | limitTo: articlesVisible" class="article-link">
+<article ng-repeat="article in articleList | orderBy: '-dateCreated'" class="article-link">
 	<time class="article-time" datetime="{{article.dateCreated}}" >{{article.dateCreatedPretty}}</time>
 
 	<h2 ng-click="articleDetail(article.indexNo)">{{article.title}}</h2>
@@ -42,3 +41,21 @@
 		<span class="article-comments-amount">{{article.commentNo}}</span>
 	</small>
 </article>
+	
+<ul class="sidebar-options article-pagination" ng-show="totalArticles.pages.length > 1">
+	<li ng-if="listCriteria.articlesPage > 2" ng-click="listCriteria.articlesPage = 1" class="pagination-previous">
+		<i class="fa fa-angle-double-left"></i>
+	</li>
+	<li ng-if="listCriteria.articlesPage > 1" ng-click="listCriteria.articlesPage = listCriteria.articlesPage - 1" class="pagination-previous">
+		<i class="fa fa-angle-left"></i>
+	</li>
+	<li ng-repeat="page in totalArticles.pages | limitTo: listCriteria.articlesPage + 1 | limitTo: -3" 
+		ng-click="listCriteria.articlesPage = page" 
+		ng-class="{active: page == listCriteria.articlesPage}">{{page}}</li>
+	<li ng-if="listCriteria.articlesPage < totalArticles.pages.length" ng-click="listCriteria.articlesPage = listCriteria.articlesPage + 1"  class="pagination-next">
+		<i class="fa fa-angle-right"></i>
+	</li>
+	<li ng-if="listCriteria.articlesPage < totalArticles.pages.length - 1" ng-click="listCriteria.articlesPage = totalArticles.pages.length"  class="pagination-next">
+		<i class="fa fa-angle-double-right"></i>
+	</li>
+</ul>

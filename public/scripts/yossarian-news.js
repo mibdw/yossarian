@@ -5,81 +5,78 @@ ctrl.controller('yossarianArticleIndex', ['$scope', '$rootScope', '$http', '$win
 	function ($scope, $rootScope, $http, $window) {	
 
 		$rootScope.subTitle = "";
-		$scope.articlesActiveCategories = [];
-		$scope.articlesVisible = 10;
+		$scope.listCriteria = {
+			'articlesActiveCategories': [],
+			'articlesVisible': 10,
+			'articlesSort': '-dateCreated',
+			'articlesPage': 1
+		};
 
+		function newArticleList() {
+
+			$http.post('/news/list', $scope.listCriteria).success( function (data) {
+				$scope.articleList = data;
+
+				for (i in $scope.articleList) {
+					$scope.articleList[i].dateCreatedFromNow = moment($scope.articleList[i].dateCreated, "YYYY-MM-DDTHH:mm:ssZ").fromNow();
+					$scope.articleList[i].dateCreatedPretty = moment($scope.articleList[i].dateCreated, "YYYY-MM-DDTHH:mm:ssZ").format('dddd, DD MMMM YYYY HH:mm:ss');
+					$scope.articleList[i].excerpt = $scope.articleList[i].body.substr(0, 300);
+					$scope.articleList[i].indexNo = i;
+
+					var commentsAmount = $scope.articleList[i].comments.length;
+					if (commentsAmount == 0) {
+						$scope.articleList[i].commentNo = "No comments";
+					} else if (commentsAmount == 1) {
+						$scope.articleList[i].commentNo = "1 comment";
+					} else {
+						$scope.articleList[i].commentNo = commentsAmount + " comments";
+					}
+				}
+			});
+
+			$http.post('/news/list/total', $scope.listCriteria).success( function (total) {
+				$scope.totalArticles = total;
+				$scope.totalArticles.pages = [];
+				var highEnd = ($scope.totalArticles.totalArticles / $scope.listCriteria.articlesVisible) + 0.99999;
+
+				for (var i = 1; i <= highEnd; i++) {
+					$scope.totalArticles.pages.push(i);
+				}
+			});
+		};
+
+		newArticleList();
 		$http.get('/settings/categories').success( function (categories) { $scope.articlesCategories = categories.categories; });
+
+		app.filter('slice', function() {
+			return function(arr, start, end) {
+				return (arr || []).slice(start, end);
+			};
+		});
 
 		$scope.articleCategoryToggle = function (index) {
 		
-			var catIndex = $scope.articlesActiveCategories.indexOf($scope.articlesCategories[index]);
+			var catIndex = $scope.listCriteria.articlesActiveCategories.indexOf($scope.articlesCategories[index]);
+
 			if (catIndex >= 0) {
-				$scope.articlesActiveCategories.splice(catIndex, 1);
+				$scope.listCriteria.articlesActiveCategories.splice(catIndex, 1);
 			} else {
-				$scope.articlesActiveCategories.push($scope.articlesCategories[index]);
+				$scope.listCriteria.articlesActiveCategories.push($scope.articlesCategories[index]);
 			}
+
+			$scope.listCriteria.articlesPage = 1;
+			newArticleList();
 		};
 
-		$http.get('/news/list').success( function (data) {
-			$scope.articleList = data;
+		$scope.articleDetail = function (index) { $window.location.href = "/#/news/" + $scope.articleList[index].slug; };
+		$scope.newArticlesVisible = function () { 
+			$scope.listCriteria.articlesPage = 1;
+			newArticleList(); 
+		};
 
-			for (i in $scope.articleList) {
-				$scope.articleList[i].dateCreatedFromNow = moment($scope.articleList[i].dateCreated, "YYYY-MM-DDTHH:mm:ssZ").fromNow();
-				$scope.articleList[i].dateCreatedPretty = moment($scope.articleList[i].dateCreated, "YYYY-MM-DDTHH:mm:ssZ").format('dddd, DD MMMM YYYY HH:mm:ss');
-				$scope.articleList[i].excerpt = $scope.articleList[i].body.substr(0, 300);
-				$scope.articleList[i].indexNo = i;
-
-				var commentsAmount = $scope.articleList[i].comments.length;
-				if (commentsAmount == 0) {
-					$scope.articleList[i].commentNo = "No comments";
-				} else if (commentsAmount == 1) {
-					$scope.articleList[i].commentNo = "1 comment";
-				} else {
-					$scope.articleList[i].commentNo = commentsAmount + " comments";
-				}
-			}
+		$scope.$watch('listCriteria.articlesPage', function() {
+			newArticleList(); 
 		});
-
-		$scope.articleFilter = function (article) {
-
-			if ($scope.articlesActiveCategories == 0) { 
-				
-				return true; 
-
-			} else {
-
-				for (i in article.category) {
-					var activeCatIndex = $scope.articlesActiveCategories.indexOf(article.category[i]);
-
-					if (activeCatIndex >= 0) { return true; }
-				}
-			}
-
-			return false;
-		}
-
-		$scope.articleDetail = function (index) {
-			$window.location.href = "/#/news/" + $scope.articleList[index].slug;
-		};
-
-		$scope.confirmDelete = function(title, deleteID) {
-			$scope.confirmMessage = "Are you sure you want to delete \'" + title +"\'?";
-			$scope.deleteID = deleteID;
-
-			alert(title + deleteID);
-		};
-
-		$scope.deleteArticle = function () { 
-
-			$scope.confirmMessage = "";
-
-			$http.post('/news/delete', { 'id': $scope.deleteID })
-			.success(function (data) {
-				$window.location.href = "/#/news";
-			});
-
-			$scope.deleteID = "";
-		};
 
 	}
 ]);

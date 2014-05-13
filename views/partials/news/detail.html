@@ -52,6 +52,7 @@
 		</div>
 		<div class="comment-body" ng-bind-html="comment.body"></div>
 		<a ng-click="deleteComment(comment._id)" class="comment-delete">Delete comment</a>
+		<small class="comment-date">Created <time datetime="{{comment.dateCreated}}">{{comment.dateCreatedFromNow}}</time></small>
 	</li>
 	<li class="article-comment">
 		<div class="comment-author user-vcard">
