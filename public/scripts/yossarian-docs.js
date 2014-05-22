@@ -4,12 +4,12 @@ var ctrl = angular.module('yossarianDocs', []);
 ctrl.controller('yossarianDocIndex', ['$scope', '$rootScope', '$sce', '$routeParams', '$http', '$window',
 	function ($scope, $rootScope, $sce, $routeParams, $http, $window) {	
 
-		$scope.activeSubnav = $routeParams.subdoc;
-		$scope.activeSubsubnav = $routeParams.subsubdoc;
+		$scope.activeSubnav = $routeParams.docSlug;
+		$scope.activeSubsubnav = $routeParams.subdocSlug;
 
-		var docSlug = $routeParams.subsubdoc || $routeParams.subdoc;
+		var docSlug = $routeParams.subdocSlug || $routeParams.docSlug;
 
-		if ($routeParams.subdoc == 'overview') {
+		if ($routeParams.docSlug == 'overview') {
 
 			$rootScope.subTitle = "\u00BB Overview";
 
@@ -65,7 +65,7 @@ ctrl.controller('yossarianDocPost', ['$scope', '$sce', '$rootScope', '$routePara
 ctrl.controller('yossarianDocEdit', ['$scope', '$sce', '$rootScope', '$routeParams', '$http', '$window',
 	function ($scope, $sce, $rootScope, $routeParams, $http, $window) {
 
-		var docSlug = $routeParams.subsubdoc || $routeParams.subdoc;
+		var docSlug = $routeParams.subdocSlug || $routeParams.docSlug;
 
 		$http.get('/docs/edit/' + docSlug).success( function (data) {
 			$scope.editDoc = data;
