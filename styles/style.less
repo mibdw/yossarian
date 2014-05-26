@@ -193,9 +193,19 @@ body {
 	// SIDEBAR
 
 	aside {
-		z-index: 555;
+		float: left;
+		border-right: 1px solid @general-line;
+		margin-top: 26px;
 
-		.sidebar-nav, .sidebar-options {
+		&.float-right {
+			float: right;
+			border-left: 1px solid @general-line;
+			border-right-width: 0;
+			margin-left: 1.5%;
+			padding: 0 0 2em 1.5%;	
+		}
+
+		ul {
 			list-style-type: none;
 			margin: 0;
 			padding: 7px 0 7px;
@@ -292,11 +302,7 @@ body {
 		&.news {
 
 			aside {
-				float: right;
 				width: 16%;
-				border-left: 1px solid @general-line;
-				margin: 26px 0 0 1.5%;
-				padding: 0 0 2em 1.5%;
 
 				.article-categories li a, .article-archive li a {
 					padding: 3px 5px;
@@ -587,10 +593,7 @@ body {
 		&.docs {
 
 			aside {
-				float: left;
 				width: 20%;
-				border-right: 1px solid @general-line;
-				margin-top: 20px;
 
 				.sidebar-nav, .sidebar-options {
 
@@ -635,17 +638,27 @@ body {
 			}
 		}	
 
+		// PROJECTS
+
+		&.projects {
+
+			aside {
+				width: 16%;
+			}
+
+			h1 {
+				width: 80%;
+			}
+		}
+
 		// SETTINGS
 
 		&.settings {
 
 			aside {
-				float: left;
 				width: 14.5%;
-				border-right: 1px solid @general-line;
-				margin-top: 20px;
 
-				.sidebar-nav, .sidebar-options {
+				ul {
 
 					li {
 
@@ -670,7 +683,7 @@ body {
 				}
 			}
 			
-			section {;
+			section {
 				.clearfix;
 				margin: 0 0 0 17%;
 
