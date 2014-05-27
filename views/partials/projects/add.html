@@ -1,5 +1,60 @@
-<h1>Projects</h1>
+<h1>{{subTitle.substr(2)}}</h1>
+<form ng-submit="postProject()">
+	
+	<div class="form-main">
+		<label for="project-title">Title</label>
+		<input id="project-title" type="text" autofocus ng-model="newProject.title">
 
-<div class="under-construction">
-	<i class="fa fa-warning"></i> Add project
+		<label for="project-content">Content</label>
+		<textarea id="project-content" placeholder="Please use Markdown to create lists, headings, tables, etc." ng-model="newProject.body"></textarea>
+	</div>
+
+	<div class="form-sidebar">
+		
+		<div class="form-controls">
+			<button type="submit">Save</button>
+			<button type="reset">Clear</button>
+		</div>
+
+		<div class="form-users user-vcard">
+			<i class="fa fa-user avatar"></i>
+			<small class="user user-label">Author</small>
+			<span class="user user-name">{{user.name.first}} {{user.name.last}}</span>
+			<span class="user user-email">{{user.email}}</span>			
+		</div>
+
+		<label for="project-parent">Category</label>
+		<ul class="form-options project-categories">
+			<li ng-repeat="category in projectCategories.sort()">
+				<a ng-click="projectCategoryToggle($index)">
+					<i class="fa" ng-class="{'fa-check-circle': newProject.category.indexOf(category) != -1, 'fa-circle-o': newProject.category.indexOf(category) == -1}"></i> {{category}}
+				</a>
+			</li>	
+		</ul>
+
+		<label>Options</label>
+		<ul class="form-options">
+			<li><a ng-click="previewProject()"><i class="fa fa-file-o"></i> Preview project</a></li>
+			<li><a href="http://www.daringfireball.net/markdown" target="_blank"><i class="fa fa-code"></i> Markdown guide</a></li>
+			<li>&nbsp;</li>
+			<li><a href="/#/projects"><i class="fa fa-arrow-left"></i> Back to overview</a></li>
+		</ul>
+			
+	</div>
+</form>
+
+<div class="alert" ng-show="errorMessage">
+	{{errorMessage}}
+	<span class="close" ng-click="errorMessage = !errorMessage">&times;</span>
+</div>
+
+<div class="modal-wrapper" ng-show="previewBody">
+	<div class="modal-header">
+		<span class="modal-title">Preview project</span>
+		<span class="modal-close" ng-click="previewBody = !previewBody">&times;</span>
+	</div>
+	<div class="modal-body">
+		<h1>{{newProject.title}}</h1>
+		<div ng-bind-html="previewBody"></div>
+	</div>
 </div>
