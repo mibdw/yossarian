@@ -9,7 +9,7 @@
 		<textarea id="doc-content" placeholder="Please use Markdown to create lists, headings, tables, etc." ng-model="editDoc.body"></textarea>
 	</div>
 
-	<div class="form-sidebar">
+	<aside class="float-right">
 		
 		<div class="form-controls">
 			<button type="submit">Save</button>
@@ -49,7 +49,7 @@
 				<a ng-if="editDoc.parent != 'noParent'" href="/#/docs/{{editDoc.parent}}/{{editDoc.slug}}"><i class="fa fa-arrow-left"></i> Back to document</a>
 			</li>
 		</ul>
-	</div>
+	</aside>
 </form>
 
 

@@ -9,7 +9,7 @@
 		<textarea id="project-content" placeholder="Please use Markdown to create lists, headings, tables, etc." ng-model="newProject.body"></textarea>
 	</div>
 
-	<div class="form-sidebar">
+	<aside class="float-right">
 		
 		<div class="form-controls">
 			<button type="submit">Save</button>
@@ -24,7 +24,7 @@
 		</div>
 
 		<label for="project-parent">Category</label>
-		<ul class="form-options project-categories">
+		<ul class="form-options condensed">
 			<li ng-repeat="category in projectCategories.sort()">
 				<a ng-click="projectCategoryToggle($index)">
 					<i class="fa" ng-class="{'fa-check-circle': newProject.category.indexOf(category) != -1, 'fa-circle-o': newProject.category.indexOf(category) == -1}"></i> {{category}}
@@ -40,7 +40,7 @@
 			<li><a href="/#/projects"><i class="fa fa-arrow-left"></i> Back to overview</a></li>
 		</ul>
 			
-	</div>
+	</aside>
 </form>
 
 <div class="alert" ng-show="errorMessage">
