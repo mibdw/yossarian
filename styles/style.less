@@ -628,6 +628,48 @@ body {
 					margin-bottom: 2em;
 				}
 
+				.document-overview {
+					margin: -.8em 0 0 0;
+					padding: 0;
+					list-style-type: none;
+
+					.overview-option {
+						border-bottom: 1px dotted @general-line;
+						float: left;
+						margin-bottom: .6em;
+						padding-bottom: .6em;
+
+						.overview-title {
+							display: block;
+							border-width: 0;
+							line-height: .8em;
+						}
+
+						.overview-excerpt {
+							width: 75%;
+							float: left;
+							margin-bottom: .4em;
+						}
+
+						.overview-subdocs {
+							width: 20%;
+							float: right;
+							list-style-type: disc;
+
+							li {
+
+								a {
+									display: block;
+									white-space: nowrap;
+									overflow: hidden;
+									text-overflow: ellipsis;
+									border-width: 0;
+								}
+							}
+						}
+					}
+				}
+
 				small {
 					display: block;
 					text-align: right;

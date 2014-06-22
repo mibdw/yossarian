@@ -41,7 +41,7 @@ exports.editDoc =  function(req, res, next) {
 
 exports.docSubmenu =  function(req, res, next) { 
 
-	Doc.find('title slug parent', function (err, submenu) {
+	Doc.find('title slug parent body author editor dateCreated dateModified').populate('author editor', 'name email').exec(function (err, submenu) {
 		if (err) return handleError(err);
 
 		return res.send(submenu);
