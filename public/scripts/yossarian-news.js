@@ -20,7 +20,7 @@ ctrl.controller('yossarianArticleIndex', ['$scope', '$rootScope', '$http', '$win
 				for (i in $scope.articleList) {
 					$scope.articleList[i].dateCreatedFromNow = moment($scope.articleList[i].dateCreated, "YYYY-MM-DDTHH:mm:ssZ").fromNow();
 					$scope.articleList[i].dateCreatedPretty = moment($scope.articleList[i].dateCreated, "YYYY-MM-DDTHH:mm:ssZ").format('dddd, DD MMMM YYYY HH:mm:ss');
-					$scope.articleList[i].excerpt = $scope.articleList[i].body.substr(0, 300);
+					$scope.articleList[i].excerpt = $scope.articleList[i].body.substr(0, 400);
 					$scope.articleList[i].indexNo = i;
 
 					var commentsAmount = $scope.articleList[i].comments.length;

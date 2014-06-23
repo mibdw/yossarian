@@ -31,19 +31,22 @@
 
 
 	<ul ng-if="activeSubnav == 'overview'" class="document-overview">
-		<li ng-repeat="option in submenu | filter:{ parent: 'noParent'} | orderBy:'title'" class="overview-option">
-			<div class="overview-excerpt">
-				<h2><a href="/#/docs/{{option.slug}}" title="{{option.title}}" class="overview-title">{{option.title}}</a></h2>
-				{{option.excerpt}}
+		<li ng-repeat="option in submenu | orderBy:['-dateModified', '-dateCreated']" class="overview-option">
 
-				<small ng-show="option.author">Created <time datetime="{{option.dateCreated}}">{{option.dateCreatedFromNow}}</time> by {{option.author.name.first}} {{option.author.name.last}}</small>
-				<small ng-show="option.editor">Last edited <time datetime="{{option.dateModified}}">{{option.dateModifiedFromNow}}</time> by {{option.editor.name.first}} {{option.editor.name.last}}</small>
-			</div>	
-			<ul class="overview-subdocs">
-				<li ng-repeat="suboption in submenu | filter:{ parent: option.slug }">
-					<a href="/#/docs/{{option.slug}}/{{suboption.slug}}" title="{{suboption.title}}">{{suboption.title}}</a>
-				</li>		
-			</ul>
+			<a href="/#/docs/{{option.slug}}" title="{{option.title}}" class="overview-title">{{option.title}}</a>
+			
+			<span ng-show="option.editor" title="{{option.dateModified}}" class="overview-date">
+				<i class="fa fa-pencil" title="{{option.dateModified}"></i> {{option.dateModifiedFromNow}}
+			</span>
+			<span ng-show="option.editor" title="Last modified by {{option.editor.name.first}} {{option.editor.name.last}}" class="overview-author">
+				<i class="fa fa-user"></i> {{option.editor.name.first}} {{option.editor.name.last}}
+			</span>
+			<span ng-hide="option.editor" title="{{option.dateCreated}}" class="overview-date">
+				<i class="fa fa-pencil"></i> {{option.dateCreatedFromNow}}
+			</span>
+			<span ng-hide="option.editor" title="Created by {{option.author.name.first}} {{option.author.name.last}}" class="overview-author">
+				<i class="fa fa-user"></i> {{option.author.name.first}} {{option.author.name.last}}
+			</span>
 		</li>
 	</ul>
 </article>

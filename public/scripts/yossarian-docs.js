@@ -29,8 +29,10 @@ ctrl.controller('yossarianDocIndex', ['$scope', '$rootScope', '$sce', '$routePar
 
 			for (i in $scope.submenu) {
 				$scope.submenu[i].excerpt = $scope.submenu[i].body.substr(0, 300);
-				$scope.submenu[i].dateCreatedFromNow = moment($scope.submenu[i].dateCreated, "YYYY-MM-DDTHH:mm:ssZ").fromNow();
+				$scope.submenu[i].dateCreatedFromNow = moment($scope.submenu[i].dateCreated, "YYYY-MM-DDTHH:mm:ssZ").fromNow(true);
 				$scope.submenu[i].dateCreatedPretty = moment($scope.submenu[i].dateCreated, "YYYY-MM-DDTHH:mm:ssZ").format('dddd, DD MMMM YYYY HH:mm:ss');
+				$scope.submenu[i].dateModifiedFromNow = moment($scope.submenu[i].dateModified, "YYYY-MM-DDTHH:mm:ssZ").fromNow(true);
+				$scope.submenu[i].dateModifiedPretty = moment($scope.submenu[i].dateModified, "YYYY-MM-DDTHH:mm:ssZ").format('dddd, DD MMMM YYYY HH:mm:ss');
 			}
 		});
 	}
