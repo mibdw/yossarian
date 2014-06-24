@@ -399,7 +399,6 @@ body {
 					margin-left: 25%;
 
 					h2 { margin: .4em 0; }
-
 				}
 
 				small {
@@ -634,8 +633,9 @@ body {
 					list-style-type: none;
 
 					.overview-option {
-						padding: .6em 1.2em .6em .8em;
+						padding: 0 1.2em 0 .8em;
 						border-left: .4em solid @general-background;
+						line-height: 3.5em;
 
 						&:nth-child(odd) {
 							background-color: darken(@general-background, 3%);
@@ -646,11 +646,11 @@ body {
 							display: inline-block;
 							width: 70%;
 							border-width: 0;
-							font-size: 1em;
 							white-space: nowrap;
 							overflow-x: hidden;
 							text-overflow: ellipsis;
 							color: lighten(@general-text, 30%);
+							line-height: 1em;
 
 							&:hover {
 								color: @general-text;
@@ -659,19 +659,23 @@ body {
 
 						.overview-date, .overview-author {
 							display: inline-block;
-							width: 14%;
 							text-align: center;
 							color: lighten(@general-text, 50%);
-							font-size: .9em;
-							line-height: 2em;
 							white-space: nowrap;
-							overflow-x: hidden;
+							overflow: hidden;
 							text-overflow: ellipsis;
+							float: right;
+							margin: 0 0 0 .9em;
+							line-height: 1em;
+						}
 
+						.overview-author {
+							
 
-
-							i {
-								margin-right: .3em;
+							.avatar {
+								width: 1.8em;
+								height: 1.8em;
+								line-height: 1.8em;
 							}
 						}
 
@@ -910,7 +914,6 @@ body {
 				}
 			}
 		}
-		
 
 		.footer-credits {
 			float: right;

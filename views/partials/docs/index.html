@@ -34,18 +34,12 @@
 		<li ng-repeat="option in submenu | orderBy:['-dateModified', '-dateCreated']" class="overview-option">
 
 			<a href="/#/docs/{{option.slug}}" title="{{option.title}}" class="overview-title">{{option.title}}</a>
-			
-			<span ng-show="option.editor" title="{{option.dateModified}}" class="overview-date">
-				<i class="fa fa-pencil" title="{{option.dateModified}"></i> {{option.dateModifiedFromNow}}
+						
+			<span title="Created by {{option.author.name.first}} {{option.author.name.last}}" class="overview-author">
+				<i class="fa fa-user avatar"></i> 
 			</span>
-			<span ng-show="option.editor" title="Last modified by {{option.editor.name.first}} {{option.editor.name.last}}" class="overview-author">
-				<i class="fa fa-user"></i> {{option.editor.name.first}} {{option.editor.name.last}}
-			</span>
-			<span ng-hide="option.editor" title="{{option.dateCreated}}" class="overview-date">
+			<span title="{{option.dateCreated}}" class="overview-date">
 				<i class="fa fa-pencil"></i> {{option.dateCreatedFromNow}}
-			</span>
-			<span ng-hide="option.editor" title="Created by {{option.author.name.first}} {{option.author.name.last}}" class="overview-author">
-				<i class="fa fa-user"></i> {{option.author.name.first}} {{option.author.name.last}}
 			</span>
 		</li>
 	</ul>
