@@ -29,10 +29,20 @@ ctrl.controller('yossarianDocIndex', ['$scope', '$rootScope', '$sce', '$routePar
 
 			for (i in $scope.submenu) {
 				$scope.submenu[i].excerpt = $scope.submenu[i].body.substr(0, 300);
-				$scope.submenu[i].dateCreatedFromNow = moment($scope.submenu[i].dateCreated, "YYYY-MM-DDTHH:mm:ssZ").fromNow(true);
+				$scope.submenu[i].dateCreatedFromNow = moment($scope.submenu[i].dateCreated, "YYYY-MM-DDTHH:mm:ssZ").fromNow();
 				$scope.submenu[i].dateCreatedPretty = moment($scope.submenu[i].dateCreated, "YYYY-MM-DDTHH:mm:ssZ").format('dddd, DD MMMM YYYY HH:mm:ss');
-				$scope.submenu[i].dateModifiedFromNow = moment($scope.submenu[i].dateModified, "YYYY-MM-DDTHH:mm:ssZ").fromNow(true);
+				$scope.submenu[i].dateModifiedFromNow = moment($scope.submenu[i].dateModified, "YYYY-MM-DDTHH:mm:ssZ").fromNow();
 				$scope.submenu[i].dateModifiedPretty = moment($scope.submenu[i].dateModified, "YYYY-MM-DDTHH:mm:ssZ").format('dddd, DD MMMM YYYY HH:mm:ss');
+
+				$scope.submenu[i].children = 0;
+
+				if ($scope.submenu[i].parent == 'noParent') {
+					for (j in $scope.submenu) {
+						if ($scope.submenu[j].parent == $scope.submenu[i].slug) {
+							$scope.submenu[i].children = $scope.submenu[i].children + 1;
+						}
+					}
+				}
 			}
 		});
 	}

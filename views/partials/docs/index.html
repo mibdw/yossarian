@@ -33,13 +33,26 @@
 	<ul ng-if="activeSubnav == 'overview'" class="document-overview">
 		<li ng-repeat="option in submenu | orderBy:['-dateModified', '-dateCreated']" class="overview-option">
 
-			<a href="/#/docs/{{option.slug}}" title="{{option.title}}" class="overview-title">{{option.title}}</a>
-						
+			<a ng-if="option.parent != 'noParent'" href="/#/docs/{{option.parent}}/{{option.slug}}" title="{{option.title}}" class="overview-title">{{option.title}}</a>
+			<a ng-if="option.parent == 'noParent'" href="/#/docs/{{option.slug}}" title="{{option.title}}" class="overview-title">{{option.title}}</a>
+
 			<span title="Created by {{option.author.name.first}} {{option.author.name.last}}" class="overview-author">
 				<i class="fa fa-user avatar"></i> 
 			</span>
 			<span title="{{option.dateCreated}}" class="overview-date">
-				<i class="fa fa-pencil"></i> {{option.dateCreatedFromNow}}
+				{{option.dateCreatedFromNow}}
+			</span>
+						
+			<span ng-if="option.parent != 'noParent'" class="overview-family">
+				<a href="/#/docs/{{option.parent}}" title="Parent document">
+					<i class="fa fa-folder stack-bottom"></i>
+					<i class="fa fa-arrow-left stack-top"></i>
+				</a>
+			</span>
+
+			<span ng-if="option.parent == 'noParent' && option.children != 0" class="overview-family">
+				<i class="fa fa-folder stack-bottom"></i> 
+				<span class="stack-top">{{option.children}}</span>
 			</span>
 		</li>
 	</ul>

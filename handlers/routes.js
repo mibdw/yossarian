@@ -72,10 +72,10 @@ module.exports = function (app, res, req) {
 	// PROJECTS
 	var projects = require(__dirname + '/projects/index');
 	
-	app.get('/projects/list', ensureAuthenticated, projects.getProjectList);
 	app.get('/projects/detail/:projectSlug', ensureAuthenticated, projects.getProject);
 	app.get('/projects/edit/:projectSlug', ensureAuthenticated, projects.editProject);
 
+	app.post('/projects/list', ensureAuthenticated, projects.getProjectList);
 	app.post('/projects/delete', ensureAuthenticated, projects.deleteProject);
 	app.post('/projects/post', ensureAuthenticated, projects.postProject);
 	app.post('/projects/update', ensureAuthenticated, projects.updateProject);

@@ -133,6 +133,7 @@ body {
 
 				li {
 					display: inline-block;
+					position: relative;
 
 					a {
 						display: inline-block;
@@ -150,7 +151,6 @@ body {
 					}
 
 					&.active {
-						position: relative;
 
 						&:before {
 							content: "";
@@ -179,6 +179,7 @@ body {
 							border-style: solid;
 							border-color: transparent transparent @general-background transparent;
 							border-width: 0 10px 10px 10px;
+							z-index: 888;
 						}
 
 						a { 
@@ -643,14 +644,8 @@ body {
 						}
 
 						.overview-title {
-							display: inline-block;
-							width: 70%;
 							border-width: 0;
-							white-space: nowrap;
-							overflow-x: hidden;
-							text-overflow: ellipsis;
 							color: lighten(@general-text, 30%);
-							line-height: 1em;
 
 							&:hover {
 								color: @general-text;
@@ -666,16 +661,54 @@ body {
 							text-overflow: ellipsis;
 							float: right;
 							margin: 0 0 0 .9em;
-							line-height: 1em;
+						}
+
+						.overview-date {
+							width: 10%;
+							text-align: center;
 						}
 
 						.overview-author {
-							
 
 							.avatar {
 								width: 1.8em;
 								height: 1.8em;
 								line-height: 1.8em;
+							}
+						}
+
+						.overview-family {
+							float: right;
+							padding-top: .5em;
+							margin-bottom: -.5em;
+
+							.stack-bottom {
+								display: inline-block;
+								font-size: 2.2em;
+								width: 1em;
+								color: lighten(@general-text, 75%);
+								text-shadow: 1px 1px 0 lighten(@header-text, 70%), -1px 1px 0 lighten(@header-text, 70%), 1px -1px 0 lighten(@header-text, 70%), -1px -1px 0 lighten(@header-text, 70%);
+							}
+
+							.stack-top {
+								display: inline-block;
+								font-size: 1em;
+								width: 2.2em;
+								color: @general-background;
+								position: relative;
+								top: -.3em;
+								left: -2.5em;
+								margin-right: -2.2em;
+								text-align: center;
+								text-shadow: 1px 1px 0 lighten(@header-text, 70%), -1px 1px 0 lighten(@header-text, 70%), 1px -1px 0 lighten(@header-text, 70%), -1px -1px 0 lighten(@header-text, 70%);
+							}
+
+							a {
+								border-width: 0;
+
+								&:hover .stack-bottom {
+									color: lighten(@general-text, 70%);
+								}
 							}
 						}
 
@@ -695,10 +728,107 @@ body {
 
 			aside {
 				width: 16%;
+
+				.project-authors {
+					border-top: 1px solid @general-line;
+					border-bottom: 1px solid @general-line;
+					margin-bottom: .5em;
+					padding: .8em 0 .4em;
+				}
 			}
 
 			.projects-header {
 				width: 80%;
+			}
+
+			article {
+				float: left;
+				width: 80%; 
+				margin: 0 0 1em 0;
+				padding-bottom: .5em;
+
+				.clearfix;
+
+				.project-time {
+					float: left;
+					margin-top: .5em;
+					width: 23%;
+					overflow: hidden;
+					text-overflow: ellipsis;
+					white-space: nowrap;
+
+					color: lighten(@general-text, 50%);
+					font-style: italic;
+					font-size: .85em;
+				}
+
+				h2 {
+					margin: 0 0 .2em 25%;
+					font-size: 1.7em;
+					font-weight: normal;
+					line-height: 1.1em;
+				}
+
+				.project-excerpt {
+					margin-left: 25%;
+					color: lighten(@general-text, 25%);
+				}
+
+				.project-body {
+					margin-left: 25%;
+
+					h2 { margin: .4em 0; }
+				}
+
+				small {
+					margin: .5em 0 0 25%;
+					color: lighten(@general-text, 50%);
+					display: block;
+
+					time {
+						font-weight: bold;
+					}
+
+					.project-categories {
+						display: inline;
+						list-style-type: none;
+						padding: 0;
+
+						li {
+							display: inline;
+							font-style: italic;
+
+							&:after { 
+								content: ", ";
+								font-style: normal;
+							}
+
+							&:last-child:after { content: ". "; }
+						}
+					}
+				}
+
+				&.project-link {
+					border-bottom: 1px solid @general-background;
+					
+					h2:hover {
+						cursor: pointer;
+						color: @brand-color;
+					}
+
+					&:hover {
+						border-bottom-color: @general-line;
+
+						.project-time, .project-excerpt, small { color: @general-text; }
+					}
+
+					small {
+						border-top: 1px dotted @general-line;
+						padding-top: .2em;
+						margin-top: 1em;
+					}
+
+				}
 			}
 		}
 

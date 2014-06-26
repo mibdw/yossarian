@@ -7,7 +7,7 @@
 		<h3>Categories</h3>
 		<li ng-repeat="category in projectCategories.sort()">
 			<a ng-click="projectCategoryToggle($index)">
-				<i class="fa" ng-class="{'fa-check-circle': listCriteria.projectActiveCategories.indexOf(category) != -1, 'fa-circle-o': listCriteria.projectActiveCategories.indexOf(category) == -1}"></i> {{category}}
+				<i class="fa" ng-class="{'fa-check-circle': listCriteria.projectsActiveCategories.indexOf(category) != -1, 'fa-circle-o': listCriteria.projectsActiveCategories.indexOf(category) == -1}"></i> {{category}}
 			</a>
 		</li>	
 	</ul>
@@ -15,3 +15,19 @@
 </aside>
 
 <h1 class="projects-header">Projects</h1>
+
+<article ng-repeat="project in projectList | orderBy: '-dateCreated'" class="project-link">
+	<time class="project-time" datetime="{{project.dateCreated}}" >{{project.dateCreatedPretty}}</time>
+
+	<h2 ng-click="projectDetail(project.indexNo)">{{project.title}}</h2>
+	<div class="project-excerpt">{{project.excerpt}} ...</div>
+	<small class="project-footer">
+		Posted <time datetime="{{project.dateCreated}}">{{project.dateCreatedFromNow}}</time> by {{project.author.name.first}} {{project.author.name.last}}
+		in 
+		<ul class="project-categories">
+			<li ng-repeat="category in project.category.sort()">{{category}}</li>
+		</ul>
+
+		<span class="project-comments-amount">{{article.commentNo}}</span>
+	</small>
+</article>

@@ -1,5 +1,42 @@
-<h1>Projects</h1>
 
-<div class="under-construction">
-	<i class="fa fa-warning"></i> Project detail
-</div>
+<aside class="float-right">
+	<ul class="sidebar-options">
+		<li><a href="/#/projects/{{project.slug}}/edit"><i class="fa fa-pencil"></i> Edit project</a></li>
+		<li><a href="/#/projects"><i class="fa fa-arrow-left"></i> Back to projects</a>
+	</ul>
+
+	<div class="project-authors">
+		<div class="user-vcard">
+			<i class="fa fa-user avatar"></i>
+			<small class="user user-label">Created <time datetime="{{project.dateCreated}}">{{project.dateCreatedFromNow}}</time> by</small>
+			<span class="user user-name">{{project.author.name.first}} {{project.author.name.last}}</span>
+			<span class="user user-email">{{project.author.email}}</span>
+		</div>
+
+		<div ng-show="project.editor" class="user-vcard">
+			<i class="fa fa-user avatar"></i>
+			<small class="user user-label">Last modified <time datetime="{{project.dateModified}}">{{project.dateModifiedFromNow}}</time> by</small>
+			<span class="user user-name">{{project.editor.name.first}} {{project.editor.name.last}}</span>
+			<span class="user user-email">{{project.editor.email}}</span>
+		</div>
+	</div>
+
+	<ul class="sidebar-options project-categories">
+		<h3 ng-if="project.category.length >= 2">Categories</h3>
+		<h3 ng-if="project.category.length <= 1">Category</h3>
+		<li ng-repeat="category in project.category.sort()">
+			<a>
+				<i class="fa fa-tag"></i> {{category}}
+			</a>
+		</li>	
+	</ul>
+</aside>
+
+<h1 class="projects-header">Project</h1>	
+
+<article class="project-detail">
+	<time class="project-time" datetime="{{project.dateCreated}}" >{{project.dateCreatedPretty}}</time>
+
+	<h2>{{project.title}}</h2>
+	<div ng-bind-html="project.description" class="project-body">{{project.body}}</div>
+</article>
