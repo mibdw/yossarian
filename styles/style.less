@@ -303,8 +303,10 @@ body {
 		// NEWS
 
 		&.news {
+			padding-top: 25px;
 
 			aside {
+				margin-top: 0;
 				width: 16%;
 
 				.article-categories li a, .article-archive li a {
@@ -828,6 +830,41 @@ body {
 						margin-top: 1em;
 					}
 
+				}
+			}
+		}
+
+		&.calendar {
+
+			h1 {
+				width: 70%;
+				border-bottom-width: 0;
+			}
+
+			.calendar-view {
+				float: left;
+				width: 70%;
+
+				.fc-header { display: none; }
+
+				.fc-content {
+
+					table {
+						border: 1px solid @general-line;
+
+						tbody {
+
+							td {
+								vertical-align: top;
+
+								.fc-day-number { text-align: right; }
+							}
+
+							tr:nth-child(odd) td { background-color: @general-background; }
+						}
+					}
+					
+					
 				}
 			}
 		}

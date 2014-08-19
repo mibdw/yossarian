@@ -1,5 +1,3 @@
-<script src="/scripts/yossarian-news.js"></script>
-
 <aside class="float-right">
 	<ul class="sidebar-options">
 		<li><a href="/#/news/add"><i class="fa fa-plus-circle"></i> New article</a></li>
@@ -25,8 +23,6 @@
 	</ul>
 
 </aside>
-
-<h1 class="articles-header">News</h1>
 
 <article ng-repeat="article in articleList | orderBy: '-dateCreated'" class="article-link">
 	<time class="article-time" datetime="{{article.dateCreated}}" >{{article.dateCreatedPretty}}</time>

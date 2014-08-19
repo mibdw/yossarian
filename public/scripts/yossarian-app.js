@@ -1,4 +1,4 @@
-var app = angular.module('yossarianApp', ['ngRoute', 'ngAnimate', 'yossarianControllers', 'yossarianArticles', 'yossarianDocs', 'yossarianCalendar', 'yossarianProjects', 'yossarianSettings']);
+var app = angular.module('yossarianApp', ['ngRoute', 'yossarianControllers', 'yossarianArticles', 'yossarianDocs', 'yossarianCalendar', 'yossarianProjects', 'yossarianSettings']);
 
 app.config(['$routeProvider',
 	function($routeProvider) {
@@ -50,6 +50,10 @@ app.config(['$routeProvider',
 				controller: 'yossarianDocEdit' 
 			}) // =========================================== >>> CALENDAR
 			.when('/calendar', {
+				templateUrl: '/partials/calendar/index', 
+				controller: 'yossarianCalendarEvents'  
+			}) 
+			.when('/calendar/:year/:month', {
 				templateUrl: '/partials/calendar/index', 
 				controller: 'yossarianCalendarEvents'  
 			}) // =========================================== >>> PROJECTS

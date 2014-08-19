@@ -14,8 +14,6 @@
 
 </aside>
 
-<h1 class="projects-header">Projects</h1>
-
 <article ng-repeat="project in projectList | orderBy: '-dateCreated'" class="project-link">
 	<time class="project-time" datetime="{{project.dateCreated}}" >{{project.dateCreatedPretty}}</time>
 
