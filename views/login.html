@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+</head>
+<body>
+
+	<% if (message) { %>
+		<p><%= message %></p>
+	<% } %>
+
+	<form action="/login" method="post">
+
+		<input type="text" name="username" placeholder="Username"><br>
+		<input type="password" name="password" placeholder="Password"><br>
+
+		<button>Submit</button>
+
+	</form>
+	
+</body>
+</html>

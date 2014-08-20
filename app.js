@@ -1,24 +1,21 @@
 var express = require('express');
 var less = require('less-middleware');
-var passport = require('passport');
-var LocalStrategy = require('passport-local').Strategy;
-var mongodb = require('mongodb');
-var mongoose = require('mongoose');
 var moment = require('moment');
 
-var dateFormat = "ddd MM-DD-YYYY HH:mm:ss";
+var mongodb = require('mongodb');
+var mongoose = require('mongoose');
+
+var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
 var User = require(__dirname + '/models/user');
   
-mongoose.connect('mongodb://dagobert:g3ldm03tr0llen@localhost:23383/poen');
+mongoose.connect('mongodb://localhost/yossarian');
 mongoose.connection.on('error', console.error.bind(console, 'Connection error:'));
 mongoose.connection.once('open', function callback() {
-	console.log(moment().format(dateFormat) + ' - De database werkt. Wat een geluk');
+	console.log(moment().format('YYYY-MM-DD HH:mm:ss') + ' - Database connection established');
 });
 
-passport.serializeUser(function(user, done) {
-	done(null, user.id);
-});
-
+passport.serializeUser(function(user, done) { done(null, user.id); });
 passport.deserializeUser(function(id, done) {
 	User.findById(id, function (err, user) {
 		done(err, user);
@@ -50,13 +47,9 @@ app.use(less(__dirname + '/', {
 	dest: __dirname + '/public'
 }));
 
-
 app.use(express.json());
-
 app.use(express.cookieParser());
-app.use(express.bodyParser());
-app.use(express.methodOverride());
-app.use(express.session({ secret: 'Dagobert Duck' }));
+app.use(express.session({ secret: 'Where are the Snowdens of yesteryear?' }));
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -66,8 +59,8 @@ app.use(express.static(__dirname + '/public'));
 
 var routes = require(__dirname + '/handlers/routes')(app);
 
-app.listen(11074, function() {
-	console.log('\n\nPOEN POEN POEN\n\n' + moment().format(dateFormat) + ' - Geld moet rollen');
+app.listen(999, function() {
+	console.log('\n\nYossarian\n\n' + moment().format('YYYY-MM-DD HH:mm:ss') + ' - Where are the Snowdens of yesteryear?\n' + moment().format('YYYY-MM-DD HH:mm:ss') + ' - Application launched at http://localhost:999');
 });
 
 /* SEED A USER 
@@ -76,6 +69,7 @@ user.save(function(err) {
 	if(err) {
 		console.log(err);
 	} else {
-		console.log(moment().format(dateFormat) + ' - New user seeded: ' + user.username + ".");
+		console.log(moment().format('YYYY-MM-DD HH:mm:ss') + ' - New user seeded: ' + user.username + ".");
 	}
-}); */
+});
+*/

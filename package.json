@@ -12,6 +12,7 @@
 		"ejs": ">= 0.0.0",
 		"express": "3.x.x",
 		"less-middleware": ">= 0.0.0",
+   		"marked": "0.3.x",
 		"moment": ">= 0.0.0",
 		"mongodb": ">= 0.0.0",
 		"mongoose": ">= 0.0.0",
