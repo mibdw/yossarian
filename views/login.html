@@ -2,7 +2,10 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title></title>
+	<title>Yossarian</title>
+
+	<link rel="stylesheet" href="/styles/main.css">
+
 </head>
 <body>
 
@@ -10,12 +13,11 @@
 		<p><%= message %></p>
 	<% } %>
 
-	<form action="/login" method="post">
+	<form action="/login" method="post" class="login">
 
-		<input type="text" name="username" placeholder="Username"><br>
-		<input type="password" name="password" placeholder="Password"><br>
-
-		<button>Submit</button>
+		<input type="email" name="username" placeholder="E-mail" autofocus>
+		<input type="password" name="password" placeholder="Password">
+		<button>Login</button>
 
 	</form>
 	

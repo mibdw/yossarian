@@ -1,0 +1,95 @@
+.login {
+	width: 200px;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin-left: -100px;
+	margin-top: -50px;
+
+	input {
+		width: 100%;
+	}
+
+	button {
+		float: right;
+	}
+}
+
+.under-construction {
+	text-align: center;
+	margin: 6em 0;
+	color: @vague;
+	font-size: 2em;
+	font-weight: bold;
+}
+
+header {
+	line-height: 2em;
+	padding-bottom: .5em;
+	border-bottom: 1px solid @line;
+	margin-bottom: 1em;	
+
+	.masthead {
+		font-weight: bold;
+		color: @text;
+	}
+
+	.nav  {
+		list-style-type: none;
+		float: right;
+		margin: 0;
+		padding: 0;
+
+		li {
+			display: inline;
+			margin-left: .85em;
+
+			&.active a  {
+				color: @text;
+				text-decoration: underline;
+			}
+		}
+	}
+}
+
+footer {
+	line-height: 2em;
+	border-top: 1px solid @line;
+	margin-top: 2em;
+
+	.nav  {
+		list-style-type: none;
+		display: inline-block;
+		margin: 0;
+		padding: 0;
+
+		li {
+			display: inline;
+			margin-right: .5em;
+
+			a {
+				color: @vague;
+
+				&:hover {
+					color: @text;
+					text-decoration: none;
+				}
+			}
+
+			&.active a {
+				text-decoration: underline;
+			}
+		}
+	}
+
+	.credits {
+		float: right;
+		color: @vague;
+		font-style: italic;
+
+		&:hover { 
+			color: @text;
+			text-decoration: none; 
+		}
+	}
+}

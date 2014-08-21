@@ -7,8 +7,6 @@ module.exports = function (app, res, req) {
 	app.get('/', ensureAuthenticated, function(req, res){
 		res.render('main.html');
 	});
-
-	// AUTHENTICATION
 	
 	app.get('/login', function(req, res){
 		res.render('login.html', { user: req.user, message: req.session.messages });
@@ -23,19 +21,74 @@ module.exports = function (app, res, req) {
 			}
 			req.logIn(user, function(err) {
 				if (err) { return next(err); }
-				req.session.messages = "";
-				console.log(moment().format(dateFormat) + ' - Succesvolle login door ' + user.username );
+				req.session.messages = "";	
+				console.log(moment().format('YYYY-MM-DD HH:mm:ss') + ' - Succesfull login by ' + user.username );
 				return res.redirect('/');
 			});
 		})(req, res, next);
 	});
 
 	app.get('/logout', ensureAuthenticated, function(req, res){
-	console.log(moment().format(dateFormat) + ' - Succesvolle logout door ' + req.user.username );
-	req.logout();
-	res.redirect('/');
+		console.log(moment().format('YYYY-MM-DD HH:mm:ss') + ' - Succesfull logout by ' + req.user.username );
+		req.logout();
+		res.redirect('/');
 	});
 
+	app.get('/partials/:section/:partial', function(req, res) {
+		res.render("partials/" + req.params.section + "/" + req.params.partial + ".html");
+	});
+
+	var users = require(__dirname + '/users.js');
+	app.post('/users/create', ensureAuthenticated, users.create);
+	app.post('/users/remove', ensureAuthenticated, users.remove);
+	app.post('/users/update', ensureAuthenticated, users.update);
+	app.post('/users/detail', ensureAuthenticated, users.detail);
+	app.post('/users/list', ensureAuthenticated, users.list);
+
+	var categories = require(__dirname + '/categories.js');
+	app.post('/categories/create', ensureAuthenticated, categories.create);
+	app.post('/categories/remove', ensureAuthenticated, categories.remove);
+	app.post('/categories/update', ensureAuthenticated, categories.update);
+	app.post('/categories/detail', ensureAuthenticated, categories.detail);
+	app.post('/categories/list', ensureAuthenticated, categories.list);
+
+	var news = require(__dirname + '/news.js');
+	app.post('/news/create', ensureAuthenticated, news.create);
+	app.post('/news/remove', ensureAuthenticated, news.remove);
+	app.post('/news/update', ensureAuthenticated, news.update);
+	app.post('/news/detail', ensureAuthenticated, news.detail);
+	app.post('/news/list', ensureAuthenticated, news.list);
+
+	var docs = require(__dirname + '/docs.js');
+	app.post('/docs/create', ensureAuthenticated, docs.create);
+	app.post('/docs/remove', ensureAuthenticated, docs.remove);
+	app.post('/docs/update', ensureAuthenticated, docs.update);
+	app.post('/docs/detail', ensureAuthenticated, docs.detail);
+	app.post('/docs/list', ensureAuthenticated, docs.list);
+
+	var calendar = require(__dirname + '/calendar.js');
+	app.post('/calendar/create', ensureAuthenticated, calendar.create);
+	app.post('/calendar/remove', ensureAuthenticated, calendar.remove);
+	app.post('/calendar/update', ensureAuthenticated, calendar.update);
+	app.post('/calendar/detail', ensureAuthenticated, calendar.detail);
+	app.post('/calendar/list', ensureAuthenticated, calendar.list);
+
+	var projects = require(__dirname + '/projects.js');
+	app.post('/projects/create', ensureAuthenticated, projects.create);
+	app.post('/projects/remove', ensureAuthenticated, projects.remove);
+	app.post('/projects/update', ensureAuthenticated, projects.update);
+	app.post('/projects/detail', ensureAuthenticated, projects.detail);
+	app.post('/projects/list', ensureAuthenticated, projects.list);
+
+	var relations = require(__dirname + '/relations.js');
+	app.post('/relations/create', ensureAuthenticated, relations.create);
+	app.post('/relations/remove', ensureAuthenticated, relations.remove);
+	app.post('/relations/update', ensureAuthenticated, relations.update);
+	app.post('/relations/detail', ensureAuthenticated, relations.detail);
+	app.post('/relations/list', ensureAuthenticated, relations.list);
+
+	var settings = require(__dirname + '/settings.js');
+	app.post('/settings/update', ensureAuthenticated, relations.update);
 };
 
 

@@ -1,12 +1,51 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="yossarian" ng-controller="global">
 <head>
 	<meta charset="UTF-8">
-	<title></title>
+	<title ng-bind-template="{{moniker}}">Yossarian</title>
+
+	<link rel="stylesheet" href="/styles/main.css">
 </head>
 <body>
 
-	Main
-	
+	<header>
+		<a href="/" class="masthead" ng-bind-template="{{masthead}}">Yossarian</a>
+			
+		<ul class="nav">
+			<li ng-repeat="option in menu" ng-class="{active: option.slug == slug}">
+				<a href="/#/{{option.slug}}">{{option.name}}</a>
+			</li>
+			<li><a href="/logout">Logout</a></li>
+		</ul>
+	</header>
+
+	<div id="main" role="main" ng-view></div>
+
+	<footer>
+		<ul class="nav">
+			<li ng-repeat="option in menu" ng-class="{active: option.slug == slug}">
+				<a href="/#/{{option.slug}}">{{option.name}}</a>
+			</li>
+		</ul>
+
+		<a href="http://meedoenisbelangrijkerdanwinnen.nl" class="credits">Where are the Snowdens of yesteryear?</a>
+	</footer>
+
+	<script src="/scripts/libs/jquery-1.11.1.min.js"></script>
+	<script src="/scripts/libs/jquery-ui-1.11.1.custom.min.js"></script>
+	<script src="/scripts/libs/moment-with-locales.min.js"></script>
+	<script src="/scripts/libs/fullcalendar.min.js"></script>
+	<script src="/scripts/libs/angular.min.js"></script>
+	<script src="/scripts/libs/angular-route.min.js"></script>
+
+	<script src="/scripts/global.js"></script>
+	<script src="/scripts/dashboard.js"></script>
+	<script src="/scripts/news.js"></script>
+	<script src="/scripts/docs.js"></script>
+	<script src="/scripts/calendar.js"></script>
+	<script src="/scripts/projects.js"></script>
+	<script src="/scripts/relations.js"></script>
+	<script src="/scripts/settings.js"></script>
+
 </body>
 </html>
