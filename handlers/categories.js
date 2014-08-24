@@ -4,7 +4,7 @@ var moment = require('moment');
 var Category = require(__dirname + '/../models/category.js');
 
 exports.create = function(req, res, next) {
-
+	
 };
 
 exports.remove = function(req, res, next) {

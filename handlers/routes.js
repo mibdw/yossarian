@@ -22,14 +22,14 @@ module.exports = function (app, res, req) {
 			req.logIn(user, function(err) {
 				if (err) { return next(err); }
 				req.session.messages = "";	
-				console.log(moment().format('YYYY-MM-DD HH:mm:ss') + ' - Succesfull login by ' + user.username );
+				console.log(moment().format('YYYY-MM-DD HH:mm:ss') + ' - Succesfull login by ' + user.email );
 				return res.redirect('/');
 			});
 		})(req, res, next);
 	});
 
 	app.get('/logout', ensureAuthenticated, function(req, res){
-		console.log(moment().format('YYYY-MM-DD HH:mm:ss') + ' - Succesfull logout by ' + req.user.username );
+		console.log(moment().format('YYYY-MM-DD HH:mm:ss') + ' - Succesfull logout by ' + req.user.email );
 		req.logout();
 		res.redirect('/');
 	});
@@ -52,12 +52,12 @@ module.exports = function (app, res, req) {
 	app.post('/categories/detail', ensureAuthenticated, categories.detail);
 	app.post('/categories/list', ensureAuthenticated, categories.list);
 
-	var news = require(__dirname + '/news.js');
-	app.post('/news/create', ensureAuthenticated, news.create);
-	app.post('/news/remove', ensureAuthenticated, news.remove);
-	app.post('/news/update', ensureAuthenticated, news.update);
-	app.post('/news/detail', ensureAuthenticated, news.detail);
-	app.post('/news/list', ensureAuthenticated, news.list);
+	var memo = require(__dirname + '/memo.js');
+	app.post('/memo/create', ensureAuthenticated, memo.create);
+	app.post('/memo/remove', ensureAuthenticated, memo.remove);
+	app.post('/memo/update', ensureAuthenticated, memo.update);
+	app.post('/memo/detail', ensureAuthenticated, memo.detail);
+	app.post('/memo/list', ensureAuthenticated, memo.list);
 
 	var docs = require(__dirname + '/docs.js');
 	app.post('/docs/create', ensureAuthenticated, docs.create);

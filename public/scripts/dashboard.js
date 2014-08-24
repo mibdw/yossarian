@@ -1,6 +1,6 @@
 var ctrl = angular.module('dashboard', []);
 
-ctrl.controller('dashboardMain', ['$scope', '$rootScope', '$routeParams', '$http', '$filter',
+ctrl.controller('dashboardController', ['$scope', '$rootScope', '$routeParams', '$http', '$filter',
 	function ($scope, $rootScope, $routeParams, $http, $filter) {	
 		$rootScope.slug = 'dashboard';
 		$rootScope.heading = 'Dashboard';

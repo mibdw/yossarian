@@ -1,6 +1,6 @@
 var ctrl = angular.module('relations', []);
 
-ctrl.controller('relationsMain', ['$scope', '$rootScope', '$routeParams', '$http', '$filter',
+ctrl.controller('relationsController', ['$scope', '$rootScope', '$routeParams', '$http', '$filter',
 	function ($scope, $rootScope, $routeParams, $http, $filter) {	
 		$rootScope.slug = 'relations';
 		$rootScope.heading = 'Relations'; 

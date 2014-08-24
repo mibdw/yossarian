@@ -5,10 +5,12 @@
 	<title ng-bind-template="{{moniker}}">Yossarian</title>
 
 	<link rel="stylesheet" href="/styles/main.css">
+	<link rel="icon" type="image/gif" href="/c130-hercules.gif">
 </head>
 <body>
 
 	<header>
+		
 		<a href="/" class="masthead" ng-bind-template="{{masthead}}">Yossarian</a>
 			
 		<ul class="nav">
@@ -19,7 +21,7 @@
 		</ul>
 	</header>
 
-	<div id="main" role="main" ng-view></div>
+	<div id="main" role="main" ng-class="slug" ng-view></div>
 
 	<footer>
 		<ul class="nav">
@@ -40,7 +42,6 @@
 
 	<script src="/scripts/global.js"></script>
 	<script src="/scripts/dashboard.js"></script>
-	<script src="/scripts/news.js"></script>
 	<script src="/scripts/docs.js"></script>
 	<script src="/scripts/calendar.js"></script>
 	<script src="/scripts/projects.js"></script>

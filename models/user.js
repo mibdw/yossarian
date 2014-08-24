@@ -10,7 +10,11 @@ var userSchema = mongoose.Schema({
 		last: { type: String, required: true},
 	},
 	role: { type: String, required: true, default: 'user' },
-	phone: Number
+	avatar: String,
+	birthday: Date,
+	department: String,
+	note: String,
+	active: { type: String, default: true },
 });
 
 userSchema.pre('save', function(next) {

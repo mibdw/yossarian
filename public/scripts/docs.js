@@ -1,6 +1,6 @@
 var ctrl = angular.module('docs', []);
 
-ctrl.controller('docsMain', ['$scope', '$rootScope', '$routeParams', '$http', '$filter',
+ctrl.controller('docsController', ['$scope', '$rootScope', '$routeParams', '$http', '$filter',
 	function ($scope, $rootScope, $routeParams, $http, $filter) {	
 		$rootScope.slug = 'docs';
 		$rootScope.heading = 'Documents'; 

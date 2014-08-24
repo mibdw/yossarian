@@ -1,3 +1,7 @@
+body {
+	padding: 0 .5em; 
+}
+
 .login {
 	width: 200px;
 	position: absolute;
@@ -25,13 +29,18 @@
 
 header {
 	line-height: 2em;
-	padding-bottom: .5em;
 	border-bottom: 1px solid @line;
-	margin-bottom: 1em;	
+	margin-bottom: 1.5em;
+	padding-bottom: .4em;	
 
 	.masthead {
 		font-weight: bold;
 		color: @text;
+
+		span {
+			position: relative;
+			top: -.3em;
+		}
 	}
 
 	.nav  {
@@ -48,6 +57,130 @@ header {
 				color: @text;
 				text-decoration: underline;
 			}
+		}
+	}
+}
+
+#main { 
+	.clearfix;
+
+	section {
+		float: left;
+		padding: 0 1.5em;
+		border-width: 0 1px 0 0;
+		border-style: solid;
+		border-color: @line;
+		.box-sizing (border-box);
+
+		&:first-child {
+			padding-left: 0;
+		}
+
+		&:last-child {
+			padding-right: 0;
+			border-right-width: 0;
+		}
+	}
+
+	.content {
+		padding: 0 1.5em;
+		.box-sizing (border-box);
+
+		&.left {
+			float: left;
+			padding-left: 0;
+		}
+
+		&.right {
+			float: right;
+			border-left-width: 1px;
+			padding-right: 0;
+		}
+	}
+}
+
+aside {
+	padding: 0 1.5em 2em;
+	border-color: @line;
+	border-style: solid;
+	border-width: 0;	
+	.box-sizing (border-box);
+
+	ul {
+		list-style-type: none;
+		margin: 0;
+		padding: 0 0 1em;
+
+		h4 {
+			font-size: 1em;
+			font-weight: bold;
+			text-decoration: underline;
+			margin: 0 0 .3em;
+		}
+
+		li {
+			.text-truncate;
+
+			&.active {
+				border: 1px solid @line;
+				line-height: 1.7em;
+				font-weight: bold;
+				background-color: @back;
+				margin: .3em 0;
+
+				a { color: @text; }
+
+				.submenu {
+					line-height: 1.2em;
+					padding-bottom: .5em;
+					font-weight: normal;
+
+					li {
+
+						a { color: @link; }
+
+						&.active {
+							border-width: 0;
+							line-height: 1.2em;
+							background-color: transparent;
+							margin: 0;
+							padding: 0;
+						}
+					}
+				}
+			}
+		}
+
+		label { cursor: pointer; }
+	}
+
+	&.left {
+		float: left;
+		border-right-width: 1px;
+		margin-left: 0;
+		padding-left: 0;
+
+		ul li.active {
+			margin-right: -1.55em;
+			padding-right: 1.55em;
+			padding-left: .8em;
+			border-right-color: @back;
+
+			a:hover { text-decoration: none; }
+		}
+	}
+
+	&.right {
+		float: right;
+		border-left-width: 1px;
+		padding-right: 0;
+
+		ul li.active {
+			margin-left: -1.55em;
+			padding-left: 1.55em;
+			border-left-color: @back;
+
+			a:hover { text-decoration: none; }
 		}
 	}
 }

@@ -1,1 +1,7 @@
-<div class="under-construction"><em>{{heading}}</em> &mdash; Under construction</div>
+<aside class="left">
+	<ul class="menu">
+		<li ng-repeat="setting in settings" ng-class="{active: currentSetting == setting.slug}"><a href="/#/settings/{{setting.slug}}">{{setting.name}}</a></li>
+	</ul>
+</aside>
+
+<div class="content right" ng-include="currentURL"></div>

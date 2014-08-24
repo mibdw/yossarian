@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 var moment = require('moment');
 
-var Article = require(__dirname + '/../models/article.js');
+var Memo = require(__dirname + '/../models/memo.js');
 
 exports.create = function(req, res, next) {
 
