@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var moment = require('moment');
+var marked = require('marked');
 
 var Document = require(__dirname + '/../models/document.js');
 
@@ -19,6 +20,6 @@ exports.detail = function(req, res, next) {
 
 };
 
-exports.list = function(req, res, next) {
+exports.menu = function(req, res, next) {
 
 };

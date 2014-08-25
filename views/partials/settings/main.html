@@ -1,7 +1,7 @@
-<aside class="left">
+<aside class="left" style="width: 15%">
 	<ul class="menu">
 		<li ng-repeat="setting in settings" ng-class="{active: currentSetting == setting.slug}"><a href="/#/settings/{{setting.slug}}">{{setting.name}}</a></li>
 	</ul>
 </aside>
 
-<div class="content right" ng-include="currentURL"></div>
+<div class="content right" style="width: 85%" ng-include="currentURL"></div>

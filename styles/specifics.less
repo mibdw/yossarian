@@ -2,18 +2,35 @@
 	
 	&.docs {
 		
-		aside { width: 20%; }
-		.content { width: 80%; }
 	}
 
 	&.settings {
-		
-		aside { width: 15%; }
-		.content { width: 85%; }
 
-		.new-category {
-			.color { width: 4em; }
-			.name { width: 60%; }
+		.category-list {
+			list-style-type: none;
+			margin: 0;
+			padding: 0;
+			.clearfix();
+
+			li { 
+
+				div { .clearfix(); }				
+				a { display: none; }
+				&:hover a { display: inline; }
+
+				input[type='text'] { width: 50%; }
+				select { width: 40%; margin-bottom: 10px; }
+			}
+		}
+
+		.category-create {
+			input[type='text'] { width: 60%; }
+		}
+
+		.user-form {
+			input, select, textarea {
+				width: 100%;
+			}
 		}
 	}
 }

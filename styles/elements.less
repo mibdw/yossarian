@@ -22,7 +22,13 @@ a {
 	&:hover { text-decoration: underline; }
 }
 
-input[type='text'], input[type='password'], input[type='email'] {
+.input-placeholder (@vague);
+
+label {
+	.box-sizing (border-box);
+}
+
+input[type='text'], input[type='password'], input[type='email'], input[type='date'] {
 	border: 1px solid @line;
 	padding: .4em .5em;
 	font-size: 1em;
@@ -34,8 +40,40 @@ input[type='text'], input[type='password'], input[type='email'] {
 	}
 }
 
+input[type='color'] {
+	border: 1px solid @line;
+	width: 4em;
+	height: 34px;
+	padding: 0;
+	margin: 0 5px 3px 0;
+	float: left;
+	.box-sizing (border-box);
+}
+
 input[type='checkbox'], input[type='radio'] {
 	margin: 0;
+}
+
+select {
+	border: 1px solid @line;
+	padding: .4em .5em;
+	font-size: 1em;
+	margin-bottom: 3px;
+	.box-sizing (border-box);
+
+	&:focus {
+		border-color: @text;
+	}
+}
+
+textarea {
+	border: 1px solid @line;
+	padding: .4em .5em;
+	font-size: 1em;
+	font-family: sans-serif;
+	margin-bottom: 3px;
+	.box-sizing (border-box);
+
 }
 
 button {

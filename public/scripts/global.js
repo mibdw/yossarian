@@ -73,8 +73,10 @@ app.controller('global', ['$scope', '$rootScope', '$http',
 			{ slug: 'settings', name: 'Settings' }
 		];
 
-		$(document).on('focusin', '.color', function () {
-			alert('CONGO')
+		$rootScope.categoryList = []
+		
+		$http.post('/categories/list').success( function (categoryData) {
+			$rootScope.categoryList = categoryData;
 		});
 	}
 ]);

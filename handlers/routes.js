@@ -49,7 +49,6 @@ module.exports = function (app, res, req) {
 	app.post('/categories/create', ensureAuthenticated, categories.create);
 	app.post('/categories/remove', ensureAuthenticated, categories.remove);
 	app.post('/categories/update', ensureAuthenticated, categories.update);
-	app.post('/categories/detail', ensureAuthenticated, categories.detail);
 	app.post('/categories/list', ensureAuthenticated, categories.list);
 
 	var memo = require(__dirname + '/memo.js');

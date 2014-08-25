@@ -29,3 +29,10 @@
 	text-overflow: ellipsis;
 	white-space: nowrap;
 }
+
+.input-placeholder(@text-color) {
+	::-webkit-input-placeholder { color: @text-color; }
+	:-moz-placeholder { color: @text-color;  }
+	::-moz-placeholder { color: @text-color;  }
+	:-ms-input-placeholder { color: @text-color; }
+}

@@ -1,1 +1,48 @@
-Users
+<section style="width: 50%">
+	<h2>User list</h2>
+
+</section>
+
+<section style="width: 50%" class="user-form">
+	<div ng-if="!editUser">
+		<h2>Create user</h2>
+
+		<input type="email" placeholder="E-mail" ng-model="newUser.email" class="email">
+		<input type="password" placeholder="Password" ng-model="newUser.password" class="password">
+		<input type="text" placeholder="First name" ng-model="newUser.name.first" class="first-name">
+		<input type="text" placeholder="Last name" ng-model="newUser.name.last" class="last-name">
+		
+		<select ng-model="newUser.role" class="role">
+			<option value="admin">Administrator</option>
+			<option value="editor">Editor</option>
+			<option value="author">Author</option>
+			<option value="editor">Editor</option>
+			<option value="user">User</option>
+		</select>
+
+		<input type="date" placeholder="Birthday" ng-model="newUser.birthday" class="birthday">
+
+		<select ng-model="newUser.department" class="department">
+			<option value="management">Management</option>
+			<option value="sales">Sales</option>
+			<option value="customer-service">Customer service</option>
+			<option value="orders">Orders</option>
+			<option value="accounts">Accounts</option>
+			<option value="journals">Journals</option>
+			<option value="it">IT</option>
+			<option value="approval-plans-nts">Approval plans / NTS</option>
+			<option value="shipping-receiving">Shipping / receiving</option>
+		</select>
+
+		<textarea rows="10" placeholder="Note" ng-model="newUser.note"></textarea>
+
+		<label><input type="checkbox" ng-model="newUser.active"> Active</label>
+
+		<button ng-click="createUser()">Create</button>
+
+	</div>
+	<div ng-if="editUser">
+		<h2>Update user</h2>
+	</div>
+	
+</section>
