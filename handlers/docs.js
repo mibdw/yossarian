@@ -20,6 +20,6 @@ exports.detail = function(req, res, next) {
 
 };
 
-exports.menu = function(req, res, next) {
+exports.list = function(req, res, next) {
 
 };

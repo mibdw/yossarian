@@ -85,9 +85,6 @@ module.exports = function (app, res, req) {
 	app.post('/relations/update', ensureAuthenticated, relations.update);
 	app.post('/relations/detail', ensureAuthenticated, relations.detail);
 	app.post('/relations/list', ensureAuthenticated, relations.list);
-
-	var settings = require(__dirname + '/settings.js');
-	app.post('/settings/update', ensureAuthenticated, relations.update);
 };
 
 
