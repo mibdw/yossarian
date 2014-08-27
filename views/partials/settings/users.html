@@ -1,5 +1,5 @@
 <section style="width: 60%" class="user-form">
-	<form name="createUserForm" ng-submit="createUser()" ng-if="!editUser">
+	<form name="createUserForm" ng-submit="createUser()" ng-show="userView == 'create'">
 		<h2>Create user</h2>
 
 		<label for="new-email">E-mail</label>
@@ -47,17 +47,17 @@
 		<label class="wrapper"><input type="checkbox" ng-model="newUser.active" id="new-active"> Active user</label>
 
 		<button type="submit">Create</button>
-
 	</form>
-	<form name="editUserForm" ng-submit="updateUser()" ng-if="editUser">
+	<form name="editUserForm" ng-submit="updateUser()" ng-show="userView == 'update'">
 		<h2>Update user</h2>
-		<a href="" ng-click="editUser = !editUser">Cancel</a>
+		<a href="" class="close" ng-click="closeUpdateUser()">Cancel</a>
 
 		<label for="update-email">E-mail</label>
 		<input type="email" ng-model="editUser.email" id="update-email" placeholder="name@example.com">
 
 		<label for="update-password">Password</label>
-		<input type="password"  ng-model="editUser.password" id="update-password" placeholder="All characters allowed">
+		<input type="password"  ng-model="editUser.password" id="update-password" placeholder="Change password">
+		<input type="password"  ng-model="editUser.confirm" id="update-confirm" placeholder="Confirm changed password" ng-change="passwordCheck()" ng-class="{invalid: passwordMatch == false}">
 
 		<label for="update-first-name">Name</label>
 		<input type="text" ng-model="editUser.name.first" id="update-first-name" placeholder="First">
@@ -97,15 +97,25 @@
 		<label class="wrapper"><input type="checkbox" ng-model="editUser.active" id="update-active"> Active user</label>
 
 		<button ng-click="updateUser()">Update</button>
+		<a href="" ng-click="removeUser()" class="user-remove">Remove</a>
 	</form>
-	
 </section>
 
 <section style="width: 40%">
 	<h2>User list</h2>
 
+	<input type="text" placeholder="Search users" class="user-search" ng-model="userSearch">
+	<a href="" class="user-clear" ng-show="userSearch" ng-click="userSearch = ''">Clear</a>
+
 	<ul class="user-list">
-		<li ng-repeat="user in userList" ng-click="userEditor($index)">{{user.email}}</li>
+		<li ng-repeat="user in userList | filter: userSearch | orderBy: '-postDate' | limitTo: userOffset - userList.length | limitTo: userLimit" ng-click="userEditor(user._id)" ng-class="{active: user._id == editUser._id}">
+			<img src="/avatar.gif">
+			<strong>{{user.name.first}} {{user.name.last}}</strong> <small>(<time datetime={{user.postDate}}>{{fromNow(user.postDate)}}</time>)</small><br>
+			<a href="mailto:{{user.email}}">{{user.email}}</a>
+		</li>
 	</ul>
+
+	<a href="" class="user-prev" ng-show="userOffset > 1" ng-click="userOffset = userOffset - userLimit">&laquo; Previous</a>
+	<a href="" class="user-next" ng-show="userOffset < userPages" ng-click="userOffset = userOffset + userLimit">Next &raquo;</a>
 
 </section>

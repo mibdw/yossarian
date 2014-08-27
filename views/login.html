@@ -5,21 +5,17 @@
 	<title>Yossarian</title>
 
 	<link rel="stylesheet" href="/styles/main.css">
-
+	<link rel="icon" type="image/gif" href="/c130-hercules.gif">
 </head>
 <body>
-
 	<% if (message) { %>
 		<p><%= message %></p>
 	<% } %>
 
 	<form action="/login" method="post" class="login">
-
 		<input type="email" name="username" placeholder="E-mail" autofocus>
 		<input type="password" name="password" placeholder="Password">
 		<button>Login</button>
-
-	</form>
-	
+	</form>	
 </body>
 </html>

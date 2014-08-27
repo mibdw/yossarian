@@ -78,5 +78,7 @@ app.controller('global', ['$scope', '$rootScope', '$http',
 		$http.post('/categories/list').success( function (categoryData) {
 			$rootScope.categoryList = categoryData;
 		});
+
+		$rootScope.fromNow = function (date) { return moment(date).fromNow(); }
 	}
 ]);

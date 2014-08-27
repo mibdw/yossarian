@@ -70,10 +70,17 @@ ctrl.controller('settingsController', ['$scope', '$rootScope', '$routeParams', '
 			}			
 		};
 
-		$scope.userList = []
+		$scope.userView = 'create';
+		$scope.userList = [];
+		
 		$http.post('/users/list').success( function (userData) {
 			$scope.userList = userData;
+
+			$scope.userLimit = 8;
+			$scope.userOffset = 1;
+			$scope.userPages = $scope.userList.length / $scope.userLimit;
 		});
+
 
 		$scope.newUser = {
 			role: 'user',
@@ -83,10 +90,18 @@ ctrl.controller('settingsController', ['$scope', '$rootScope', '$routeParams', '
 
 		$scope.passwordMatch = true;
 		$scope.passwordCheck = function () {
-			if ($scope.newUser.password != $scope.newUser.confirm) {
-				$scope.passwordMatch = false;
-			} else if ($scope.newUser.password == $scope.newUser.confirm) {
-				$scope.passwordMatch = true;
+			if ($scope.userView == 'create') {
+				if ($scope.newUser.password != $scope.newUser.confirm) {
+					$scope.passwordMatch = false;
+				} else if ($scope.newUser.password == $scope.newUser.confirm) {
+					$scope.passwordMatch = true;
+				}	
+			} else if ($scope.userView == 'update') {
+				if ($scope.editUser.password != $scope.editUser.confirm) {
+					$scope.passwordMatch = false;
+				} else if ($scope.editUser.password == $scope.editUser.confirm) {
+					$scope.passwordMatch = true;
+				}
 			}
 		};
 
@@ -94,21 +109,59 @@ ctrl.controller('settingsController', ['$scope', '$rootScope', '$routeParams', '
 			if ($scope.newUser.password != $scope.newUser.confirm) {
 				alert("Your passwords do not match, please retry")
 			} else {
-
 				var username = $scope.newUser.name.first + " " + $scope.newUser.name.last;
 
 				$scope.newUser.username = slugify(username);
+				$scope.newUser.postDate = moment();
 				$http.post('/users/create', $scope.newUser).success( function (data) {
-
 					window.location.reload();	
 				});
 			}
 		};
 
-		$scope.userEditor = function (index) {
-			$http.post('/users/detail', $scope.userList[index]).success( function (userData) {
-				$scope.editUser = userData; 
-			});
+		$scope.userEditor = function (id) {
+			if ($scope.userView == 'create') {
+				$scope.userView = 'update';
+				$http.post('/users/detail', { _id: id}).success( function (userData) {
+					$scope.editUser = userData; 
+					$scope.editUser.birthday = moment($scope.editUser.birthday).format('DD-MM-YYYY');
+				});	
+			} else if ($scope.userView == 'update' && id != $scope.editUser._id) {
+				$http.post('/users/detail', { _id: id}).success( function (userData) {
+					$scope.editUser = userData; 
+					$scope.editUser.birthday = moment($scope.editUser.birthday).format('DD-MM-YYYY');
+				});	
+			} else {
+				$scope.userView = 'create';
+				$scope.editUser = {};
+			}
+		};
+
+		$scope.updateUser = function () {
+			if ($scope.editUser.password != $scope.editUser.confirm) {
+				alert("Your passwords do not match, please retry")
+			} else {
+				var username = $scope.editUser.name.first + " " + $scope.editUser.name.last;
+
+				$scope.editUser.username = slugify(username);
+				$scope.editUser.postDate = moment();
+				$http.post('/users/create', $scope.editUser).success( function (data) {
+					window.location.reload();	
+				});
+			}
+		};
+
+		$scope.removeUser = function () {
+			if (confirm('Are you sure you want to remove this user?') == true) {
+				$http.post('/users/remove', { remove: $scope.editUser._id }).success( function (data) {
+					window.location.reload();	
+				});
+			}
+		};
+
+		$scope.closeUpdateUser = function () {
+			$scope.userView = 'create';
+			$scope.editUser = {}; 
 		};
 	}
 ]);

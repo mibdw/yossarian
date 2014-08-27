@@ -16,6 +16,8 @@ var userSchema = mongoose.Schema({
 	department: String,
 	note: String,
 	active: Boolean,
+	postDate: Date,
+	editDate: Date
 });
 
 userSchema.pre('save', function(next) {
