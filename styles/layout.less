@@ -97,6 +97,38 @@ header {
 			padding-right: 0;
 		}
 	}
+
+	.form {
+		input[type='text'], select, textarea {
+			float: left;
+			width: 80%;
+		}
+
+		label {
+			float: left;
+			width: 20%;
+		}
+
+		.form-controls {
+			margin-bottom: .5em;
+			.clearfix; 
+			
+			button[type='submit'] {
+				float: right;
+			}
+
+			.form-clear { float: left;}
+		}	
+
+		.form-checkboxes {
+			label {
+				float: none;
+				width: auto;
+				line-height: 1.4em;
+				color: @text;
+			}
+		}
+	}
 }
 
 aside {
@@ -110,6 +142,8 @@ aside {
 		list-style-type: none;
 		margin: 0;
 		padding: 0 0 1em;
+
+		&.menu { line-height: 1.3em; }
 
 		h4 {
 			font-size: 1em;
@@ -131,7 +165,7 @@ aside {
 				a { color: @text; }
 
 				.submenu {
-					line-height: 1.2em;
+					line-height: 1.3em;
 					padding-bottom: .5em;
 					font-weight: normal;
 
@@ -160,6 +194,8 @@ aside {
 		margin-left: 0;
 		padding-left: 0;
 
+		ul li { padding-left: .8em; }
+
 		ul li.active {
 			margin-right: -1.6em;
 			padding-right: 1.6em;
@@ -167,6 +203,8 @@ aside {
 			border-right-color: @back;
 
 			a:hover { text-decoration: none; }
+
+			.submenu li { padding-left: 0; }
 		}
 	}
 

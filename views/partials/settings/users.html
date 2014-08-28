@@ -1,121 +1,125 @@
-<section style="width: 60%" class="user-form">
-	<form name="createUserForm" ng-submit="createUser()" ng-show="userView == 'create'">
-		<h2>Create user</h2>
+<div ng-controller="settingsUsers">
+	<section style="width: 60%" class="user-form">
+		<form name="createUserForm" ng-submit="createUser()" ng-show="userView == 'create'">
+			<h2>Create user</h2>
 
-		<label for="new-email">E-mail</label>
-		<input type="email" ng-model="newUser.email" id="new-email" placeholder="name@example.com" required="required">
+			<label for="new-email">E-mail</label>
+			<input type="email" ng-model="newUser.email" id="new-email" placeholder="name@example.com" required="required">
 
-		<label for="new-password">Password</label>
-		<input type="password"  ng-model="newUser.password" id="new-password" placeholder="All characters allowed" required="required">
-		<input type="password"  ng-model="newUser.confirm" id="new-confirm" placeholder="Confirm password" required="required" ng-change="passwordCheck()" ng-class="{invalid: passwordMatch == false}">
+			<label for="new-password">Password</label>
+			<input type="password"  ng-model="newUser.password" id="new-password" placeholder="All characters allowed" required="required">
+			<input type="password"  ng-model="newUser.confirm" id="new-confirm" placeholder="Confirm password" required="required" ng-change="passwordCheck()" ng-class="{invalid: passwordMatch == false}">
 
-		<label for="new-first-name">Name</label>
-		<input type="text" ng-model="newUser.name.first" id="new-first-name" placeholder="First" required="required">
-		<input type="text" ng-model="newUser.name.last" id="new-last-name" placeholder="Last" required="required">
-		
-		<label for="new-role">Role</label>
-		<select ng-model="newUser.role" id="new-role" required="required">
-			<option value="admin">Administrator</option>
-			<option value="editor">Editor</option>
-			<option value="author">Author</option>
-			<option value="editor">Editor</option>
-			<option value="user">User</option>
-		</select>
+			<label for="new-first-name">Name</label>
+			<input type="text" ng-model="newUser.name.first" id="new-first-name" placeholder="First" required="required">
+			<input type="text" ng-model="newUser.name.last" id="new-last-name" placeholder="Last" required="required">
+			
+				<label for="new-role">Role</label>
+				<select ng-model="newUser.role" id="new-role" required="required">
+					<option value="admin">Administrator</option>
+					<option value="editor">Editor</option>
+					<option value="author">Author</option>
+					<option value="editor">Editor</option>
+					<option value="user">User</option>
+				</select>
 
-		<label for="new-birthday">Birthday</label>
-		<input type="date" ng-model="newUser.birthday" id="new-birthday" placeholder="DD-MM-YYYY" required="required">
+			<label for="new-birthday">Birthday</label>
+			<input type="date" ng-model="newUser.birthday" id="new-birthday" placeholder="DD-MM-YYYY" required="required">
 
-		<label for="new-department">Department</label>
-		<select ng-model="newUser.department" id="new-department" required="required">
-			<option value="management">Management</option>
-			<option value="sales">Sales</option>
-			<option value="customer-service">Customer service</option>
-			<option value="orders">Orders</option>
-			<option value="accounts">Accounts</option>
-			<option value="journals">Journals</option>
-			<option value="it">IT</option>
-			<option value="approval-plans-nts">Approval plans / NTS</option>
-			<option value="shipping-receiving">Shipping / receiving</option>
-		</select>
+			<label for="new-department">Department</label>
+			<select ng-model="newUser.department" id="new-department" required="required">
+				<option value="management">Management</option>
+				<option value="sales">Sales</option>
+				<option value="customer-service">Customer service</option>
+				<option value="orders">Orders</option>
+				<option value="accounts">Accounts</option>
+				<option value="journals">Journals</option>
+				<option value="it">IT</option>
+				<option value="approval-plans-nts">Approval plans / NTS</option>
+				<option value="shipping-receiving">Shipping / receiving</option>
+			</select>
 
-		<label for="new-picture">Picture</label>
-		<input type="file" id="new-picture" disabled="disabled">
+			<label for="new-picture">Picture</label>
+			<input type="file" id="new-picture" disabled="disabled">
 
-		<label for="new-note">Note</label>
-		<textarea rows="8"  ng-model="newUser.note" id="new-note"></textarea>
+			<label for="new-note">Note</label>
+			<textarea rows="8"  ng-model="newUser.note" id="new-note"></textarea>
 
-		<label class="wrapper"><input type="checkbox" ng-model="newUser.active" id="new-active"> Active user</label>
+			<label class="wrapper"><input type="checkbox" ng-model="newUser.active" id="new-active"> Active user</label>
 
-		<button type="submit">Create</button>
-	</form>
-	<form name="editUserForm" ng-submit="updateUser()" ng-show="userView == 'update'">
-		<h2>Update user</h2>
-		<a href="" class="close" ng-click="closeUpdateUser()">Cancel</a>
+			<button type="submit">Create</button>
+		</form>
+		<form name="editUserForm" ng-submit="updateUser()" ng-show="userView == 'update'">
+			<h2>Update user</h2>
+			<a href="" class="close" ng-click="closeUpdateUser()">Cancel</a>
 
-		<label for="update-email">E-mail</label>
-		<input type="email" ng-model="editUser.email" id="update-email" placeholder="name@example.com">
+			<label for="update-email">E-mail</label>
+			<input type="email" ng-model="editUser.email" id="update-email" placeholder="name@example.com">
 
-		<label for="update-password">Password</label>
-		<input type="password"  ng-model="editUser.password" id="update-password" placeholder="Change password">
-		<input type="password"  ng-model="editUser.confirm" id="update-confirm" placeholder="Confirm changed password" ng-change="passwordCheck()" ng-class="{invalid: passwordMatch == false}">
+			<label for="update-password">Password</label>
+			<input type="password"  ng-model="editUser.password" id="update-password" placeholder="Change password">
+			<input type="password"  ng-model="editUser.confirm" id="update-confirm" placeholder="Confirm changed password" ng-change="passwordCheck()" ng-class="{invalid: passwordMatch == false}">
 
-		<label for="update-first-name">Name</label>
-		<input type="text" ng-model="editUser.name.first" id="update-first-name" placeholder="First">
-		<input type="text" ng-model="editUser.name.last" id="update-last-name" placeholder="Last">
-		
-		<label for="update-role">Role</label>
-		<select ng-model="editUser.role" id="update-role">
-			<option value="admin">Administrator</option>
-			<option value="editor">Editor</option>
-			<option value="author">Author</option>
-			<option value="editor">Editor</option>
-			<option value="user">User</option>
-		</select>
+			<label for="update-first-name">Name</label>
+			<input type="text" ng-model="editUser.name.first" id="update-first-name" placeholder="First">
+			<input type="text" ng-model="editUser.name.last" id="update-last-name" placeholder="Last">
+			
+			<label for="update-role">Role</label>
+			<select ng-model="editUser.role" id="update-role">
+				<option value="admin">Administrator</option>
+				<option value="editor">Editor</option>
+				<option value="author">Author</option>
+				<option value="editor">Editor</option>
+				<option value="user">User</option>
+			</select>
 
-		<label for="update-birthday">Birthday</label>
-		<input type="date" ng-model="editUser.birthday" id="update-birthday" placeholder="DD-MM-YYYY">
+			<label for="update-birthday">Birthday</label>
+			<input type="date" ng-model="editUser.birthday" id="update-birthday" placeholder="DD-MM-YYYY">
 
-		<label for="update-department">Department</label>
-		<select ng-model="editUser.department" id="update-department">
-			<option value="management">Management</option>
-			<option value="sales">Sales</option>
-			<option value="customer-service">Customer service</option>
-			<option value="orders">Orders</option>
-			<option value="accounts">Accounts</option>
-			<option value="journals">Journals</option>
-			<option value="it">IT</option>
-			<option value="approval-plans-nts">Approval plans / NTS</option>
-			<option value="shipping-receiving">Shipping / receiving</option>
-		</select>
+			<label for="update-department">Department</label>
+			<select ng-model="editUser.department" id="update-department">
+				<option value="management">Management</option>
+				<option value="sales">Sales</option>
+				<option value="customer-service">Customer service</option>
+				<option value="orders">Orders</option>
+				<option value="accounts">Accounts</option>
+				<option value="journals">Journals</option>
+				<option value="it">IT</option>
+				<option value="approval-plans-nts">Approval plans / NTS</option>
+				<option value="shipping-receiving">Shipping / receiving</option>
+			</select>
 
-		<label for="update-picture">Picture</label>
-		<input type="file" id="update-picture" disabled="disabled">
+			<label for="update-picture">Picture</label>
+			<input type="file" id="update-picture" disabled="disabled">
 
-		<label for="update-note">Note</label>
-		<textarea rows="8"  ng-model="editUser.note" id="update-note"></textarea>
+			<label for="update-note">Note</label>
+			<textarea rows="8" ng-model="editUser.note" id="update-note"></textarea>
 
-		<label class="wrapper"><input type="checkbox" ng-model="editUser.active" id="update-active"> Active user</label>
+			<label class="wrapper"><input type="checkbox" ng-model="editUser.active" id="update-active"> Active user</label>
 
-		<button ng-click="updateUser()">Update</button>
-		<a href="" ng-click="removeUser()" class="user-remove">Remove</a>
-	</form>
-</section>
+			<button ng-click="updateUser()">Update</button>
+			<a href="" ng-click="removeUser()" class="user-remove">Remove</a>
+		</form>
+	</section>
 
-<section style="width: 40%">
-	<h2>User list</h2>
+	<section style="width: 40%">
+		<h2>User list <small>{{userList.length}} total</small></h2>
 
-	<input type="text" placeholder="Search users" class="user-search" ng-model="userSearch">
-	<a href="" class="user-clear" ng-show="userSearch" ng-click="userSearch = ''">Clear</a>
+		<input type="text" placeholder="Search users" class="user-search" ng-model="userSearch">
+		<a href="" class="user-clear" ng-show="userSearch" ng-click="userSearch = ''">Clear</a>
 
-	<ul class="user-list">
-		<li ng-repeat="user in userList | filter: userSearch | orderBy: '-postDate' | limitTo: userOffset - userList.length | limitTo: userLimit" ng-click="userEditor(user._id)" ng-class="{active: user._id == editUser._id}">
-			<img src="/avatar.gif">
-			<strong>{{user.name.first}} {{user.name.last}}</strong> <small>(<time datetime={{user.postDate}}>{{fromNow(user.postDate)}}</time>)</small><br>
-			<a href="mailto:{{user.email}}">{{user.email}}</a>
-		</li>
-	</ul>
+		<ul class="user-list">
+			<li ng-repeat="user in userList | filter: userSearch | orderBy: '-postDate' | limitTo: userOffset - userList.length | limitTo: userLimit" ng-click="userEditor(user._id)" ng-class="{active: user._id == editUser._id}">
+				<img src="/avatar.gif">
+				<strong>{{user.name.first}} {{user.name.last}}</strong> <small><time datetime={{user.postDate}}>{{fromNow(user.postDate)}}</time></small><br>
+				<a href="mailto:{{user.email}}">{{user.email}}</a>
+			</li>
+		</ul>
 
-	<a href="" class="user-prev" ng-show="userOffset > 1" ng-click="userOffset = userOffset - userLimit">&laquo; Previous</a>
-	<a href="" class="user-next" ng-show="userOffset < userPages" ng-click="userOffset = userOffset + userLimit">Next &raquo;</a>
-
-</section>
+		<div class="user-nav" ng-hide="userSearch">
+			<a href="" class="user-prev" ng-show="userOffset > 1" ng-click="userOffset = userOffset - userLimit">&laquo; Previous</a>
+			{{(userOffset / userLimit + 1)}} of {{userPages}} 
+			<a href="" class="user-next" ng-show="(userOffset / userLimit + 1) < userPages" ng-click="userOffset = userOffset + userLimit">Next &raquo;</a>
+		</div>
+	</section>
+</div>

@@ -27,9 +27,13 @@ ctrl.controller('settingsController', ['$scope', '$rootScope', '$routeParams', '
 		}
 
 		$rootScope.moniker = $rootScope.heading + $rootScope.seperator + $rootScope.masthead;
+	}
+]);
+
+ctrl.controller('settingsCategories', ['$scope', '$rootScope', '$routeParams', '$http', '$filter',
+	function ($scope, $rootScope, $routeParams, $http, $filter) {	
 
 		$scope.newCategory = {};
-
 		$scope.createCategory = function () {
 			
 			if (!$scope.newCategory.name) {
@@ -38,7 +42,7 @@ ctrl.controller('settingsController', ['$scope', '$rootScope', '$routeParams', '
 				alert('Please choose a color');
 			} else {
 
-				$scope.newCategory.slug = slugify($scope.newCategory.name);
+				$scope.newCategory.slug = $rootScope.slugify($scope.newCategory.name);
 				$http.post('/categories/create', $scope.newCategory).success( function (data) {
 
 					$http.post('/categories/list').success( function (categoryData) {
@@ -50,7 +54,7 @@ ctrl.controller('settingsController', ['$scope', '$rootScope', '$routeParams', '
 		};
 
 		$scope.updateCategory = function (index) {
-			 $rootScope.categoryList[index].slug = slugify( $rootScope.categoryList[index].name);
+			 $rootScope.categoryList[index].slug = $rootScope.slugify( $rootScope.categoryList[index].name);
 			$http.post('/categories/update', $rootScope.categoryList[index]);
 		};
 
@@ -68,8 +72,13 @@ ctrl.controller('settingsController', ['$scope', '$rootScope', '$routeParams', '
 					});
 				});
 			}			
-		};
+		};	
+	}
+]);
 
+ctrl.controller('settingsUsers', ['$scope', '$rootScope', '$routeParams', '$http', '$filter',
+	function ($scope, $rootScope, $routeParams, $http, $filter) {	
+		$rootScope.datePicker();
 		$scope.userView = 'create';
 		$scope.userList = [];
 		
@@ -77,10 +86,9 @@ ctrl.controller('settingsController', ['$scope', '$rootScope', '$routeParams', '
 			$scope.userList = userData;
 
 			$scope.userLimit = 8;
-			$scope.userOffset = 1;
-			$scope.userPages = $scope.userList.length / $scope.userLimit;
+			$scope.userOffset = 0;
+			$scope.userPages = Math.ceil($scope.userList.length / $scope.userLimit);
 		});
-
 
 		$scope.newUser = {
 			role: 'user',
@@ -111,7 +119,8 @@ ctrl.controller('settingsController', ['$scope', '$rootScope', '$routeParams', '
 			} else {
 				var username = $scope.newUser.name.first + " " + $scope.newUser.name.last;
 
-				$scope.newUser.username = slugify(username);
+				$scope.newUser.username = $rootScope.slugify(username);
+				$scope.newUser.birthday = moment($scope.newUser.birthday, "DD-MM-YYYY");
 				$scope.newUser.postDate = moment();
 				$http.post('/users/create', $scope.newUser).success( function (data) {
 					window.location.reload();	
@@ -143,10 +152,11 @@ ctrl.controller('settingsController', ['$scope', '$rootScope', '$routeParams', '
 			} else {
 				var username = $scope.editUser.name.first + " " + $scope.editUser.name.last;
 
-				$scope.editUser.username = slugify(username);
-				$scope.editUser.postDate = moment();
-				$http.post('/users/create', $scope.editUser).success( function (data) {
-					window.location.reload();	
+				$scope.editUser.username = $rootScope.slugify(username);
+				$scope.editUser.birthday = moment($scope.editUser.birthday, "DD-MM-YYYY");
+				$scope.editUser.editDate = moment();
+				$http.post('/users/update', $scope.editUser).success( function (data) {
+					window.location.reload();
 				});
 			}
 		};
@@ -165,7 +175,3 @@ ctrl.controller('settingsController', ['$scope', '$rootScope', '$routeParams', '
 		};
 	}
 ]);
-
-function slugify (text) {
-	return text.toString().toLowerCase().replace(/\s+/g, '-').replace(/[^\w\-]+/g, '').replace(/\-\-+/g, '-').replace(/^-+/, '').replace(/-+$/, '');
-};

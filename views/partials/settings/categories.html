@@ -1,30 +1,31 @@
+<div ng-controller="settingsCategories">
+	<section style="width: 55%">
+		<h2>Category list</h2>
+		<ul class="category-list">
+			<li ng-repeat="category in categoryList">
+				<div>
+					<input type="color" ng-model="category.color" ng-change="updateCategory($index)">
+					<input type="text" ng-model="category.name"  ng-change="updateCategory($index)">
+					<a href="" ng-click="redirectCategory.from = category._id">Remove</a>
+				</div>
+				
+				<div ng-show="category._id==redirectCategory.from">
+					<select ng-model="redirectCategory.to">
+						<option value="0">Redirect items to</option>
+						<option ng-repeat="redirect in categoryList" ng-if="redirect._id!=redirectCategory.from" value="{{redirect._id}}">{{redirect.name}}</option>
+					}
+					</select>
+					<button ng-click="removeCategory()">Redirect</button>
+					<a href="" ng-click="redirectCategory.from = 0"> Cancel</a>
+				</div>
+			</li>
+		</ul>
+	</section>
 
-<section style="width: 55%">
-	<h2>Category list</h2>
-	<ul class="category-list">
-		<li ng-repeat="category in categoryList">
-			<div>
-				<input type="color" ng-model="category.color" ng-change="updateCategory($index)">
-				<input type="text" ng-model="category.name"  ng-change="updateCategory($index)">
-				<a href="" ng-click="redirectCategory.from = category._id">Remove</a>
-			</div>
-			
-			<div ng-show="category._id==redirectCategory.from">
-				<select ng-model="redirectCategory.to">
-					<option value="0">Redirect items to</option>
-					<option ng-repeat="redirect in categoryList" ng-if="redirect._id!=redirectCategory.from" value="{{redirect._id}}">{{redirect.name}}</option>
-				}
-				</select>
-				<button ng-click="removeCategory()">Redirect</button>
-				<a href="" ng-click="redirectCategory.from = 0"> Cancel</a>
-			</div>
-		</li>
-	</ul>
-</section>
-
-<section style="width: 45%" class="category-create">
-	<h2>New category</h2>
-	<input type="color" ng-model="newCategory.color" placeholder="Color">
-	<input type="text" ng-model="newCategory.name" placeholder="New category name">
-	<button ng-click="createCategory()">Create</button>
-</section>
+	<section style="width: 45%" class="category-create">
+		<h2>New category</h2>
+		<input type="color" ng-model="newCategory.color" placeholder="Color">
+		<input type="text" ng-model="newCategory.name" placeholder="New category name">
+		<button ng-click="createCategory()">Create</button>
+	</section>
+</div>

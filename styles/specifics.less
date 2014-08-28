@@ -1,106 +1,117 @@
 #main {
 	
 	&.docs {
-		
+	
 	}
 
 	&.settings {
 
-		.category-list {
-			list-style-type: none;
-			margin: 0;
-			padding: 0;
-			.clearfix();
+		.categories {
+			
+			.category-list {
+				list-style-type: none;
+				margin: 0;
+				padding: 0;
+				.clearfix();
 
-			li { 
+				li { 
 
-				div { .clearfix(); }				
-				a { display: none; }
-				&:hover a { display: inline; }
+					div { .clearfix(); }				
+					a { display: none; }
+					&:hover a { display: inline; }
 
-				input[type='text'] { width: 50%; }
-				select { width: 40%; margin-bottom: 10px; }
+					input[type='text'] { width: 50%; }
+					select { width: 40%; margin-bottom: 10px; }
+				}
+			}
+
+			.category-create {
+				input[type='text'] { width: 60%; }
 			}
 		}
 
-		.category-create {
-			input[type='text'] { width: 60%; }
-		}
+		.users {
+			.user-search { 
+				width: 100%; 
+				padding-right: 4em;
+			}
+			
+			.user-nav {
+				text-align: center;
+				color: @vague;
+				margin-top: .5em;
 
-		.user-search { 
-			width: 100%; 
-			padding-right: 4em;
-		}
+				.user-next { float: right; }
+				.user-prev { float: left; }
+			}
 
-		.user-next { float: right; }
+			.user-clear {
+				float: right;
+				position: relative;
+				top: -1.8em;
+				right: .5em;
+			}
 
-		.user-clear {
-			float: right;
-			position: relative;
-			top: -1.8em;
-			right: .5em;
-		}
+			.user-list {
+				margin: 0;
+				padding: 0;
+				list-style-type: none;
 
-		.user-list {
-			margin: 0;
-			padding: 0;
-			list-style-type: none;
+				li {
+					padding: .5em 0;
+					border-bottom: 1px solid @line;
+					cursor: pointer;
 
-			li {
-				padding: .5em 0;
-				border-top: 1px solid @line;
-				cursor: pointer;
+					&:hover { background-color: @hover; }
+					&.active { background-color: @mark; }
 
-				&:first-child { border-top-width: 0; }
-				&:hover { background-color: @hover; }
-				&.active { background-color: @mark; }
+					img {
+						width: 40px;
+						height: 40px;
+						margin: 0 .5em 0 0;
+						float: left;
+					}
+				}
+			}
 
-				img {
-					width: 40px;
-					height: 40px;
-					margin: 0 .5em 0 0;
+			.user-form {
+				h2 { 
 					float: left;
+					width: 81%;
 				}
-			}
-		}
 
-		.user-form {
-			h2 { 
-				float: left;
-				width: 81%;
-			}
+				.close {
+					float: right;
+					line-height: 2em;
+				}
 
-			.close {
-				float: right;
-				line-height: 2em;
-			}
-
-			input[type='text'], input[type='password'], input[type='date'], input[type='email'], input[type='file'], select, textarea {
-				float: left;
-				width: 80%;
-
-				&#new-confirm, &#update-confirm { margin-left: 20%; }
-				&#new-first-name, &#update-first-name { width: 35%; margin-right: .5%; }
-				&#new-last-name, &#update-last-name { width: 44.5%; }
-			}
-
-			label {
-				float: left;
-				width: 20%;
-
-				&.wrapper {
-					margin-left: 20%;
+				input[type='text'], input[type='password'], input[type='date'], input[type='email'], input[type='file'], select, textarea {
+					float: left;
 					width: 80%;
-					color: @text;
+
+					&#new-confirm, &#update-confirm { margin: 0 0 1.5em 20%; }
+					&#new-first-name, &#update-first-name { width: 35%; margin-right: .5%; }
+					&#new-last-name, &#update-last-name { width: 44.5%; }
 				}
-			}
 
-			button { float: right; }
+				label {
+					float: left;
+					width: 20%;
 
-			.user-remove { 
-				float: right;
-				line-height: 1.9em;
-				margin-right: .5em;
+					&.wrapper {
+						margin-left: 20%;
+						width: 80%;
+						color: @text;
+					}
+				}
+
+				button { float: right; }
+
+				.user-remove { 
+					float: right;
+					line-height: 1.9em;
+					margin-right: .5em;
+				}
 			}
 		}
 	}

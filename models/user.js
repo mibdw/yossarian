@@ -11,7 +11,7 @@ var userSchema = mongoose.Schema({
 		last: String,
 	},
 	role: String,
-	avatar: String,
+	picture: String,
 	birthday: Date,
 	department: String,
 	note: String,

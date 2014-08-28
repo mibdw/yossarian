@@ -13,6 +13,8 @@ p {
 h1, h2, h3, h4, h5 {
 	margin-top: 0;
 	margin-bottom: 16px;
+
+	small { font-weight: normal; }
 }
 
 small {
@@ -102,4 +104,97 @@ button {
 	font-size: .9em;
 	padding: .2em .4em;
 	.box-sizing (border-box);
+}
+
+.credits {
+	list-style-type: none;
+
+	li {
+		padding: .5em 0 .5em 50px;
+		border-bottom: 1px solid @line;
+
+		img {
+			width: 40px;
+			height: 40px;
+			margin: 0 10px 0 -50px;
+			float: left;
+		}
+
+		&:first-child { border-top: 1px solid @line; }
+	}
+}
+
+.ui-datepicker {
+	background-color: @back;
+	border: 1px solid @text;
+	margin: .2em .5em;
+
+	&:empty { display: none; 	}
+
+	.ui-datepicker-header {
+		text-align: center;
+		padding: .4em .6em .6em;
+		
+		.ui-corner-all { 
+			cursor: pointer;
+			line-height: 1.5em;
+		}
+
+		.ui-datepicker-prev { float: left }
+		.ui-datepicker-next { float: right }
+
+		.ui-datepicker-title {
+			display: inline;
+
+			select {
+				padding: 0;
+				margin: 0;
+			}
+		}
+	}
+
+	.ui-datepicker-calendar {
+		border-collapse: collapse;
+		width: 100%;
+
+		th {
+			border-width: 1px;
+			border-style: solid;
+			border-color: @line;
+
+			&:first-child { border-left-width: 0 }
+			&:last-child { border-right-width: 0 }
+		}
+			
+		tr {
+			
+			td {
+				border: 1px solid @line;
+				padding: 0;
+
+				&:first-child { border-left-width: 0 }
+				&:last-child { border-right-width: 0 }
+
+				.ui-state-default {
+					display: block;
+					text-align: center;
+					padding: .4em .6em;
+					width: 100%;
+					.box-sizing (border-box);
+
+					&:hover { 
+						background-color: @hover;
+						text-decoration: none;
+						color: @text; 
+					}
+
+					&.ui-state-highlight { background-color: @mark }
+					&.ui-state-active { background-color: @active }
+				}
+			}
+
+			&:last-child td { border-bottom-width: 0 }
+		}
+
+	}
 }

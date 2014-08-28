@@ -25,6 +25,7 @@ exports.remove = function(req, res, next) {
 };
 
 exports.update = function(req, res, next) {
+
 	User.findByIdAndUpdate(req.body._id, { $set: req.body }, function (err, user) {
 		if (err) console.log(err);
 		return res.send(user);
@@ -33,7 +34,7 @@ exports.update = function(req, res, next) {
 
 exports.detail = function(req, res, next) {
 	User.findById(req.body._id)
-	.select('_id email name role birthday department note active')
+	.select('-password')
 	.exec(function (err, userData) {
 		if (err) console.log(err);
 		return res.send(userData);
@@ -46,5 +47,14 @@ exports.list = function(req, res, next) {
 	.exec(function (err, userList) {
 		if (err) console.log(err);
 		return res.send(userList);
+	});
+};
+
+exports.user = function(req, res, next) {
+	User.findOne({ 'email': req.user.email })
+	.select('email name role picture department birthday')
+	.exec(function (err, userData) {
+		if (err) console.log(err);
+		return res.send(userData);
 	});
 };
