@@ -8,14 +8,14 @@ app.config(['$routeProvider', function ($routeProvider) {
 		}).
 		when('/docs/:slug/update', {
 		templateUrl: 'partials/docs/update',
-		controller: 'docsController'
+		controller: 'docsUpdate'
 		}).
 		when('/docs/create', {
 		templateUrl: 'partials/docs/create',
 		controller: 'docsCreate'
 		}).
 		when('/docs/:slug', {
-		templateUrl: 'partials/docs/detail',
+		templateUrl: 'partials/docs/main',
 		controller: 'docsController'
 		}).
 		when('/docs', {

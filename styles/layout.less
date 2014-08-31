@@ -101,15 +101,16 @@ header {
 	.form {
 		input[type='text'], select, textarea {
 			float: left;
-			width: 80%;
+			width: 87%;
 		}
 
 		label {
 			float: left;
-			width: 20%;
+			width: 13%;
 		}
 
 		.form-controls {
+			margin-top: 1em;
 			margin-bottom: .5em;
 			.clearfix; 
 			
@@ -117,16 +118,47 @@ header {
 				float: right;
 			}
 
-			.form-clear { float: left;}
-		}	
+			.form-clear { 
+				float: left;
+				line-height: 2em;
+			}
+
+			.form-remove {
+				float: right;
+				line-height: 2em;
+				margin-right: 1em;
+			}
+		}
 
 		.form-checkboxes {
+			h4 {
+				float: left;
+				color: @vague;
+				font-weight: normal;
+				text-decoration: none;
+				position: absolute;
+			}
+
 			label {
-				float: none;
+				float: left;
 				width: auto;
 				line-height: 1.4em;
 				color: @text;
+				padding-left: 30%;
 			}
+		}
+
+		.form-selects {
+			margin-bottom: 1em;
+			.clearfix;
+
+			label { width: 30% }
+			select { width: 70% }
+		}
+
+		.form-links {
+			border-top: 1px solid @line;
+			padding-top: .5em;
 		}
 	}
 }
@@ -142,7 +174,8 @@ aside {
 		list-style-type: none;
 		margin: 0;
 		padding: 0 0 1em;
-
+		.clearfix;
+			
 		&.menu { line-height: 1.3em; }
 
 		h4 {
@@ -155,6 +188,8 @@ aside {
 		li {
 			.text-truncate;
 
+			.submenu { display: none; }
+
 			&.active {
 				border: 1px solid @line;
 				line-height: 1.7em;
@@ -165,6 +200,7 @@ aside {
 				a { color: @text; }
 
 				.submenu {
+					display: block;
 					line-height: 1.3em;
 					padding-bottom: .5em;
 					font-weight: normal;

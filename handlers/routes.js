@@ -1,6 +1,9 @@
 var passport = require('passport');
 var mongoose = require('mongoose');
 var moment = require('moment');
+var marked = require('marked');
+
+marked.setOptions({	gfm: true, tables: true });
 
 module.exports = function (app, res, req) {
 
@@ -38,6 +41,10 @@ module.exports = function (app, res, req) {
 		res.render("partials/" + req.params.section + "/" + req.params.partial + ".html");
 	});
 
+	app.post('/marked', ensureAuthenticated, function(req, res) {
+		res.send(marked(req.body.text));
+	});
+
 	var users = require(__dirname + '/users.js');
 	app.post('/users/create', ensureAuthenticated, users.create);
 	app.post('/users/remove', ensureAuthenticated, users.remove);
@@ -64,7 +71,7 @@ module.exports = function (app, res, req) {
 	app.post('/docs/remove', ensureAuthenticated, docs.remove);
 	app.post('/docs/update', ensureAuthenticated, docs.update);
 	app.post('/docs/detail', ensureAuthenticated, docs.detail);
-	app.post('/docs/list', ensureAuthenticated, docs.list);
+	app.post('/docs/menu', ensureAuthenticated, docs.menu);
 
 	var calendar = require(__dirname + '/calendar.js');
 	app.post('/calendar/create', ensureAuthenticated, calendar.create);

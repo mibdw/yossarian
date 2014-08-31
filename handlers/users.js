@@ -25,7 +25,6 @@ exports.remove = function(req, res, next) {
 };
 
 exports.update = function(req, res, next) {
-
 	User.findByIdAndUpdate(req.body._id, { $set: req.body }, function (err, user) {
 		if (err) console.log(err);
 		return res.send(user);
