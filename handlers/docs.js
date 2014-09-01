@@ -21,9 +21,16 @@ exports.remove = function(req, res, next) {
 };
 
 exports.update = function(req, res, next) {
-	Doc.findByIdAndUpdate(req.body._id, { $set: req.body }, function (err, docData) {
+	Doc.findById(req.body._id)
+	.exec(function (err, oldDoc) {
 		if (err) console.log(err);
-		return res.send(docData);
+		Doc.update({ 'parent': oldDoc.slug }, { 'parent': req.body.slug }, function (err) {
+			if (err) console.log(err);
+			Doc.findByIdAndUpdate(req.body._id, { $set: req.body }, function (err, docData) {
+				if (err) console.log(err);
+				return res.send(docData);
+			});
+		});
 	});
 };
 
@@ -39,7 +46,7 @@ exports.detail = function(req, res, next) {
 
 exports.menu = function(req, res, next) {
 	Doc.find({})
-	.select('_id title slug parent')
+	.select('_id title slug parent order')
 	.exec(function (err, docMenu) {
 		if (err) console.log(err);
 		return res.send(docMenu);

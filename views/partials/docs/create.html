@@ -1,12 +1,18 @@
 <form ng-submit="createDocument()" class="form">
-	<div class="content left" style="width: 72%">
+	<div ng-show="!preview" class="content left" style="width: 72%" >
 		<h1>Create document</h1>
 
 		<label for="title">Title</label>
 		<input type="text" id="title" ng-model="createDoc.title" required="required">
 
 		<label for="body">Body</label>
-		<textarea id="body" rows="20" ng-model="createDoc.body" placeholder="Use Markdown to style your text"></textarea>
+		<textarea id="body" rows="23" ng-model="createDoc.body" placeholder="Use Markdown to style your text"></textarea>
+	</div>
+
+	<div ng-show="preview" class="content left preview" style="width: 72%">
+		<a href="" ng-click="preview = !preview" class="form-close-preview">Close preview</a>
+		<h1>{{createDoc.title}}</h1>
+		<div ng-bind-html="preview"></div>
 	</div>
 
 	<aside class="right" style="width: 28%">
@@ -36,18 +42,20 @@
 			<label for="parent">Parent</label>
 			<select id="parent" ng-model="createDoc.parent">
 				<option value="none">None</option>
+				<option ng-repeat="parent in docParents | filter: {parent: 'none'}" value="{{parent.slug}}">{{parent.title}}</option>
 			</select>
 
 			<label for="order">Order</label>
 			<select id="order" ng-model="createDoc.order">
-				<option value=""></option>
+				<option value="1">1</option>
+				<option ng-repeat="parent in docParents | filter: {parent: createDoc.parent}" value="{{$index + 2}}">{{$index + 2}}</option>
 			</select>
 		</div>
 
 		<ul class="form-links">
 			<li><a href="/#/docs">Back to documents</a></li>
 			<li><a href="" ng-click="previewDocument()">Preview document</a></li>
-			<li><a href="">Markdown documentation</a></li>
+			<li><a href="{{markdownURL}}" target="_blank">Markdown documentation</a></li>
 		</ul>
 	</aside>
 </form>

@@ -1,1 +1,16 @@
-<div class="under-construction"><em>{{heading}}</em> &mdash; Under construction</div>
+<div class="content left" style="width:70%">
+	<ul class="calendar-nav">
+		<li ng-show="displayMonth != actualMonth" class="calendar-today"><a href="" ng-click="navMonth()">Today</a></li>
+		<li><a href="" ng-click="navMonth('prev')">&laquo; Previous</a></li>
+		<li><a href="" ng-click="navMonth('next')">Next &raquo;</a></li>
+	</ul>
+
+	<h1>{{displayMonth}}</h1>
+	<div class="calendar-view"></div>
+</div>
+
+<aside class="right" style="width:30%">
+
+	<div ng-include="eventOption.url"></div>
+
+</aside>

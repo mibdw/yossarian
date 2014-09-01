@@ -1,28 +1,37 @@
-<aside class="left" style="width:15%">
-
+<aside class="left" style="width:20%">
 	<ul class="links">
 		<li><a href="/#/docs/create">Create document</a></li>
 	</ul>
 
 	<ul class="menu">
-		<li ng-repeat="doc in docsMenu" ng-class="{active: doc.slug == currentSlug || doc.parent == currentSlug}">
+		<li ng-repeat="doc in docsMenu | filter: {parent: 'none'} | orderBy: 'order'" ng-class="{active: doc.slug == currentSlug || doc.slug == currentDoc.parent}">
 			<a href="/#/docs/{{doc.slug}}" title="{{doc.title}}">{{doc.title}}</a>
-
+			<ul class="submenu">
+				<li ng-repeat="subdoc in docsMenu | filter: {parent: doc.slug} | orderBy: 'order'" ng-class="{active: subdoc.slug == currentSlug}">
+					<a href="/#/docs/{{subdoc.slug}}" title="{{subdoc.title}}">{{subdoc.title}}</a>
+				</li>
+			</ul>
 		</li>
 	</ul>
 </aside>
 
-<div class="content right" style="width:85%">
+<div class="content right" style="width:80%">
 	<h1>{{currentDoc.title}}</h1>
 
 	<div class="body" ng-bind-html="currentDoc.marked"></div>
 
 	<div class="meta">
 		<dl>
-			<dt>Author</dt>
-			<dd>{{currentDoc.author.name.first}} {{currentDoc.author.name.last}} (<time datetime="{{currentDoc.postDate}}">{{fromNow(currentDoc.postDate)}}</time>)</dd>
-			<dt ng-if="currentDoc.editor">Editor</dt>
-			<dd ng-if="currentDoc.editor">{{currentDoc.editor.name.first}} {{currentDoc.editor.name.last}} (<time datetime="{{currentDoc.editDate}}">{{fromNow(currentDoc.editDate)}}</time>)</dd>
+			<dt>Author:</dt>
+			<dd>
+				<strong>{{currentDoc.author.name.first}} {{currentDoc.author.name.last}}</strong> 
+				<small><time datetime="{{currentDoc.postDate}}">{{fromNow(currentDoc.postDate)}}</time></small>
+			</dd>
+			<dt ng-if="currentDoc.editor">Editor:</dt>
+			<dd ng-if="currentDoc.editor">
+				<strong>{{currentDoc.editor.name.first}} {{currentDoc.editor.name.last}}</strong>
+				<small><time datetime="{{currentDoc.editDate}}">{{fromNow(currentDoc.editDate)}}</time></small>
+			</dd>
 		</dl>
 		
 		<ul class="badges" ng-if="currentDoc.categories">

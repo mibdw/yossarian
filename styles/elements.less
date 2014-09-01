@@ -124,6 +124,34 @@ button {
 	}
 }
 
+.fc {
+	.fc-header { display: none }
+	.fc-border-separate {
+		border-collapse: collapse;
+		border: 1px solid @line;
+
+		th {
+			border: 1px solid @line;
+		}
+
+		td {
+			border: 1px solid @line;
+			vertical-align: top;
+
+			.fc-day-number {
+				padding: .2em;
+				text-align: right;
+			}
+
+			&.fc-other-month {
+				.fc-day-number { color: @vague }
+			}
+
+			&.fc-today { background-color: @mark }
+		}
+	}
+}
+
 .ui-datepicker {
 	background-color: @back;
 	border: 1px solid @text;

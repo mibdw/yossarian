@@ -17,13 +17,13 @@ ctrl.controller('settingsController', ['$scope', '$rootScope', '$routeParams', '
 			for (i in $scope.settings) {
 				if ($scope.settings[i].slug == $routeParams.option) {
 					$scope.currentURL = $scope.settings[i].url;
-					$rootScope.heading = 'Settings \u00BB ' + $scope.settings[i].name; 
+					$rootScope.heading =  $scope.settings[i].name + ' \u00AB Settings'; 
 				}
 			}
 		} else {
 			$scope.currentSetting = $scope.settings[0].slug;
 			$scope.currentURL = $scope.settings[0].url;
-			$rootScope.heading = 'Settings \u00BB ' + $scope.settings[0].name
+			$rootScope.heading = $scope.settings[0].name + ' \u00AB Settings'
 		}
 
 		$rootScope.moniker = $rootScope.heading + $rootScope.seperator + $rootScope.masthead;

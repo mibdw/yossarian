@@ -26,6 +26,10 @@ app.config(['$routeProvider', function ($routeProvider) {
 		templateUrl: 'partials/calendar/main',
 		controller: 'calendarController'
 		}).
+		when('/calendar/:year/:month', {
+		templateUrl: 'partials/calendar/main',
+		controller: 'calendarController'
+		}).
 		when('/projects/:slug/update', {
 		templateUrl: 'partials/projects/update',
 		controller: 'projectsController'
@@ -83,6 +87,8 @@ app.controller('global', ['$scope', '$rootScope', '$http',
 			$rootScope.categoryList = categoryData;
 		});
 
+		$rootScope.markdownURL = 'https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet';
+
 		$rootScope.fromNow = function (date) { 
 			return moment(date).fromNow(); 
 		}
@@ -101,3 +107,17 @@ app.controller('global', ['$scope', '$rootScope', '$http',
 		}
 	}
 ]);
+
+app.run(['$route', '$rootScope', '$location', function ($route, $rootScope, $location) {
+	var original = $location.path;
+	$location.path = function (path, reload) {
+		if (reload === false) {
+			var lastRoute = $route.current;
+			var un = $rootScope.$on('$locationChangeSuccess', function () {
+				$route.current = lastRoute;
+				un();
+			});
+		}
+		return original.apply($location, [path]);
+	};
+}])

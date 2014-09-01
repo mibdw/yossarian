@@ -12,7 +12,17 @@ ctrl.controller('docsController', ['$scope', '$rootScope', '$routeParams', '$htt
 			if ($routeParams.slug) {
 				$scope.currentSlug = $routeParams.slug;
 			} else {
-				$scope.currentSlug = $scope.docsMenu[0].slug;
+				var parentLess = [];
+				for (i in $scope.docsMenu) {
+					if ($scope.docsMenu[i].parent == 'none') {
+						parentLess.push($scope.docsMenu[i]);
+					}
+				}
+
+				parentLess = parentLess.sort(function (low, high) {
+					return low.order - high.order;
+				});
+				$scope.currentSlug = parentLess[0].slug;
 			}
 
 			$scope.currentDoc = {};
@@ -22,15 +32,18 @@ ctrl.controller('docsController', ['$scope', '$rootScope', '$routeParams', '$htt
 				$http.post('/marked', { 'text': $scope.currentDoc.body }).success( function (markedText) {
 					$scope.currentDoc.marked = $sce.trustAsHtml(markedText);
 				});
+
+				$rootScope.heading = $scope.currentDoc.title + ' \u00AB Documents'; 
+				$rootScope.moniker = $rootScope.heading + $rootScope.seperator + $rootScope.masthead;
 			});
 		});
 	}
 ]);
 
-ctrl.controller('docsCreate', ['$scope', '$rootScope', '$http',
-	function ($scope, $rootScope, $http) {	
+ctrl.controller('docsCreate', ['$scope', '$rootScope', '$http', '$sce',
+	function ($scope, $rootScope, $http, $sce) {	
 		$rootScope.slug = 'docs';
-		$rootScope.heading = 'Documents \u00BB Create document'; 
+		$rootScope.heading = 'Create document \u00AB Documents'; 
 		$rootScope.moniker = $rootScope.heading + $rootScope.seperator + $rootScope.masthead;
 
 		var uncategorized = '';
@@ -39,6 +52,11 @@ ctrl.controller('docsCreate', ['$scope', '$rootScope', '$http',
 				uncategorized = $rootScope.categoryList[i]._id;
 			}
 		}
+
+		$scope.docParents = [];
+		$http.post('/docs/menu').success( function (menu) {
+			$scope.docParents = menu;
+		});
 
 		$scope.createDoc = {
 			categories: [uncategorized],
@@ -58,6 +76,9 @@ ctrl.controller('docsCreate', ['$scope', '$rootScope', '$http',
 			$scope.createDoc.slug = $rootScope.slugify($scope.createDoc.title);
 			$scope.createDoc.postDate = moment();
 			$scope.createDoc.author = $rootScope.user._id;
+			if ($scope.createDoc.title == 'None') {
+				$scope.createDoc.title = 'No title';
+			}
 			if ($scope.createDoc.categories.length < 1) {
 				$scope.createDoc.categories.push(uncategorized);
 			}
@@ -66,13 +87,20 @@ ctrl.controller('docsCreate', ['$scope', '$rootScope', '$http',
 				window.location.pathname = '/#/docs/' + $scope.createDoc.slug;	
 			});
 		}
+
+		$scope.previewDocument = function () {
+			$http.post('/marked', { 'text': $scope.createDoc.body }).success( function (markedText) {
+				$scope.previewVisible = true;
+				$scope.preview = $sce.trustAsHtml(markedText);
+			});
+		}
 	}
 ]);
 
-ctrl.controller('docsUpdate', ['$scope', '$rootScope', '$routeParams', '$http',
-	function ($scope, $rootScope, $routeParams, $http) {	
+ctrl.controller('docsUpdate', ['$scope', '$rootScope', '$routeParams', '$http', '$sce',
+	function ($scope, $rootScope, $routeParams, $http, $sce) {	
 		$rootScope.slug = 'docs';
-		$rootScope.heading = 'Documents \u00BB Update document'; 
+		$rootScope.heading = 'Update document \u00AB Documents'; 
 		$rootScope.moniker = $rootScope.heading + $rootScope.seperator + $rootScope.masthead;
 
 		var uncategorized = '';
@@ -81,6 +109,11 @@ ctrl.controller('docsUpdate', ['$scope', '$rootScope', '$routeParams', '$http',
 				uncategorized = $rootScope.categoryList[i]._id;
 			}
 		}
+
+		$scope.docParents = [];
+		$http.post('/docs/menu').success( function (menu) {
+			$scope.docParents = menu;
+		});
 
 		$scope.updateSlug = $routeParams.slug;
 		$scope.updateDoc = {};
@@ -109,6 +142,9 @@ ctrl.controller('docsUpdate', ['$scope', '$rootScope', '$routeParams', '$http',
 			$scope.updateDoc.editDate = moment();
 			$scope.updateDoc.author = $scope.updateDoc.author._id;
 			$scope.updateDoc.editor = $rootScope.user._id;
+			if ($scope.updateDoc.title == 'None') {
+				$scope.updateDoc.title = 'No title';
+			}
 			if ($scope.updateDoc.categories.length < 1) {
 				$scope.updateDoc.categories.push(uncategorized);
 			}
@@ -119,11 +155,34 @@ ctrl.controller('docsUpdate', ['$scope', '$rootScope', '$routeParams', '$http',
 		}
 
 		$scope.removeDoc = function () {
-			if (confirm('Are you sure you want to remove this document?') == true) {
-				$http.post('/docs/remove', { remove: $scope.updateDoc._id }).success( function (data) {
-					window.location.pathname = '/#/docs';	
-				});
+			var children = [];
+			for (i in $scope.docParents) {
+				if ($scope.docParents[i].parent == $scope.updateDoc.slug) {
+					children.push($scope.docParents[i].slug);
+				}
+			}
+
+			if (children.length > 0) {
+				alert('This document has child-documents. Unable to remove.');
+			} else {
+
+				if (confirm('Are you sure you want to remove this document?') == true) {
+					$http.post('/docs/remove', { remove: $scope.updateDoc._id }).success( function (data) {
+						window.location.pathname = '/#/docs';	
+					});
+				}	
 			}
 		};
+
+		$scope.previewDocument = function () {
+			if ($scope.preview) {
+				$scope.preview = !$scope.preview;
+			} else {
+				$http.post('/marked', { 'text': $scope.updateDoc.body }).success( function (markedText) {
+					$scope.previewVisible = true;
+					$scope.preview = $sce.trustAsHtml(markedText);
+				});	
+			}
+		}
 	}
 ]);

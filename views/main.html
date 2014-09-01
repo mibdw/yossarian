@@ -17,7 +17,7 @@
 			<li ng-repeat="option in menu" ng-class="{active: option.slug == slug}">
 				<a href="/#/{{option.slug}}">{{option.name}}</a>
 			</li>
-			<li><a href="/logout">Logout</a></li>
+			<li><a href="/logout" title="Logout {{user.name.first}} {{user.name.last}}">Logout</a></li>
 		</ul>
 	</header>
 

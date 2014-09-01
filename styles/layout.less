@@ -109,6 +109,15 @@ header {
 			width: 13%;
 		}
 
+		.preview {
+			margin-top: .5em;
+
+			.form-close-preview {
+				float: right;
+				margin-top: .8em;
+			}
+		}
+
 		.form-controls {
 			margin-top: 1em;
 			margin-bottom: .5em;
@@ -202,7 +211,8 @@ aside {
 				.submenu {
 					display: block;
 					line-height: 1.3em;
-					padding-bottom: .5em;
+					padding-bottom: 0;
+					padding-left: 1em;
 					font-weight: normal;
 
 					li {
@@ -216,6 +226,8 @@ aside {
 							margin: 0;
 							padding: 0;
 						}
+
+						&:last-child { padding-bottom: .3em }
 					}
 				}
 			}
