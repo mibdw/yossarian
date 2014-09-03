@@ -1,5 +1,19 @@
+<h1>Upcoming events</h1>
+
 <ul>
 	<li>
 		<a href="" ng-click="eventPage(1)">Create event</a>
+	</li>
+</ul>
+
+<ul class="checkboxes">
+	<h4>Filter</h4>
+	<li ng-repeat="category in categoryList">
+		<label for="{{category.slug}}">
+			<input type="checkbox" id="{{category.slug}}" value="{{category._id}}" ng-checked="createDoc.categories.indexOf(category._id) > -1" ng-click="categoryToggle(category._id)"> {{category.name}}
+		</label>
+	</li>
+	<li ng-show="eventCategories.length > 0">
+		<a href="" ng-click="eventCategories.length = 0">Remove all</a>
 	</li>
 </ul>

@@ -3,9 +3,10 @@ var mongoose = require('mongoose');
 var eventSchema = mongoose.Schema({
 	title: { type: String, required: true },
 	note: String,
-	user: { type: String, ref: 'User' },
-	allDay: { type: Boolean, default: true },
+	author: { type: String, ref: 'User' },
 	postDate: Date,
+	editor: { type: String, ref: 'User' },
+	editDate: Date,
 	start: { type: Date, required: true },
 	end: Date,
 	category: { type: String, ref: 'Category' },

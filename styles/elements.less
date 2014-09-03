@@ -98,6 +98,10 @@ textarea {
 	margin-bottom: 3px;
 	.box-sizing (border-box);
 
+	&:focus {
+		border-color: @text;
+	}
+
 }
 
 button {
@@ -125,8 +129,11 @@ button {
 }
 
 .fc {
+
 	.fc-header { display: none }
+		
 	.fc-border-separate {
+		width: 100%;
 		border-collapse: collapse;
 		border: 1px solid @line;
 
@@ -138,17 +145,34 @@ button {
 			border: 1px solid @line;
 			vertical-align: top;
 
+			&:hover { background-color: @hover }
+			&.start, &.end { background-color: @active }
+			&.range { background-color: @hover }
+
 			.fc-day-number {
 				padding: .2em;
 				text-align: right;
+				font-size: .7em;
 			}
 
 			&.fc-other-month {
 				.fc-day-number { color: @vague }
 			}
 
-			&.fc-today { background-color: @mark }
+			&.fc-today { 
+				background-color: @mark;
+				&.start, &.end { background-color: @active }
+				&.range { background-color: @hover }
+			}
 		}
+	}
+
+	.fc-event {
+		color: @back;
+		font-size: .8em;
+		padding: .1em .3em;
+		margin-bottom: .1em;
+		.fc-event-time { display: none; }
 	}
 }
 

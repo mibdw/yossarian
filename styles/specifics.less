@@ -45,12 +45,13 @@
 	}
 
 	&.calendar {
+		.calendar-title { font-size: 1.6em; }
 		.calendar-nav {
 			margin: 0;
 			padding: 0;
 			list-style-type: none;
 			float: right;
-			padding-top: 1em;	
+			padding-top: .5em;	
 
 			li {
 				display: inline;
@@ -62,9 +63,38 @@
 			}
 		}
 
-		.calendar-cancel {
+		.event-cancel {
 			float: right;
 			padding-top: .5em;
+		}
+
+		.event-form {
+			.clearfix;
+
+			label {
+				float: left;
+				width: 25%;
+				clear: left;
+			}
+
+			input[type='text'], input[type='date'], textarea, select {
+				float: left;
+				width: 75%;
+
+				&#start { padding-right: 70px } 
+			}
+		}
+
+		.event-range {
+			float: right;
+			width: 60px;
+			font-size: .9em;
+			margin: -2em -.2em 0 0;
+		}
+
+		.event-submit {
+			float: right;
+			margin-top: .2em;
 		}
 	}
 
