@@ -79,6 +79,7 @@ module.exports = function (app, res, req) {
 	app.post('/calendar/update', ensureAuthenticated, calendar.update);
 	app.post('/calendar/detail', ensureAuthenticated, calendar.detail);
 	app.post('/calendar/list', ensureAuthenticated, calendar.list);
+	app.post('/calendar/upcoming', ensureAuthenticated, calendar.upcoming);
 
 	var projects = require(__dirname + '/projects.js');
 	app.post('/projects/create', ensureAuthenticated, projects.create);

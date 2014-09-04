@@ -1,6 +1,25 @@
 <div class="content left" style="width:70%">
 	<ul class="calendar-nav">
 		<li ng-show="displayMonth != actualMonth" class="calendar-today"><a href="" ng-click="navMonth()">Today</a></li>
+		<li class="calendar-create"><a href="" ng-click="eventPage(1)">Create</a></li>
+		<li class="calendar-filter">
+			<a href="" ng-click="calendarFilter = !calendarFilter" ng-class="{active: eventFilter.length > 0}">
+				<span ng-hide="calendarFilter">Filter</span>
+				<span ng-show="calendarFilter">Close</span>
+			</a>
+			<ul ng-show="calendarFilter" id="filter" outside-click="closeFilter()">
+				<li ng-repeat="category in categoryList">
+					<label for="{{category.slug}}">
+						<input type="checkbox" id="{{category.slug}}" value="{{category._id}}" ng-checked="eventFilter.indexOf(category._id) > -1" ng-click="categoryToggle(category._id)">
+						<span class="color-block" style="background-color: {{category.color}};"></span>
+						{{category.name}}
+					</label>
+				</li>
+				<li ng-show="eventFilter.length > 0">
+					<a href="" ng-click="removeEventCategories()">Remove all</a>
+				</li>
+			</ul>			
+		</li>
 		<li><a href="" ng-click="navMonth('prev')">&laquo; Previous</a></li>
 		<li><a href="" ng-click="navMonth('next')">Next &raquo;</a></li>
 	</ul>

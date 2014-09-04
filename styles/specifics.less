@@ -45,9 +45,51 @@
 	}
 
 	&.calendar {
+		aside {
+			padding-left: 0;
+			border-left-width: 0;
+
+			.upcoming-events {
+
+				li {
+					position: relative;
+
+					.upcoming-category {
+						position: absolute;
+						display: block;
+						top: 0;
+						left: 0;
+						bottom: 0;
+						width: 1em;
+					}
+
+					.upcoming-content {
+						margin-left: 1em;
+						padding: .3em .5em;
+						border-width: 1px 1px 0 0;
+						border-color: @line;
+						border-style: solid;
+						font-size: .8em;
+
+						.upcoming-title {
+							font-weight: bold;
+							font-size: 1.3em;
+						}
+
+						.upcoming-timeline {
+							float: right;
+							color: @vague;
+						}
+					}
+
+					&:last-child .upcoming-content { border-bottom-width: 1px }
+				}
+			}
+		}
+
 		.calendar-title { font-size: 1.6em; }
 		.calendar-nav {
-			margin: 0;
+			margin: 0 1em;
 			padding: 0;
 			list-style-type: none;
 			float: right;
@@ -57,8 +99,42 @@
 				display: inline;
 				margin-left: .2em;
 
-				&.calendar-today {
+				&.calendar-today, &.calendar-create { margin-right: 1em; }
+
+				&.calendar-filter {
 					margin-right: 1em;
+					position: relative;
+
+					.active span {
+						font-weight: bold;
+						text-decoration: underline;
+					}
+
+					ul {
+						z-index: 999;
+						position: absolute;
+						top: 20px;
+						left: 50%;
+						width: 140px;
+						background-color: @back;
+						border: 1px solid @text;
+						padding: .5em;	
+						margin-left: -70px;
+
+						li {
+							display: block;
+							margin-bottom: .1em;
+
+							label {
+								color: @text;
+								line-height: 1em;
+								display: block;
+								white-space: nowrap;
+								overflow: hidden;
+								text-overflow: ellipsis;
+							}
+						}						
+					}
 				}
 			}
 		}

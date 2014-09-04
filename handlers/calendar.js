@@ -27,8 +27,7 @@ exports.update = function(req, res, next) {
 
 exports.detail = function(req, res, next) {
 	Event.findById(req.body._id)
-	.populate('user editor', 'email name role picture department')
-	.populate('category')
+	.populate('author editor', 'email name role picture department')
 	.exec(function (err, eventData) {
 		if (err) console.log(err);	
 		return res.send(eventData);
@@ -38,7 +37,11 @@ exports.detail = function(req, res, next) {
 exports.list = function(req, res, next) {
 	if (req.body.categories && req.body.categories.length > 0) {
 		Event.find({})
-		.where('start').gt(req.body.start).lt(req.body.end)
+		.or([
+			{ start: { $gt: req.body.start, $lte: req.body.end }}, 
+			{ end: { $gt: req.body.start, $lte: req.body.end }}, 
+			{ start: { $lt: req.body.start }, end: { $gt: req.body.end }}
+		])
 		.where('category').in(req.body.categories)
 		.populate('author editor', 'email name role picture department')
 		.populate('category')
@@ -48,12 +51,52 @@ exports.list = function(req, res, next) {
 		});
 	} else {
 		Event.find({})
-		.where('start').gt(req.body.start).lt(req.body.end)
+		.or([
+			{ start: { $gt: req.body.start, $lte: req.body.end }}, 
+			{ end: { $gt: req.body.start, $lte: req.body.end }}, 
+			{ start: { $lt: req.body.start }, end: { $gt: req.body.end }}
+		])
 		.populate('author editor', 'email name role picture department')
 		.populate('category')
 		.exec(function (err, eventData) {
 			if (err) console.log(err);	
 			return res.send(eventData);
+		});
+	}
+};
+
+exports.upcoming = function(req, res, next) {
+
+	var yesterday = moment().subtract('1', 'day');
+	if (req.body.categories && req.body.categories.length > 0) {
+		Event.find({})
+		.or([
+			{ start: { $gt: yesterday }},
+			{ start: { $lt: yesterday }, end: { $gt: yesterday } }
+		])
+		.where('category').in(req.body.categories)
+		.sort('start')
+		.limit(10)
+		.populate('author editor', 'email name role picture department')
+		.populate('category')
+		.exec(function (err, upcomingData) {
+			if (err) console.log(err);
+			return res.send(upcomingData);
+		});
+		
+	} else {
+		Event.find({})
+		.or([
+			{ start: { $gt: yesterday }},
+			{ start: { $lt: yesterday }, end: { $gt: yesterday } }
+		])
+		.sort('start')
+		.limit(10)
+		.populate('author editor', 'email name role picture department')
+		.populate('category')
+		.exec(function (err, upcomingData) {
+			if (err) console.log(err);
+			return res.send(upcomingData);
 		});
 	}
 };

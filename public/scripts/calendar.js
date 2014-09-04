@@ -16,7 +16,7 @@ ctrl.controller('calendarController', ['$scope', '$rootScope', '$routeParams', '
 		$rootScope.heading = $scope.displayMonth + ' \u00AB Calendar'; 
 		$rootScope.moniker = $rootScope.heading + $rootScope.seperator + $rootScope.masthead;
 
-		$scope.createEvent = {};
+		$scope.incident = {};
 
 		$scope.displayMin = moment($scope.displayDate).startOf('month').subtract('15', 'day');
 		$scope.displayMax = moment($scope.displayDate).endOf('month').add('15', 'day');
@@ -29,23 +29,23 @@ ctrl.controller('calendarController', ['$scope', '$rootScope', '$routeParams', '
 						url: '/calendar/list',
 						method: 'POST',
 						data: {
-							categories: $scope.eventCategories
+							categories: $scope.eventFilter
 						},
 						error: function() {
 							alert('there was an error while fetching events!');
 						}
 					}
 				],
-				dayRender: function(date, cell) { 
+				dayRender: function (date, cell) { 
 					var scope = angular.element('#main').scope();
 
 					scope.$apply (function() {
-						if (scope.createEvent.start) {
-							var start = moment(scope.createEvent.start, 'DD/MM/YYYY');
+						if (scope.incident.start) {
+							var start = moment(scope.incident.start, 'DD/MM/YYYY');
 							scope.startDate(start);
 						}
-						if (scope.createEvent.end) {
-							var end = moment(scope.createEvent.end, 'DD/MM/YYYY');
+						if (scope.incident.end) {
+							var end = moment(scope.incident.end, 'DD/MM/YYYY');
 							scope.endDate(end);
 						}
 					});				
@@ -54,19 +54,47 @@ ctrl.controller('calendarController', ['$scope', '$rootScope', '$routeParams', '
 					var scope = angular.element('#main').scope();
 
 					scope.$apply (function() {
-						scope.eventPage(1);
-						if (!$('#end').is(':visible') || scope.resetStart == true) {	
-							scope.startDate(date);
+						if (scope.eventOption.slug == 'update') {
+							if (!$('#end').is(':visible') || scope.resetStart == true) {	
+								scope.startDate(date);
+							} else {
+								scope.endDate(date);
+							}
 						} else {
-							scope.endDate(date);
-						}			
+							scope.eventPage(1);
+							if (!$('#end').is(':visible') || scope.resetStart == true) {	
+								scope.startDate(date);
+							} else {
+								scope.endDate(date);
+							}
+						}
+										
 					});
 				},
-				eventRender: function(event, element) {
+				eventRender: function (event, element) {
 					element.css({
 						'background-color': event.category.color
 					});
 					element.attr('title', event.title + ' [' + event.category.name + ']');
+					element.addClass(event._id);
+				},
+				eventMouseover: function (event, jsEvent, view) {
+					var scope = angular.element('#main').scope();
+					var rootScope = scope.$root;
+					var hoverColor = rootScope.morphColor(event.category.color, 40);
+
+					$('.' + event._id).css('background-color', hoverColor);
+				},
+				eventMouseout: function (event, jsEvent, view) {
+					$('.' + event._id).css('background-color', event.category.color);
+				},
+				eventClick: function (event, jsEvent, view) {
+					var scope = angular.element('#main').scope();
+
+					scope.$apply (function() {
+						scope.eventPage(2);
+						scope.getEvent(event);
+					});
 				}
 			});
 		}, 1);
@@ -99,42 +127,63 @@ ctrl.controller('calendarController', ['$scope', '$rootScope', '$routeParams', '
 
 		$scope.eventOption = $scope.eventOptions[0];
 		$scope.eventPage = function (index) {
+			$scope.eventRange = false;
+			if (index == 1 && $scope.eventOption.slug != 'create') {
+				$scope.incident = {};
+			}
+			if (index == 0) { $scope.getUpcoming(); }
 			$scope.eventOption = $scope.eventOptions[index];
 		}
 
+		$scope.getEvent = function (id) {
+			$http.post('/calendar/detail', id).success(function (incident) {
+				$scope.incident = incident;
+				$('.fc-day').removeClass('start range end');
+				$scope.incident.start = moment($scope.incident.start).format('DD/MM/YYYY');
+				var beginning = moment($scope.incident.start, 'DD/MM/YYYY').format('YYYY-MM-DD');
+				$('.fc-day[data-date="' + beginning + '"]').addClass('start');
+
+				if ($scope.incident.end) {
+					$scope.rangeToggle();
+					$scope.incident.end = moment($scope.incident.end).format('DD/MM/YYYY');
+					var finale = moment($scope.incident.end, 'DD/MM/YYYY').format('YYYY-MM-DD');
+					$('.fc-day[data-date="' + finale + '"]').addClass('end');
+					$scope.rangeMark($scope.incident.start, $scope.incident.end);
+				}
+			});
+		}
+
 		$scope.categoryToggle = function (id) {
-			if ($scope.createEvent.categories.indexOf(id) > -1) {
-				var index = $scope.createEvent.categories.indexOf(id);
-				$scope.createEvent.categories.splice(index, 1);
-			} else if ($scope.createEvent.categories.indexOf(id) == -1) {
-				$scope.createEvent.categories.push(id);
+			if ($scope.incident.categories.indexOf(id) > -1) {
+				var index = $scope.incident.categories.indexOf(id);
+				$scope.incident.categories.splice(index, 1);
+			} else if ($scope.incident.categories.indexOf(id) == -1) {
+				$scope.incident.categories.push(id);
 			}
 		}
 
 		$scope.rangeToggle = function () {
 			$scope.eventRange = !$scope.eventRange;
 			if ($scope.eventRange == false) {
-				$scope.createEvent.end = '';
-				$('.fc-day').removeClass('end');
-				$('.fc-day').removeClass('range');
+				$scope.incident.end = '';
+				$('.fc-day').removeClass('end range');
 			}
 		}
 
 		$scope.startDate = function (date) {
-			var dataDate = moment(date).format('YYYY-MM-DD');
-			
-			if ($scope.createEvent.end) {
-				var checkDate = moment($scope.createEvent.end, 'DD/MM/YYYY');
+			var dataDate = moment(date).format('YYYY-MM-DD');			
+			if ($scope.incident.end) {
+				var checkDate = moment($scope.incident.end, 'DD/MM/YYYY');
 				if (moment(date).isBefore(checkDate)) {
 					$('.fc-day').removeClass('start');
 					$('.fc-day[data-date="' + dataDate + '"]').addClass('start');
-					$scope.createEvent.start = moment(date).format('DD/MM/YYYY');
-					$scope.rangeMark($scope.createEvent.start, $scope.createEvent.end);	
+					$scope.incident.start = moment(date).format('DD/MM/YYYY');
+					$scope.rangeMark($scope.incident.start, $scope.incident.end);
 				}
 			} else {
 				$('.fc-day').removeClass('start');
 				$('.fc-day[data-date="' + dataDate + '"]').addClass('start');
-				$scope.createEvent.start = moment(date).format('DD/MM/YYYY');
+				$scope.incident.start = moment(date).format('DD/MM/YYYY');
 			}			
 
 			$scope.resetStart = false;
@@ -142,15 +191,15 @@ ctrl.controller('calendarController', ['$scope', '$rootScope', '$routeParams', '
 
 		$scope.endDate = function (date) {
 			var dataDate = moment(date).format('YYYY-MM-DD');
-			var checkDate = moment($scope.createEvent.start, 'DD/MM/YYYY');
+			var checkDate = moment($scope.incident.start, 'DD/MM/YYYY');
 
 			if (moment(date).isAfter(checkDate)) {
-				$scope.createEvent.end = moment(date).format('DD/MM/YYYY');
+				$scope.incident.end = moment(date).format('DD/MM/YYYY');
 
 				$('.fc-day').removeClass('end');
 				$('.fc-day[data-date="' + dataDate + '"]').addClass('end');
 
-				$scope.rangeMark($scope.createEvent.start, $scope.createEvent.end);
+				$scope.rangeMark($scope.incident.start, $scope.incident.end);
 			}
 		}
 
@@ -168,15 +217,15 @@ ctrl.controller('calendarController', ['$scope', '$rootScope', '$routeParams', '
 		}
 
 		$scope.resetStartDate = function () {
-			if ($scope.createEvent.end) {
+			if ($scope.incident.end) {
 				$scope.resetStart = true;
 			}
 		}
 
 		$scope.checkStart = function () {
 			setTimeout(function(){
-				if (moment($scope.createEvent.start, 'DD/MM/YYYY').isValid()) {
-					var date = moment($scope.createEvent.start, 'DD/MM/YYYY');
+				if (moment($scope.incident.start, 'DD/MM/YYYY').isValid()) {
+					var date = moment($scope.incident.start, 'DD/MM/YYYY');
 					$scope.startDate(date);
 				}
 			}, 500);
@@ -184,30 +233,30 @@ ctrl.controller('calendarController', ['$scope', '$rootScope', '$routeParams', '
 
 		$scope.checkEnd = function () {
 			setTimeout(function(){	
-				if (moment($scope.createEvent.end, 'DD/MM/YYYY').isValid()) {
-					var date = moment($scope.createEvent.end, 'DD/MM/YYYY');
+				if (moment($scope.incident.end, 'DD/MM/YYYY').isValid()) {
+					var date = moment($scope.incident.end, 'DD/MM/YYYY');
 					$scope.endDate(date);
 				}
 			}, 500);
 		}
 
-		$scope.createCancel = function () {
+		$scope.incidentCancel = function () {
 			$scope.eventPage(0);
-			$scope.createEvent = {};
+			$scope.incident = {};
 			$scope.eventRange = false;
 			$('.fc-day').removeClass('start end range');
 		}
 
-		$scope.createNewEvent = function () {
-			$scope.createEvent.postDate = moment();
-			$scope.createEvent.author = $rootScope.user._id;
-			$scope.createEvent.start = moment($scope.createEvent.start, 'DD/MM/YYYY').format('YYYY-MM-DD');
-			if ($scope.createEvent.end) {
-				$scope.createEvent.end = moment($scope.createEvent.end, 'DD/MM/YYYY').endOf('day');
+		$scope.createEvent = function () {
+			$scope.incident.postDate = moment();
+			$scope.incident.author = $rootScope.user._id;
+			$scope.incident.start = moment($scope.incident.start, 'DD/MM/YYYY').format('YYYY-MM-DD');
+			if ($scope.incident.end) {
+				$scope.incident.end = moment($scope.incident.end, 'DD/MM/YYYY').endOf('day');
 			}
-			$http.post('/calendar/create', $scope.createEvent).success(function () {
-				$scope.navMonth($scope.createEvent.start);		
-				$scope.createEvent = {};
+			$http.post('/calendar/create', $scope.incident).success(function () {
+				$scope.navMonth($scope.incident.start);		
+				$scope.incident = {};
 				$scope.eventPage(0);
 
 				$('.fc-day').removeClass('start end range');
@@ -215,18 +264,76 @@ ctrl.controller('calendarController', ['$scope', '$rootScope', '$routeParams', '
 			});
 		}
 
-		$scope.eventCategories = [];
+		$scope.updateEvent = function () {
+			$scope.incident.editDate = moment();
+			$scope.incident.author = $scope.incident.author._id;
+			$scope.incident.editor = $rootScope.user._id;
+			$scope.incident.start = moment($scope.incident.start, 'DD/MM/YYYY').format('YYYY-MM-DD');
+			if ($scope.incident.end) {
+				$scope.incident.end = moment($scope.incident.end, 'DD/MM/YYYY').endOf('day');
+			}
+			$http.post('/calendar/update', $scope.incident).success(function () {
+				$scope.navMonth($scope.incident.start);		
+				$scope.incident = {};
+				$scope.eventPage(0);
+
+				$('.fc-day').removeClass('start end range');
+				$('.calendar-view').fullCalendar('refetchEvents');
+			});
+		}
+
+		$scope.upcomingEvents = [];
+		$scope.getUpcoming = function () {
+			$http.post('/calendar/upcoming', { 'categories': $scope.eventFilter }).success(function (upcomingData) {
+				$scope.upcomingEvents = upcomingData;
+				var today = moment();
+				var tomorrow = moment().add('1', 'day');
+				for (i in $scope.upcomingEvents) {
+					if (moment($scope.upcomingEvents[i].start).isBefore(today, 'day')) {
+						$scope.upcomingEvents[i].timeline = 'history';
+					} else if (moment($scope.upcomingEvents[i].start).isSame(today, 'day')) {
+						$scope.upcomingEvents[i].timeline = 'today';
+					} else if (moment($scope.upcomingEvents[i].start).isSame(tomorrow, 'day')) {
+						$scope.upcomingEvents[i].timeline = 'tomorrow';
+					} else if (moment($scope.upcomingEvents[i].start).isAfter(today, 'day')) {
+						$scope.upcomingEvents[i].timeline = 'future';
+					}
+
+					$scope.upcomingEvents[i].period = moment($scope.upcomingEvents[i].start).format('DD/MM/YYYY');
+					if ($scope.upcomingEvents[i].end) {
+						var start = moment($scope.upcomingEvents[i].start).format('DD/MM/YYYY');
+						var end = moment($scope.upcomingEvents[i].end).format('DD/MM/YYYY');
+
+						if (moment($scope.upcomingEvents[i].start).isAfter(today, 'day') == false) {
+							var timeleft = moment($scope.upcomingEvents[i].end).fromNow(today, true);
+							$scope.upcomingEvents[i].period = start + ' \u2014 ' + end + ' (' + timeleft + ' left)';
+						} else {
+							$scope.upcomingEvents[i].period = start + ' \u2014 ' + end;
+						}						
+					}
+				}
+			});
+		}
+		$scope.getUpcoming();
+
+		$scope.eventFilter = [];
 		$scope.categoryToggle = function (id) {
-			if ($scope.eventCategories.indexOf(id) > -1) {
-				var index = $scope.eventCategories.indexOf(id);
-				$scope.eventCategories.splice(index, 1);
-			} else if ($scope.eventCategories.indexOf(id) == -1) {
-				$scope.eventCategories.push(id);
+			if ($scope.eventFilter.indexOf(id) > -1) {
+				var index = $scope.eventFilter.indexOf(id);
+				$scope.eventFilter.splice(index, 1);
+			} else if ($scope.eventFilter.indexOf(id) == -1) {
+				$scope.eventFilter.push(id);
 			}
 		}
 
-		$scope.$watch('eventCategories', function() {
+		$scope.$watch('eventFilter', function() {
 			$('.calendar-view').fullCalendar('refetchEvents');
+			$scope.incidentCancel();
 		}, true);
+
+		$scope.removeEventCategories = function () {
+			$scope.eventFilter.length = 0;
+			$('.checkboxes input').attr('checked', false);
+		}
 	}
 ]);	
