@@ -1,9 +1,27 @@
-<aside class="left" style="width:20%">
-	<ul class="links">
-		<li><a href="/#/docs/create">Create document</a></li>
+ <aside class="left" style="width:20%">
+
+	<input type="text" class="search" ng-model="docSearch" placeholder="Search documents" ng-change="docQuery()">
+	<a href="" class="clear" ng-show="docSearch" ng-click="docSearch = ''">Clear</a>
+
+	<ul class="results" ng-show="docSearch">
+		<li ng-repeat="result in docResults = (docsMenu |filter: docSearch | limitTo: 7)" ng-click="gotoDoc(result.slug)">	
+			<strong>{{result.title}}</strong>
+			<dl>
+				<dt>Author: </dt>
+				<dd><strong>{{result.author.name.first}} {{result.author.name.last}}</strong> <small>{{fromNow(result.postDate)}}</small></dd>
+				<dt ng-show="result.editor">Editor: </dt>
+				<dd ng-show="result.editor"><strong>{{result.author.name.first}} {{result.author.name.last}}</strong> <small>{{fromNow(result.editDate)}}</small></dd>
+			</dl>
+			<ul class="categories">
+				<li ng-repeat="category in result.categories" style="background-color: {{category.color}}">
+					{{category.name}}
+				</li>
+			</ul>
+		</li>
+		<li ng-show="docResults.length == 0" class="no-results">No results for <em>{{docSearch}}</em></li>
 	</ul>
 
-	<ul class="menu">
+	<ul class="menu" ng-hide="docSearch">
 		<li ng-repeat="doc in docsMenu | filter: {parent: 'none'} | orderBy: 'order'" ng-class="{active: doc.slug == currentSlug || doc.slug == currentDoc.parent}">
 			<a href="/#/docs/{{doc.slug}}" title="{{doc.title}}">{{doc.title}}</a>
 			<ul class="submenu">
@@ -12,6 +30,10 @@
 				</li>
 			</ul>
 		</li>
+	</ul>
+
+	<ul class="links" ng-hide="docSearch">
+		<li><a href="/#/docs/create">Create document</a></li>
 	</ul>
 </aside>
 

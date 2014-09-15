@@ -1,1 +1,33 @@
-<div class="under-construction"><em>{{heading}}</em> &mdash; Under construction</div>
+<aside class="right" style="width: 20%">
+	
+	<input type="text" class="search" ng-model="projectSearch" placeholder="Search projects" ng-change="projectQuery()">
+	<a href="" class="clear" ng-show="projectSearch" ng-click="projectSearch = ''">Clear</a>
+
+	<ul class="results" ng-show="projectSearch">
+		<li ng-repeat="result in projectResults |filter: projectSearch | limitTo: 7" ng-click="gotoProject(result.slug)" title="{{result.title}}">	
+			<strong>{{result.title}}</strong>
+			<dl>
+				<dt>Author: </dt>
+				<dd><strong>{{result.author.name.first}} {{result.author.name.last}}</strong> <small>{{fromNow(result.postDate)}}</small></dd>
+				<dt ng-show="result.editor">Editor: </dt>
+				<dd ng-show="result.editor"><strong>{{result.author.name.first}} {{result.author.name.last}}</strong> <small>{{fromNow(result.editDate)}}</small></dd>
+			</dl>
+			<ul class="categories">
+				<li ng-repeat="category in result.categories" style="background-color: {{category.color}}">
+					{{category.name}}
+				</li>
+			</ul>
+		</li>
+		<li ng-show="projectResults.length == 0" class="no-results">No results for <em>{{projectSearch}}</em></li>
+	</ul>
+
+	<ul class="links" ng-hide="projectSearch">
+		<li><a href="/#/projects/create">Create project</a></li>
+	</ul>
+
+	
+</aside>
+
+<div class="content left" style="width: 80%">
+	Projects overview
+</div>

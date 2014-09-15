@@ -33,7 +33,9 @@
 			<h4>Categories</h4>
 			<li ng-repeat="category in categoryList">
 				<label for="{{category.slug}}">
-					<input type="checkbox" id="{{category.slug}}" value="{{category._id}}" ng-checked="createDoc.categories.indexOf(category._id) > -1" ng-click="categoryToggle(category._id)"> {{category.name}}
+					<input type="checkbox" id="{{category.slug}}" value="{{category._id}}" ng-checked="createDoc.categories.indexOf(category._id) > -1" ng-click="categoryToggle(category._id)"> 
+					<span class="color-block" style="background-color: {{category.color }};"></span>
+					{{category.name}}
 				</label>
 			</li>
 		</ul>

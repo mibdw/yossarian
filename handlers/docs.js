@@ -46,9 +46,12 @@ exports.detail = function(req, res, next) {
 
 exports.menu = function(req, res, next) {
 	Doc.find({})
-	.select('_id title slug parent order')
+	.select('_id title slug parent order categories author editor postDate editDate')
+	.populate('author editor', 'email name role picture department')
+	.populate('categories')	
 	.exec(function (err, docMenu) {
 		if (err) console.log(err);
 		return res.send(docMenu);
 	});
 };
+

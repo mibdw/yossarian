@@ -53,6 +53,7 @@
 
 				li {
 					position: relative;
+					cursor: pointer;
 
 					.upcoming-category {
 						position: absolute;
@@ -65,7 +66,7 @@
 
 					.upcoming-content {
 						margin-left: 1em;
-						padding: .3em .5em;
+						padding: .3em .7em .6em 1em;
 						border-width: 1px 1px 0 0;
 						border-color: @line;
 						border-style: solid;
@@ -78,18 +79,26 @@
 
 						.upcoming-timeline {
 							float: right;
-							color: @vague;
+							line-height: 20px;
 						}
 					}
 
+					&:hover { background-color: @hover }
 					&:last-child .upcoming-content { border-bottom-width: 1px }
+
+					dl {
+						color: @vague;
+
+						dt { float: left }
+						dd { margin-left: 20% }
+					}
 				}
 			}
 		}
 
 		.calendar-title { font-size: 1.6em; }
 		.calendar-nav {
-			margin: 0 1em;
+			margin: 0;
 			padding: 0;
 			list-style-type: none;
 			float: right;
@@ -130,7 +139,7 @@
 								line-height: 1em;
 								display: block;
 								white-space: nowrap;
-								overflow: hidden;
+								overflow-x: hidden;
 								text-overflow: ellipsis;
 							}
 						}						
@@ -171,6 +180,10 @@
 		.event-submit {
 			float: right;
 			margin-top: .2em;
+		}
+
+		.credits {
+			padding-top: .5em; 
 		}
 	}
 

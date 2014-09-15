@@ -9,7 +9,10 @@
 </head>
 <body>
 	<% if (message) { %>
-		<p><%= message %></p>
+		<p class="alert">
+			<%= message %>
+			<span class="close">&times;</span>
+		</p>
 	<% } %>
 
 	<form action="/login" method="post" class="login">

@@ -36,7 +36,12 @@ ctrl.controller('docsController', ['$scope', '$rootScope', '$routeParams', '$htt
 				$rootScope.heading = $scope.currentDoc.title + ' \u00AB Documents'; 
 				$rootScope.moniker = $rootScope.heading + $rootScope.seperator + $rootScope.masthead;
 			});
+
 		});
+
+		$scope.gotoDoc = function (slug) {
+			window.location.pathname = "/#/docs/" + slug;
+		}
 	}
 ]);
 

@@ -1,20 +1,5 @@
 <a href="" ng-click="incidentCancel()" class="event-cancel">Cancel</a>
 <h1>{{eventOption.name}}</h1>
-<ul class="form-credits credits">
-	<li>
-		<img src="/avatar.gif">
-		<strong>{{incident.author.name.first}} {{incident.author.name.last}}</strong> <small>Author</small><br>
-		<a href="mailto:{{incident.author.email}}">{{incident.author.email}}</a><br>
-		<small>Created <time datetime="{{incident.postDate}}">{{fromNow(incident.postDate)}}</time></small>
-	</li>
-	<li ng-if="incident.editor">
-		<img src="/avatar.gif">
-		<strong>{{incident.editor.name.first}} {{incident.editor.name.last}}</strong> <small>Editor</small><br>
-		<a href="mailto:{{incident.editor.email}}">{{incident.editor.email}}</a><br>
-		<small>Last updated <time datetime="{{incident.editDate}}">{{fromNow(incident.editDate)}}</time></small>
-	</li>
-</ul>
-
 <form ng-submit="updateEvent()" class="event-form form">
 	<label for="title">Title</label>
 	<input type="text" id="title" ng-model="incident.title" required="required">
@@ -40,3 +25,18 @@
 
 	<button type="submit" class="event-submit">Update</button>
 </form>
+
+<ul class="form-credits credits">
+	<li>
+		<img src="/avatar.gif">
+		<strong>{{incident.author.name.first}} {{incident.author.name.last}}</strong> <small>Author</small><br>
+		<a href="mailto:{{incident.author.email}}">{{incident.author.email}}</a><br>
+		<small>Created <time datetime="{{incident.postDate}}">{{fromNow(incident.postDate)}}</time></small>
+	</li>
+	<li ng-if="incident.editor">
+		<img src="/avatar.gif">
+		<strong>{{incident.editor.name.first}} {{incident.editor.name.last}}</strong> <small>Editor</small><br>
+		<a href="mailto:{{incident.editor.email}}">{{incident.editor.email}}</a><br>
+		<small>Last updated <time datetime="{{incident.editDate}}">{{fromNow(incident.editDate)}}</time></small>
+	</li>
+</ul>

@@ -110,12 +110,37 @@ button {
 	.box-sizing (border-box);
 }
 
+.alert {
+	background-color: red;
+	color: white;
+	position: absolute;
+	top: .5em;
+	left: 50%;
+	margin: 0 0 0 -250px;
+	padding: .6em 2em .6em 1em;
+	width: 500px;
+	.box-sizing (border-box);
+
+	.close {
+		position: absolute;
+		right: .3em;
+		top: 0em;
+		font-size: 2em;
+		color: darken(red, 5%);
+		cursor: pointer;
+
+		&:hover {
+			color: darken(red, 10%);
+		}
+	}
+}
+
 .color-block {
 	display: inline-block;
 	height: 1em;
 	width: 1em;
 	position: relative;
-	bottom: -.08em;
+	bottom: -.1em;
 }
 
 .credits {

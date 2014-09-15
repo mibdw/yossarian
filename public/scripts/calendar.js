@@ -64,8 +64,10 @@ ctrl.controller('calendarController', ['$scope', '$rootScope', '$routeParams', '
 							scope.eventPage(1);
 							if (!$('#end').is(':visible') || scope.resetStart == true) {	
 								scope.startDate(date);
+								scope.rangeToggle();
 							} else {
 								scope.endDate(date);
+								scope.rangeToggle();
 							}
 						}
 										
@@ -315,6 +317,12 @@ ctrl.controller('calendarController', ['$scope', '$rootScope', '$routeParams', '
 			});
 		}
 		$scope.getUpcoming();
+
+		$scope.upcomingClick = function (stuff) {
+			$scope.navMonth(stuff.start)
+			$scope.eventPage(2);
+			$scope.getEvent(stuff);
+		}
 
 		$scope.eventFilter = [];
 		$scope.categoryToggle = function (id) {

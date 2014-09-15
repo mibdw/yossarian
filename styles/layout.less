@@ -36,10 +36,11 @@ header {
 	.masthead {
 		font-weight: bold;
 		color: @text;
+		font-style: italic;
 
-		span {
-			position: relative;
-			top: -.3em;
+		&:hover {
+			color: @link;
+			text-decoration: none;
 		}
 	}
 
@@ -179,13 +180,27 @@ aside {
 	border-width: 0;	
 	.box-sizing (border-box);
 
+	.search { 
+		width: 100%; 
+		padding-right: 50px;
+	}
+
+	.clear {
+		float: right;
+		position: relative;
+		top: -1.8em;
+		right: .5em;
+		margin-bottom: -1.8em;
+	}
+
 	ul {
 		list-style-type: none;
 		margin: 0;
 		padding: 0 0 1em;
 		.clearfix;
 			
-		&.menu { line-height: 1.3em; }
+		&.menu { line-height: 1.3em; margin-top: 1em }
+		&.links { margin-top: 1em }
 
 		h4 {
 			font-size: 1em;
@@ -217,7 +232,11 @@ aside {
 
 					li {
 
-						a { color: @link; }
+						a { 
+							color: @link; 
+							
+							&:hover { text-decoration: underline }
+						}
 
 						&.active {
 							border-width: 0;
@@ -225,6 +244,8 @@ aside {
 							background-color: transparent;
 							margin: 0;
 							padding: 0;
+
+							a:hover { text-decoration: none }
 						}
 
 						&:last-child { padding-bottom: .3em }
@@ -240,6 +261,66 @@ aside {
 			width: auto;
 			line-height: 1.4em;
 			color: @text;
+		}
+
+		&.results {
+
+			li {
+				cursor: pointer;
+				padding: .4em 0;
+				border-bottom: 1px solid @line;
+				font-size: 0.8em;
+
+				strong {
+					display: block;
+					white-space: nowrap;
+					overflow: hidden;
+					text-overflow: ellipsis;
+					font-size: 1.3em;
+					margin-bottom: .2em;
+				}
+
+				dl {
+					color: @vague;
+					line-height: 1.3em;
+
+					dt { float: left; }
+					dd { 
+						margin-left: 20%;
+
+						strong {
+							display: inline;
+							font-size: 1em;
+						}
+					}
+				}
+
+				.categories {
+					list-style-type: none;
+					margin: 0;
+					padding: 0;
+					font-size: 1em;
+					white-space: normal;
+
+					li {
+						display: inline;
+						border-width: 0;
+						padding: 0 .2em;
+						margin: 0 .2em 0 0;
+						color: #fff;
+					}
+				}
+
+				&:hover { background-color: @hover }
+
+				&.no-results {
+					cursor: default;
+					color: @vague;
+					font-size: 1em;
+
+					&:hover { background-color: transparent; }
+				}
+			}
 		}
 	}
 

@@ -1,19 +1,23 @@
 <h1>Upcoming events</h1>
 
 <ul class="upcoming-events">
-	<li ng-repeat="event in upcomingEvents">
+	<li ng-repeat="event in upcomingEvents" ng-click="upcomingClick(event)">
 		<div class="upcoming-category" style="background-color: {{event.category.color}}"></div>
 		<div class="upcoming-content">
 			<span class="upcoming-timeline" ng-show="event.timeline == 'history'">Started {{fromNow(event.start)}}</span>
-			<span class="upcoming-timeline" ng-show="event.timeline == 'today'">Today</span>
+			<span class="upcoming-timeline" ng-show="event.timeline == 'today'"><strong>Today</strong></span>
 			<span class="upcoming-timeline" ng-show="event.timeline == 'tomorrow'">Tomorrow</span>
 			<span class="upcoming-timeline" ng-show="event.timeline == 'future'">{{fromNow(event.start)}}</span>
 
 			<span class="upcoming-title">{{event.title}}</span>
 			<br>
 
-			<span class="upcoming-period">{{event.period}}</span>
-
+			<dl>
+				<dt>Date:</dt>
+				<dd>{{event.period}}</dd>
+				<dt>Author:</dt>
+				<dd>{{event.author.name.first}} {{event.author.name.last}}</dd>
+			</dl>
 			
 
 		</div>
