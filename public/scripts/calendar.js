@@ -64,7 +64,6 @@ ctrl.controller('calendarController', ['$scope', '$rootScope', '$routeParams', '
 							scope.eventPage(1);
 							if (!$('#end').is(':visible') || scope.resetStart == true) {	
 								scope.startDate(date);
-								scope.rangeToggle();
 							} else {
 								scope.endDate(date);
 								scope.rangeToggle();
@@ -282,6 +281,18 @@ ctrl.controller('calendarController', ['$scope', '$rootScope', '$routeParams', '
 				$('.fc-day').removeClass('start end range');
 				$('.calendar-view').fullCalendar('refetchEvents');
 			});
+		}
+
+		$scope.removeEvent = function () {
+			if (confirm('Are you sure you want to remove this event?') == true) {
+				$http.post('/calendar/remove', { remove: $scope.incident._id }).success( function (data) {	
+					$scope.incident = {};
+					$scope.eventPage(0);
+
+					$('.fc-day').removeClass('start end range');
+					$('.calendar-view').fullCalendar('refetchEvents');
+				});
+			}	
 		}
 
 		$scope.upcomingEvents = [];

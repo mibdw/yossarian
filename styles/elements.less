@@ -215,6 +215,8 @@ button {
 	border: 1px solid @text;
 	margin: .2em .5em;
 
+	&.right { margin-left: -20px; }
+
 	&:empty { display: none; 	}
 
 	.ui-datepicker-header {
@@ -277,6 +279,8 @@ button {
 					&.ui-state-highlight { background-color: @mark }
 					&.ui-state-active { background-color: @active }
 				}
+
+				&.ui-state-disabled { color: @vague; }
 			}
 
 			&:last-child td { border-bottom-width: 0 }

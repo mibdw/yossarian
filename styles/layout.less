@@ -34,13 +34,8 @@ header {
 	padding-bottom: .4em;	
 
 	.masthead {
-		font-weight: bold;
-		color: @text;
-		font-style: italic;
-
-		&:hover {
-			color: @link;
-			text-decoration: none;
+		img {
+			margin: 3px 0 -5px;
 		}
 	}
 
@@ -166,6 +161,21 @@ header {
 			select { width: 70% }
 		}
 
+		.form-inputs {
+			margin-bottom: 1em;
+			.clearfix;
+
+			label { 
+				width: 30%;
+				padding: 1px 0 3px 0; 
+			}
+
+			input {
+				width: 70%;
+				float: right;
+			}
+		}
+
 		.form-links {
 			border-top: 1px solid @line;
 			padding-top: .5em;
@@ -256,7 +266,7 @@ aside {
 
 		label { cursor: pointer; }
 
-		&.checkboxes label {
+		&.checkboxes label, &.radio label {
 			float: left;
 			width: auto;
 			line-height: 1.4em;

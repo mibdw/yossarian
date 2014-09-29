@@ -40,7 +40,7 @@
 			</select>
 
 			<label for="new-picture">Picture</label>
-			<input type="file" id="new-picture" disabled="disabled">
+			<input type="file" id="new-picture" accept=".jpg,.gif,.png">
 
 			<label for="new-note">Note</label>
 			<textarea rows="8"  ng-model="newUser.note" id="new-note"></textarea>
@@ -90,7 +90,7 @@
 			</select>
 
 			<label for="update-picture">Picture</label>
-			<input type="file" id="update-picture" disabled="disabled">
+			<input type="file" id="update-picture" accept=".jpg,.gif,.png">
 
 			<label for="update-note">Note</label>
 			<textarea rows="8" ng-model="editUser.note" id="update-note"></textarea>
@@ -109,9 +109,9 @@
 		<a href="" class="user-clear" ng-show="userSearch" ng-click="userSearch = ''">Clear</a>
 
 		<ul class="user-list">
-			<li ng-repeat="user in userList | filter: userSearch | orderBy: '-postDate' | limitTo: userOffset - userList.length | limitTo: userLimit" ng-click="userEditor(user._id)" ng-class="{active: user._id == editUser._id}">
+			<li ng-repeat="user in userList | filter: {name: userSearch} | orderBy: '-postDate' | limitTo: userOffset - userList.length | limitTo: userLimit" ng-click="userEditor(user._id)" ng-class="{active: user._id == editUser._id}">
 				<img src="/avatar.gif">
-				<strong>{{user.name.first}} {{user.name.last}}</strong> <small><time datetime={{user.postDate}}>{{fromNow(user.postDate)}}</time></small><br>
+				<strong ng-bind-html="user.name.first + ' ' + user.name.last | highlight: userSearch"></strong> <small><time datetime={{user.postDate}}>{{fromNow(user.postDate)}}</time></small><br>
 				<a href="mailto:{{user.email}}">{{user.email}}</a>
 			</li>
 		</ul>

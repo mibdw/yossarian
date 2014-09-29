@@ -11,7 +11,9 @@
 
 	<header>
 		
-		<a href="/" class="masthead" ng-bind-template="{{masthead}}">Yossarian</a>
+		<a href="/" class="masthead">
+			<img src="/c130-hercules.gif" title="{{heading}}">
+		</a>
 			
 		<ul class="nav">
 			<li ng-repeat="option in menu" ng-class="{active: option.slug == slug}">
@@ -39,6 +41,7 @@
 	<script src="/scripts/libs/fullcalendar.min.js"></script>
 	<script src="/scripts/libs/angular.min.js"></script>
 	<script src="/scripts/libs/angular-route.min.js"></script>
+	<script src="/scripts/libs/angular-sanitize.min.js"></script>
 
 	<script src="/scripts/global.js"></script>
 	<script src="/scripts/dashboard.js"></script>

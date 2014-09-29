@@ -1,4 +1,4 @@
-var app = angular.module('yossarian', ['ngRoute', 'dashboard', 'docs', 'calendar', 'projects', 'relations', 'settings']);
+var app = angular.module('yossarian', ['ngRoute', 'ngSanitize', 'ui.highlight', 'dashboard', 'docs', 'calendar', 'projects', 'relations', 'settings']);
 
 app.config(['$routeProvider', function ($routeProvider) {
 	$routeProvider.
@@ -32,15 +32,15 @@ app.config(['$routeProvider', function ($routeProvider) {
 		}).
 		when('/projects/:slug/update', {
 		templateUrl: 'partials/projects/update',
-		controller: 'projectsController'
+		controller: 'projectsUpdate'
 		}).
 		when('/projects/create', {
 		templateUrl: 'partials/projects/create',
-		controller: 'projectsController'
+		controller: 'projectsCreate'
 		}).
 		when('/projects/:slug', {
 		templateUrl: 'partials/projects/detail',
-		controller: 'projectsController'
+		controller: 'projectsDetail'
 		}).
 		when('/projects', {
 		templateUrl: 'partials/projects/main',
@@ -89,13 +89,9 @@ app.controller('global', ['$scope', '$rootScope', '$http',
 
 		$rootScope.markdownURL = 'https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet';
 
-		$rootScope.fromNow = function (date) { 
-			return moment(date).fromNow(); 
-		}
-
-		$rootScope.daysFromNow = function (date) { 
-			return moment(date).fromNow('dd'); 
-		}
+		$rootScope.fromNow = function (date) { 	return moment(date).fromNow(); }
+		$rootScope.daysFromNow = function (date) { return moment(date).fromNow('dd'); }
+		$rootScope.displayDate = function (date) { return moment(date).format('DD-MM-YYYY'); }
 		
 		$rootScope.datePicker = function () {
 			var yearRange = moment().subtract('100', 'year').format('YYYY') + ':' + moment().format('YYYY');
@@ -130,3 +126,19 @@ app.controller('global', ['$scope', '$rootScope', '$http',
 		}
 	}
 ]);
+
+angular.module('ui.highlight',[]).filter('highlight', function () {
+	return function (text, search, caseSensitive) {
+		if (text && (search || angular.isNumber(search))) {
+			text = text.toString();
+			search = search.toString();
+			if (caseSensitive) {
+				return text.split(search).join('<mark>' + search + '</mark>');
+			} else {
+				return text.replace(new RegExp(search, 'gi'), '<mark>$&</mark>');
+			}
+		} else {
+			return text;
+		}
+	};
+});

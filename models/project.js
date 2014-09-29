@@ -11,7 +11,7 @@ var projectSchema = mongoose.Schema({
 	editDate: Date,
 	start: Date,
 	end: Date,
-	categories: [{ type: String, ref: 'User' }],
+	categories: [{ type: String, ref: 'Category' }],
 	description: String,
 	comments: [{
 		author: { type: String, ref: 'User' },
@@ -20,7 +20,8 @@ var projectSchema = mongoose.Schema({
 		visible: { type: Boolean, default: true }
 	}],
 	tasks: [{
-		note: String,
+		title: String,
+		description: String,
 		author: { type: String, ref: 'User' },
 		editor: { type: String, ref: 'User' },
 		participants: [{ type: String, ref: 'User' }],
@@ -29,6 +30,13 @@ var projectSchema = mongoose.Schema({
 		editDate: Date,
 		start: Date,
 		end: Date,
+		priority: Number,
+		comments: [{
+			author: { type: String, ref: 'User' },
+			body: String,
+			postDate: Date,
+			visible: { type: Boolean, default: true }
+		}]
 	}],
 	visible: { type: Boolean, default: true }
 });

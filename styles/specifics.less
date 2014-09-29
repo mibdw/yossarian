@@ -182,8 +182,304 @@
 			margin-top: .2em;
 		}
 
+		.event-remove {
+			line-height: 1.8em;
+		}
+
 		.credits {
 			padding-top: .5em; 
+		}
+	}
+
+	&.projects {
+
+		.project-list {
+			margin: 0;
+			list-style-type: none;
+
+			li {
+				border-bottom: 1px solid @line;
+				padding-bottom: 1em;
+				margin-bottom: 1em;
+				.clearfix;
+
+				.project-left {
+					float: left;
+					width: 75%;
+					.box-sizing (border-box);
+				}
+
+				.project-right {
+					float: left;
+					width: 25%;
+					padding-left: 1em;
+					.box-sizing (border-box);
+				}
+
+				.project-participants {
+					list-style-type: none;
+					padding: 0;
+					margin: 0;	
+
+					small {
+						display: block;
+						padding-left: 3px;
+						line-height: 1.5em;
+					}
+
+					li {
+						display: inline-block;
+						border-bottom-width: 0;
+						padding: 0;
+						margin: 0;
+
+						img {
+							border: 3px solid transparent;
+						}
+
+						&.owner img {
+							border-color: @mark;
+						}
+					}
+				}
+
+				.project-tasks {
+					list-style-type: none;
+					padding: 0;
+					margin: 0;	
+
+					small {
+						display: block;
+						padding-left: 3px;
+						line-height: 1.5em;
+					}
+
+					li {
+						margin: 0;
+						padding: 0;
+						border-width: 0;
+					}				
+				}
+
+				.project-period {
+					line-height: 1.4em;
+					.text-truncate;
+				}
+
+				h2 {
+					margin-bottom: 0;
+					.text-truncate;
+				}
+			}
+		}
+
+		.user-list {
+			float: left;
+			margin: 0 0 0 30%;
+			padding: 0;
+			width: 70%;
+			list-style-type: none;
+
+			li {
+				cursor: pointer;
+
+				&:hover, &:focus { background-color: @hover; }
+				&:first-child { border-top-width: 0 }
+			}
+
+			.no-users {
+				padding: .6em 0;
+				text-align: center;
+				color: @vague;
+			}
+		}
+
+		.participant-list {
+			float: left;
+			margin: 0 0 0 30%;
+			padding: .4em 0 0;
+			width: 70%;
+			list-style-type: none;
+
+			li {
+				display: inline-block;
+				text-align: center;
+				margin-bottom: -3px;
+				position: relative;
+
+				img {
+					border: 3px solid transparent;
+				}
+
+				&.owner img {
+					border-color: @mark;
+				}
+
+				a {
+					font-size: .7em;
+					position: absolute;
+					left: 0;
+					right: 0;
+					bottom: 0;
+					text-align: center;
+					background-color: @back;
+					visibility: hidden;
+				}
+
+				&:hover a {
+					visibility: visible;
+				}
+			}
+		}
+
+		.tasks {
+			border-top: 1px solid @line;
+			float: left;
+			width: 100%;
+			margin-top: 1.5em;
+			padding-top: 1.5em;
+
+			.task-list {
+				padding: 0;
+				margin: 0 0 0 13%;
+				list-style-type: none;	
+
+				li {					
+
+					&.no-tasks {
+						padding: .3em 0;
+						color: @vague;
+						font-style: italic;
+						text-align: center;
+					}
+
+					&.task {
+						border-top: 1px solid @line;
+						padding: .3em 0;
+						.clearfix;
+
+						&:first-child { border-top-width: 0; }
+
+						h3 {
+							margin-bottom: 0;
+							width: 70%;
+						}	
+
+						small {
+							width: 70%;
+							display: block;
+							line-height: 1.4em;
+							margin-bottom: .4em;
+
+							&.tasked-count {
+								margin: .4em 3px -.1em;
+							}
+						}
+
+						.task-description {
+
+							ul, ol {
+								list-style-type: initial;
+								margin: 1em 0;
+							}
+						}
+
+						.task-priority {
+							float: right;
+							display: block;
+							padding: .3em .5em;
+							color: #fff;
+
+							&.high { background-color: red }
+							&.normal { background-color: chocolate }
+							&.low { background-color: tan }
+						}
+
+						.tasked {
+							margin: 0;
+							padding: 0;
+							list-style-type: none;
+							float: left;
+
+							li {
+								display: inline-block;
+								border-top-width: 0;
+
+								img {
+									border: 3px solid transparent;
+								}
+
+								&.owner img {
+									border-color: @mark;
+								}
+							}
+						}
+
+						.task-options {
+							float: right;
+							margin: -.6em 0 0 1em;
+						}
+					}
+
+					&.new-task {
+						border-top: 1px solid @line;
+						margin-top: 1em;
+						padding: 1em 0 .3em;
+
+						label {
+							width: 20%;
+							clear: left;
+						}
+
+						input, textarea, select {
+							width: 80%;
+						}
+
+						#task-start, #task-end {
+							width: 30%;
+							margin-right: 3px;
+						}
+
+						.user-list {
+							margin: 0 0 0 20%;
+							padding: 0;
+							width: 80%;
+
+							li {
+								border-top-width: 0;
+
+								&.no-users {
+									margin-left: 0;
+								}
+							}
+						}
+
+						.participant-list {
+							margin: -5px 0 0 20%;
+
+							li { border-top-width: 0; }
+						}
+
+						.clear {
+							float: left;
+							clear: left;
+							margin-top: .6em;
+							margin-left: 20%;
+						}
+
+						.create, .update {
+							float: right;
+							clear: left;
+							margin-top: .3em;
+						}
+
+						.cancel {
+							float: right;
+							margin: .6em .6em 0 0;
+						}
+					}
+				}
+			}
 		}
 	}
 

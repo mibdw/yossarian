@@ -1,1 +1,158 @@
-Create project
+<form ng-submit="createProject()" class="form">
+	<div ng-show="!preview" class="content left" style="width: 72%" >
+		<h1>Create project</h1>
+
+		<label for="title">Title</label>
+		<input type="text" id="title" ng-model="newProject.title" required="required">
+
+		<label for="description">Description</label>
+		<textarea id="description" rows="15" ng-model="newProject.description" placeholder="Use Markdown to style your text"></textarea>
+	
+		<div class="tasks">
+			<label for="tasks">Tasks</label>
+			<ul class="task-list">
+				<li class="task task-{{$index}}" ng-repeat="task in newProject.tasks">
+	
+					<span ng-show="task.priority == 1" class="task-priority high">High</span>
+					<span ng-show="task.priority == 2" class="task-priority normal">Normal</span>
+					<span ng-show="task.priority == 3" class="task-priority low">Low</span>
+
+
+					<h3>{{task.title}}</h3>
+					<small ng-show="task.start || task.end">
+						<span ng-show="task.start">{{task.start}}</span>
+						<span ng-show="task.start && task.end"> &mdash; </span> 
+						<span ng-show="task.end">{{task.end}}</span> 
+					</small>
+
+					<div class="task-description" ng-bind-html="task.markedDescription"><em>Task description</em></div>
+
+					<small class="tasked-count" ng-show="task.participants.length == 0">No participants</small>
+					<small class="tasked-count" ng-show="task.participants.length == 1">1 participant:</small>
+					<small class="tasked-count" ng-show="task.participants.length > 1">{{task.participants.length}} participants:</small>
+					<ul class="tasked" ng-show="task.participants.length > 0">
+						<li ng-repeat="tasked in task.participants" ng-class="{owner: tasked._id == task.owner}">
+							<img src="/avatar.gif" title="{{tasked.name.first}} {{tasked.name.last}}">
+						</li>
+					</ul>
+
+					<a href="" ng-click="updateTask($index)" class="task-options">Update</a>
+					<a href="" ng-click="removeTask($index)" class="task-options">Remove</a>
+				</li>
+
+				<li ng-show="newProject.tasks.length < 1" class="no-tasks">There are no tasks for this project</li>
+
+				<li class="new-task">
+					<label for="task-title">Title</label>
+					<input type="text" id="task-title" ng-model="newTask.title">
+
+					<label for="task-description">Description</label>
+					<textarea id="task-description" ng-model="newTask.description" rows="8" placeholder="Use Markdown to style your text"></textarea>
+
+					<label for="task-start">Period</label>
+					<input type="text" ng-model="newTask.start" id="task-start" placeholder="Start date">
+					<input type="text" ng-model="newTask.end" id="task-end" placeholder="End date">
+
+					<label for="task-priority">Priority</label>
+					<select id="task-priority" ng-model="newTask.priority" style="width: 40%;">
+						<option value="1">High</option>
+						<option value="2">Normal</option>
+						<option value="3">Low</option>
+					</select>
+
+					<label for="task-participants">Participants</label>
+					<input type="text" id="task-participants" placeholder="Search and add people" ng-model="humanSearch" tabindex="2000">
+					<ul class="user-list credits" ng-show="humanSearch">
+						<li ng-repeat="human in humanList = (userList | filter: {name: humanSearch} | limitTo: 3)" ng-click="addTaskParticipant(human)" ng-keydown="addTaskParticipantKeydown($event, human)" tabindex="{{2001 + $index}}" ng-hide="newTask.participants.indexOf(human) > -1">
+							<img src="/avatar.gif" title="{{human.name.first}} {{human.name.last}}">
+							<strong ng-bind-html="human.name.first + ' ' + human.name.last | highlight: humanSearch"></strong><br>
+							<a href="mailto:{{human.email}}">{{human.email}}</a>
+						</li>
+						<li ng-hide="humanList.length > 0" class="no-users">No results for <em>{{humanSearch}}</em></li>
+					</ul>
+
+					<ul class="participant-list" ng-show="newTask.participants.length > 0">
+						<li ng-repeat="participant in newTask.participants" ng-class="{owner: participant._id == newTask.owner}">
+							<img src="/avatar.gif" title="{{participant.name.first}} {{participant.name.last}}"><br>
+							<a href="" ng-click="removeTaskParticipant($index)">Remove</a>
+						</li>
+					</ul>
+
+					<label for="task-owner" ng-show="newTask.participants.length > 0">Owner</label>
+					<select id="task-owner" ng-model="newTask.owner" ng-show="newTask.participants.length > 0">
+						<option ng-repeat="participant in newTask.participants" value="{{participant._id}}">{{participant.name.first}} {{participant.name.last}}</option>
+					</select>
+	
+					<button ng-show="updatingTask == 'none'" type="button" class="create" ng-click="addTask()">Create</button>
+					<button ng-show="updatingTask != 'none'" type="button" class="update" ng-click="confirmUpdateTask()">Update</button>
+					<a ng-show="updatingTask != 'none'" href="" class="cancel" ng-click="cancelUpdateTask()">Cancel</a>
+					<a href="" ng-click="initTask()" class="clear">Clear</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+
+	<aside class="right" style="width: 28%">
+		<div class="form-controls">	
+			<button type="submit" class="form-submit">Create</button>
+			<a href="" ng-click="initProject()" class="form-clear">Clear</a>
+		</div>
+
+		<ul class="form-credits credits">
+			<li>
+				<img src="/avatar.gif">
+				<strong>{{user.name.first}} {{user.name.last}}</strong><br>
+				<a href="mailto:{{user.email}}">{{user.email}}</a>
+			</li>
+		</ul>
+
+		<div class="form-inputs">
+			<label for="start">Period</label>
+			<input type="text" id="start" ng-model="newProject.start" placeholder="Start date">
+			<input type="text" id="end" ng-model="newProject.end" placeholder="End date">
+		</div>
+
+		<div class="form-inputs" style="margin-bottom: 0">
+			<label for="participants">Participants</label>
+			<input type="text" id="participants" placeholder="Search and add people" ng-model="userSearch" tabindex="1000">
+			<ul class="user-list credits" ng-show="userSearch">
+				<li ng-repeat="person in personList = (userList | filter: {name: userSearch} | limitTo: 3)" ng-click="addParticipant(person)" ng-keydown="addParticipantKeydown($event, $index, person)" tabindex="{{1001 + $index}}" ng-hide="newProject.participants.indexOf(person) > -1">
+					<img src="/avatar.gif" title="{{person.name.first}} {{person.name.last}}">
+					<strong ng-bind-html="person.name.first + ' ' + person.name.last | highlight: userSearch"></strong><br>
+					<a href="mailto:{{person.email}}">{{person.email}}</a>
+				</li>
+				<li ng-hide="personList.length > 0" class="no-users">No results for <em>{{userSearch}}</em></li>
+			</ul>
+
+			<ul class="participant-list" ng-show="newProject.participants.length > 0">
+				<li ng-repeat="participant in newProject.participants" ng-class="{owner: participant._id == newProject.owner}">
+					<img src="/avatar.gif" title="{{participant.name.first}} {{participant.name.last}}"><br>
+					<a href="" ng-click="removeParticipant($index)">Remove</a>
+				</li>
+			</ul>
+		</div>
+
+		<div class="form-selects">
+			<label for="owner" ng-show="newProject.participants.length > 0">Owner</label>
+			<select ng-model="newProject.owner" ng-show="newProject.participants.length > 0">
+				<option ng-repeat="participant in newProject.participants" value="{{participant._id}}">{{participant.name.first}} {{participant.name.last}}</option>
+			</select>
+		</div>
+
+		<ul class="form-checkboxes">
+			<h4>Categories</h4>
+			<li ng-repeat="category in categoryList">
+				<label for="{{category.slug}}">
+					<input type="checkbox" id="{{category.slug}}" value="{{category._id}}" ng-checked="newProject.categories.indexOf(category._id) > -1" ng-click="categoryToggle(category._id)"> 
+					<span class="color-block" style="background-color: {{category.color}};"></span>
+					{{category.name}}
+				</label>
+			</li>
+		</ul>
+
+		<ul class="form-links">
+			<li><a href="/#/projects">Back to projects</a></li>
+			<li><a href="{{markdownURL}}" target="_blank">Markdown documentation</a></li>
+		</ul>
+	</aside>
+</form>
