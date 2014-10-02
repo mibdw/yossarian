@@ -1,64 +1,157 @@
-<aside class="left">
+<form ng-submit="updateProject()" class="form">
+	<div ng-show="!preview" class="content left" style="width: 72%" >
+		<h1>Update project</h1>
 
-	<ul class="links">
-		<li><a href="">New document</a></li>
-	</ul>
+		<label for="title">Title</label>
+		<input type="text" id="title" ng-model="venture.title" required="required">
 
-	<ul class="menu">
-		<li><a href="">Frozen</a></li>
-		<li><a href="">Whatever snow does</a></li>
-		<li class="active">
-			<a href="">Puddle</a>
-			<ul class="submenu">
-				<li><a href="">Ik wil nagellak</a></li>
-				<li><a href="">Prinsessen</a></li>
-				<li class="active"><a href="">Elsa en Anna</a></li>
-				<li><a href="">Huilen</a></li>
+		<label for="description">Description</label>
+		<textarea id="description" rows="15" ng-model="venture.description" placeholder="Use Markdown to style your text"></textarea>
+	
+		<div class="tasks">
+			<label for="tasks">Tasks</label>
+			<ul class="task-list">
+				<li class="task task-{{$index}}" ng-repeat="task in venture.tasks">
+
+					<h3>{{task.title}}</h3>
+					<small ng-show="task.start || task.end">
+						<span ng-show="task.start">{{task.start}}</span>
+						<span ng-show="task.start && task.end"> &mdash; </span> 
+						<span ng-show="task.end">{{task.end}}</span> 
+					</small>
+
+					<div class="task-description" ng-bind-html="task.markedDescription"><em>Task description</em></div>
+
+					<small class="tasked-count" ng-show="task.participants.length == 0">No participants</small>
+					<small class="tasked-count" ng-show="task.participants.length == 1">1 participant:</small>
+					<small class="tasked-count" ng-show="task.participants.length > 1">{{task.participants.length}} participants:</small>
+					<ul class="tasked" ng-show="task.participants.length > 0">
+						<li ng-repeat="tasked in task.participants" ng-class="{owner: tasked._id == task.owner}">
+							<img src="/avatar.gif" title="{{tasked.name.first}} {{tasked.name.last}}">
+						</li>
+					</ul>
+					
+					<span ng-show="task.priority == 1" class="task-priority high">Priority: <strong>High</strong></span>
+					<span ng-show="task.priority == 2" class="task-priority normal">Priority: <strong>Normal</strong></span>
+					<span ng-show="task.priority == 3" class="task-priority low">Priority: <strong>Low</strong></span><br>
+
+					<a href="" ng-click="updateTask($index)" class="task-options">Update</a>
+					<a href="" ng-click="removeTask($index)" class="task-options">Remove</a>
+				</li>
+
+				<li ng-show="venture.tasks.length < 1" class="no-tasks">There are no tasks for this project</li>
+
+				<li class="new-task">
+					<label for="task-title">Title</label>
+					<input type="text" id="task-title" ng-model="newTask.title">
+
+					<label for="task-description">Description</label>
+					<textarea id="task-description" ng-model="newTask.description" rows="8" placeholder="Use Markdown to style your text"></textarea>
+
+					<label for="task-start">Period</label>
+					<input type="text" ng-model="newTask.start" id="task-start" placeholder="Start date">
+					<input type="text" ng-model="newTask.end" id="task-end" placeholder="End date">
+
+					<label for="task-priority">Priority</label>
+					<select id="task-priority" ng-model="newTask.priority" style="width: 40%;">
+						<option value="1">High</option>
+						<option value="2">Normal</option>
+						<option value="3">Low</option>
+					</select>
+
+					<label for="task-participants">Participants</label>
+					<input type="text" id="task-participants" placeholder="Search and add people" ng-model="humanSearch" tabindex="2000">
+					<ul class="user-list credits" ng-show="humanSearch">
+						<li ng-repeat="human in humanList = (userList | filter: {name: humanSearch} | limitTo: 3)" ng-click="addTaskParticipant(human)" ng-keydown="addTaskParticipantKeydown($event, human)" tabindex="{{2001 + $index}}" ng-hide="newTask.participants.indexOf(human) > -1">
+							<img src="/avatar.gif" title="{{human.name.first}} {{human.name.last}}">
+							<strong ng-bind-html="human.name.first + ' ' + human.name.last | highlight: humanSearch"></strong><br>
+							<a href="mailto:{{human.email}}">{{human.email}}</a>
+						</li>
+						<li ng-hide="humanList.length > 0" class="no-users">No results for <em>{{humanSearch}}</em></li>
+					</ul>
+
+					<ul class="participant-list" ng-show="newTask.participants.length > 0">
+						<li ng-repeat="participant in newTask.participants" ng-class="{owner: participant._id == newTask.owner}">
+							<img src="/avatar.gif" title="{{participant.name.first}} {{participant.name.last}}"><br>
+							<a href="" ng-click="removeTaskParticipant($index)">Remove</a>
+						</li>
+					</ul>
+
+					<label for="task-owner" ng-show="newTask.participants.length > 0">Owner</label>
+					<select id="task-owner" ng-model="newTask.owner" ng-show="newTask.participants.length > 0">
+						<option ng-repeat="participant in newTask.participants" value="{{participant._id}}">{{participant.name.first}} {{participant.name.last}}</option>
+					</select>
+	
+					<button ng-show="updatingTask == 'none'" type="button" class="create" ng-click="addTask()">Create</button>
+					<button ng-show="updatingTask != 'none'" type="button" class="update" ng-click="confirmUpdateTask()">Update</button>
+					<a ng-show="updatingTask != 'none'" href="" class="cancel" ng-click="cancelUpdateTask()">Cancel</a>
+					<a href="" ng-click="initTask()" class="clear">Clear</a>
+				</li>
 			</ul>
-		</li>
-		<li><a href="">Happy snowman</a></li>
-		<li><a href="">Letting of steam</a></li>
-		<li><a href="">In summer</a></li>
-	</ul>
-</aside>
+		</div>
+	</div>
 
-<div class="content right">
-	<h1>Lorem ipsum dolor sit amet</h1>
+	<aside class="right" style="width: 28%">
+		<div class="form-controls">	
+			<button type="submit" class="form-submit">Update</button>
+			<a href="" ng-click="initProject()" class="form-clear">Clear</a>
+		</div>
 
-	<p>Consectetur adipisicing elit. Magni error necessitatibus consequuntur est voluptates vel dolorum, blanditiis saepe quasi adipisci quibusdam pariatur, eos porro doloremque? Dolores mollitia quae assumenda voluptas! Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magni error <strong>necessitatibus consequuntur</strong> est voluptates vel dolorum, blanditiis saepe quasi adipisci quibusdam pariatur, eos porro doloremque? Dolores mollitia quae assumenda voluptas! Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magni error necessitatibus <em>consequuntur est voluptates vel dolorum</em>, blanditiis saepe quasi adipisci quibusdam pariatur, eos porro doloremque?</p>
+		<ul class="form-credits credits">
+			<li>
+				<img src="/avatar.gif">
+				<strong>{{user.name.first}} {{user.name.last}}</strong><br>
+				<a href="mailto:{{user.email}}">{{user.email}}</a>
+			</li>
+		</ul>
 
-	<h2>Dolores mollitia quae assumenda voluptas!</h2> 
+		<div class="form-inputs">
+			<label for="start">Period</label>
+			<input type="text" id="start" ng-model="venture.start" placeholder="Start date">
+			<input type="text" id="end" ng-model="venture.end" placeholder="End date">
+		</div>
 
-	<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magni error necessitatibus consequuntur est voluptates vel dolorum, blanditiis saepe quasi adipisci quibusdam pariatur, eos porro doloremque? Dolores mollitia quae assumenda voluptas! <a href="http://www.lipsum.com">Lorem ipsum</a> dolor sit amet, consectetur adipisicing elit. Magni error necessitatibus consequuntur est voluptates vel dolorum, blanditiis saepe quasi adipisci quibusdam pariatur, eos porro doloremque?</p>
+		<div class="form-inputs" style="margin-bottom: 0">
+			<label for="participants">Participants</label>
+			<input type="text" id="participants" placeholder="Search and add people" ng-model="userSearch" tabindex="1000">
+			<ul class="user-list credits" ng-show="userSearch">
+				<li ng-repeat="person in personList = (userList | filter: {name: userSearch} | limitTo: 3)" ng-click="addParticipant(person)" ng-keydown="addParticipantKeydown($event, $index, person)" tabindex="{{1001 + $index}}" ng-hide="venture.participants.indexOf(person) > -1">
+					<img src="/avatar.gif" title="{{person.name.first}} {{person.name.last}}">
+					<strong ng-bind-html="person.name.first + ' ' + person.name.last | highlight: userSearch"></strong><br>
+					<a href="mailto:{{person.email}}">{{person.email}}</a>
+				</li>
+				<li ng-hide="personList.length > 0" class="no-users">No results for <em>{{userSearch}}</em></li>
+			</ul>
 
-	<p>Dolores mollitia quae assumenda voluptas! Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magni error necessitatibus consequuntur est voluptates vel dolorum, blanditiis saepe quasi adipisci quibusdam pariatur, eos porro doloremque? 
+			<ul class="participant-list" ng-show="venture.participants.length > 0">
+				<li ng-repeat="participant in venture.participants" ng-class="{owner: participant._id == venture.owner}">
+					<img src="/avatar.gif" title="{{participant.name.first}} {{participant.name.last}}"><br>
+					<a href="" ng-click="removeParticipant($index)">Remove</a>
+				</li>
+			</ul>
+		</div>
 
-	<ul>
-		<li>Dolores mollitia quae assumenda voluptas </li>
-		<li>Lorem ipsum dolor sit amet</li>
-		<li>Consectetur <strong>adipisicing elit</strong></li>
-		<li>Magni error necessitatibus</li>
-		<li>Consequuntur est voluptates</li>
-	</ul>
+		<div class="form-selects">
+			<label for="owner" ng-show="venture.participants.length > 0">Owner</label>
+			<select ng-model="venture.owner" ng-show="venture.participants.length > 0">
+				<option ng-repeat="participant in venture.participants" value="{{participant._id}}">{{participant.name.first}} {{participant.name.last}}</option>
+			</select>
+		</div>
 
-	<p>Vel dolorum, blanditiis saepe quasi adipisci quibusdam pariatur, eos porro doloremque?</p> 
+		<ul class="form-checkboxes">
+			<h4>Categories</h4>
+			<li ng-repeat="category in categoryList">
+				<label for="{{category.slug}}">
+					<input type="checkbox" id="{{category.slug}}" value="{{category._id}}" ng-checked="venture.categories.indexOf(category._id) > -1" ng-click="categoryToggle(category._id)"> 
+					<span class="color-block" style="background-color: {{category.color}};"></span>
+					{{category.name}}
+				</label>
+			</li>
+		</ul>
 
-	<blockquote>Dolores mollitia quae assumenda voluptas! Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magni error necessitatibus consequuntur est voluptates vel dolorum, blanditiis saepe quasi adipisci quibusdam pariatur, eos porro doloremque?</blockquote> 
-
-	<p>Dolores mollitia quae assumenda voluptas! Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magni error necessitatibus consequuntur est voluptates vel dolorum, blanditiis saepe quasi adipisci quibusdam pariatur, eos porro doloremque?</p> 
-
-	<h2>Magni error necessitatibus</h2>
-
-	<p>Dolores mollitia quae assumenda voluptas! Lorem ipsum dolor sit amet, consectetur adipisicing elit. <a href="http://duckduckgo.com">Magni error necessitatibus consequuntur</a> est voluptates vel dolorum, blanditiis saepe quasi adipisci quibusdam pariatur, eos porro doloremque? Dolores mollitia quae assumenda voluptas! Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magni error necessitatibus consequuntur est voluptates vel dolorum, blanditiis saepe quasi adipisci quibusdam pariatur, eos porro doloremque? 
-
-	<ol>
-		<li>Dolores mollitia quae assumenda voluptas</li>
-		<li>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</li>
-		<li>Magni error necessitatibus consequuntur est voluptates vel dolorum</li>
-		<li>Blanditiis saepe quasi adipisci quibusdam pariatur</li>
-		<li>Eos porro doloremque?</li>
-		<li>Dolores mollitia quae assumenda voluptas! </li>
-	</ol>
-
-	<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magni error necessitatibus consequuntur est voluptates vel dolorum, blanditiis saepe quasi adipisci quibusdam pariatur, eos porro doloremque? Dolores mollitia quae assumenda voluptas!</p>
-</div>
+		<ul class="form-links">
+			<li><a href="/#/projects">Back to projects</a></li>
+			<li><a href="{{markdownURL}}" target="_blank">Markdown documentation</a></li>
+		</ul>
+	</aside>
+</form>

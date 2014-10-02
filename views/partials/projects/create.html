@@ -3,20 +3,15 @@
 		<h1>Create project</h1>
 
 		<label for="title">Title</label>
-		<input type="text" id="title" ng-model="newProject.title" required="required">
+		<input type="text" id="title" ng-model="venture.title" required="required">
 
 		<label for="description">Description</label>
-		<textarea id="description" rows="15" ng-model="newProject.description" placeholder="Use Markdown to style your text"></textarea>
+		<textarea id="description" rows="15" ng-model="venture.description" placeholder="Use Markdown to style your text"></textarea>
 	
 		<div class="tasks">
 			<label for="tasks">Tasks</label>
 			<ul class="task-list">
-				<li class="task task-{{$index}}" ng-repeat="task in newProject.tasks">
-	
-					<span ng-show="task.priority == 1" class="task-priority high">High</span>
-					<span ng-show="task.priority == 2" class="task-priority normal">Normal</span>
-					<span ng-show="task.priority == 3" class="task-priority low">Low</span>
-
+				<li class="task task-{{$index}}" ng-repeat="task in venture.tasks">
 
 					<h3>{{task.title}}</h3>
 					<small ng-show="task.start || task.end">
@@ -35,12 +30,16 @@
 							<img src="/avatar.gif" title="{{tasked.name.first}} {{tasked.name.last}}">
 						</li>
 					</ul>
-
+					
+					<span ng-show="task.priority == 1" class="task-priority high">Priority: <strong>High</strong></span>
+					<span ng-show="task.priority == 2" class="task-priority normal">Priority: <strong>Normal</strong></span>
+					<span ng-show="task.priority == 3" class="task-priority low">Priority: <strong>Low</strong></span><br>
+					
 					<a href="" ng-click="updateTask($index)" class="task-options">Update</a>
 					<a href="" ng-click="removeTask($index)" class="task-options">Remove</a>
 				</li>
 
-				<li ng-show="newProject.tasks.length < 1" class="no-tasks">There are no tasks for this project</li>
+				<li ng-show="venture.tasks.length < 1" class="no-tasks">There are no tasks for this project</li>
 
 				<li class="new-task">
 					<label for="task-title">Title</label>
@@ -108,15 +107,15 @@
 
 		<div class="form-inputs">
 			<label for="start">Period</label>
-			<input type="text" id="start" ng-model="newProject.start" placeholder="Start date">
-			<input type="text" id="end" ng-model="newProject.end" placeholder="End date">
+			<input type="text" id="start" ng-model="venture.start" placeholder="Start date">
+			<input type="text" id="end" ng-model="venture.end" placeholder="End date">
 		</div>
 
 		<div class="form-inputs" style="margin-bottom: 0">
 			<label for="participants">Participants</label>
 			<input type="text" id="participants" placeholder="Search and add people" ng-model="userSearch" tabindex="1000">
 			<ul class="user-list credits" ng-show="userSearch">
-				<li ng-repeat="person in personList = (userList | filter: {name: userSearch} | limitTo: 3)" ng-click="addParticipant(person)" ng-keydown="addParticipantKeydown($event, $index, person)" tabindex="{{1001 + $index}}" ng-hide="newProject.participants.indexOf(person) > -1">
+				<li ng-repeat="person in personList = (userList | filter: {name: userSearch} | limitTo: 3)" ng-click="addParticipant(person)" ng-keydown="addParticipantKeydown($event, $index, person)" tabindex="{{1001 + $index}}" ng-hide="venture.participants.indexOf(person) > -1">
 					<img src="/avatar.gif" title="{{person.name.first}} {{person.name.last}}">
 					<strong ng-bind-html="person.name.first + ' ' + person.name.last | highlight: userSearch"></strong><br>
 					<a href="mailto:{{person.email}}">{{person.email}}</a>
@@ -124,8 +123,8 @@
 				<li ng-hide="personList.length > 0" class="no-users">No results for <em>{{userSearch}}</em></li>
 			</ul>
 
-			<ul class="participant-list" ng-show="newProject.participants.length > 0">
-				<li ng-repeat="participant in newProject.participants" ng-class="{owner: participant._id == newProject.owner}">
+			<ul class="participant-list" ng-show="venture.participants.length > 0">
+				<li ng-repeat="participant in venture.participants" ng-class="{owner: participant._id == venture.owner}">
 					<img src="/avatar.gif" title="{{participant.name.first}} {{participant.name.last}}"><br>
 					<a href="" ng-click="removeParticipant($index)">Remove</a>
 				</li>
@@ -133,9 +132,9 @@
 		</div>
 
 		<div class="form-selects">
-			<label for="owner" ng-show="newProject.participants.length > 0">Owner</label>
-			<select ng-model="newProject.owner" ng-show="newProject.participants.length > 0">
-				<option ng-repeat="participant in newProject.participants" value="{{participant._id}}">{{participant.name.first}} {{participant.name.last}}</option>
+			<label for="owner" ng-show="venture.participants.length > 0">Owner</label>
+			<select ng-model="venture.owner" ng-show="venture.participants.length > 0">
+				<option ng-repeat="participant in venture.participants" value="{{participant._id}}">{{participant.name.first}} {{participant.name.last}}</option>
 			</select>
 		</div>
 
@@ -143,7 +142,7 @@
 			<h4>Categories</h4>
 			<li ng-repeat="category in categoryList">
 				<label for="{{category.slug}}">
-					<input type="checkbox" id="{{category.slug}}" value="{{category._id}}" ng-checked="newProject.categories.indexOf(category._id) > -1" ng-click="categoryToggle(category._id)"> 
+					<input type="checkbox" id="{{category.slug}}" value="{{category._id}}" ng-checked="venture.categories.indexOf(category._id) > -1" ng-click="categoryToggle(category._id)"> 
 					<span class="color-block" style="background-color: {{category.color}};"></span>
 					{{category.name}}
 				</label>

@@ -36,8 +36,8 @@ ctrl.controller('projectsController', ['$scope', '$rootScope', '$http',
 	}
 ]);
 
-ctrl.controller('projectsCreate', ['$scope', '$rootScope', '$http',
-	function ($scope, $rootScope, $http) {
+ctrl.controller('projectsCreate', ['$scope', '$rootScope', '$http', '$routeParams',
+	function ($scope, $rootScope, $http, $routeParams) {
 		$rootScope.slug = 'projects';
 		$rootScope.heading = 'Create project'; 
 		$rootScope.moniker = $rootScope.heading + $rootScope.seperator + $rootScope.masthead;
@@ -48,51 +48,68 @@ ctrl.controller('projectsCreate', ['$scope', '$rootScope', '$http',
 		});
 
 		$scope.initProject = function () {
-			$scope.newProject = {
+			$scope.venture = {
 				categories: [],
 				participants: [],
 				tasks: []
 			}
 		}
-		$scope.initProject();
+
+		if ($routeParams.slug) {
+			$http.post('/projects/detail', { slug: $routeParams.slug }).success(function (projectData) {
+				$scope.venture = projectData;
+				if ($scope.venture.start) $scope.venture.start = moment($scope.venture.start).format('DD-MM-YYYY');
+				if ($scope.venture.end) $scope.venture.end = moment($scope.venture.end).format('DD-MM-YYYY');
+
+				angular.forEach($scope.venture.tasks, function (task) {
+					if (task.start) task.start = moment(task.start).format('DD-MM-YYYY');
+					if (task.end) task.end = moment(task.end).format('DD-MM-YYYY');
+					$http.post('/marked', {'text': task.description}).success(function (markedText) {
+						task.markedDescription = markedText;
+					});
+				});
+			});
+		} else {
+			$scope.initProject();
+		}
 
 		$scope.addParticipant =  function (person) {
 			$scope.userSearch = '';
-			if ($scope.newProject.participants.length == 0) {
-				$scope.newProject.owner = person._id;
+			if ($scope.venture.participants.length == 0) {
+				$scope.venture.owner = person._id;
 			}
-			$scope.newProject.participants.push(person);
+			$scope.venture.participants.push(person);
 		}
 
 		$scope.addParticipantKeydown =  function ($event, index, person) {
 			if ($event.keyCode == 13) {
 				$scope.userSearch = '';
-				if ($scope.newProject.participants.length == 0) {
-					$scope.newProject.owner = person._id;
+				if ($scope.venture.participants.length == 0) {
+					$scope.venture.owner = person._id;
 				}
-				$scope.newProject.participants.push(person);
+				$scope.venture.participants.push(person);
 			}	
 		}
 
 		$scope.removeParticipant = function (index) {
-			if ($scope.newProject.participants[index]._id == $scope.newProject.owner) {
-				$scope.newProject.participants.splice(index, 1);
-				if ($scope.newProject.participants.length == 0) {
-					$scope.newProject.owner = '';
+			if ($scope.venture.participants[index]._id == $scope.venture.owner) {
+				$scope.venture.participants.splice(index, 1);
+				if ($scope.venture.participants.length == 0) {
+					$scope.venture.owner = '';
 				} else {
-					$scope.newProject.owner = $scope.newProject.participants[0]._id;
+					$scope.venture.owner = $scope.venture.participants[0]._id;
 				}
 			} else {
-				$scope.newProject.participants.splice(index, 1);
+				$scope.venture.participants.splice(index, 1);
 			}
 		}
 
 		$scope.categoryToggle = function (id) {
-			if ($scope.newProject.categories.indexOf(id) > -1) {
-				var index = $scope.newProject.categories.indexOf(id);
-				$scope.newProject.categories.splice(index, 1);
-			} else if ($scope.newProject.categories.indexOf(id) == -1) {
-				$scope.newProject.categories.push(id);
+			if ($scope.venture.categories.indexOf(id) > -1) {
+				var index = $scope.venture.categories.indexOf(id);
+				$scope.venture.categories.splice(index, 1);
+			} else if ($scope.venture.categories.indexOf(id) == -1) {
+				$scope.venture.categories.push(id);
 			}
 		}
 
@@ -137,7 +154,7 @@ ctrl.controller('projectsCreate', ['$scope', '$rootScope', '$http',
 				$scope.newTask.postDate = moment();
 				$http.post('/marked', {'text': $scope.newTask.description}).success(function (markedText) {
 					$scope.newTask.markedDescription = markedText;
-					$scope.newProject.tasks.push($scope.newTask);
+					$scope.venture.tasks.push($scope.newTask);
 					$scope.initTask();
 				});
 			}
@@ -145,7 +162,7 @@ ctrl.controller('projectsCreate', ['$scope', '$rootScope', '$http',
 
 		$scope.updateTask = function (index) {
 			$scope.updatingTask = index;
-			$scope.newTask = $scope.newProject.tasks[index];
+			$scope.newTask = $scope.venture.tasks[index];
 			$('.task-' + index).hide();
 		}
 
@@ -159,7 +176,7 @@ ctrl.controller('projectsCreate', ['$scope', '$rootScope', '$http',
 			$scope.newTask.postDate = moment();
 			$http.post('/marked', {'text': $scope.newTask.description}).success(function (markedText) {
 				$scope.newTask.markedDescription = markedText;
-				$scope.newProject.tasks[$scope.updatingTask] = $scope.newTask;
+				$scope.venture.tasks[$scope.updatingTask] = $scope.newTask;
 				$('.task').show();
 				$scope.initTask();
 			});
@@ -167,7 +184,7 @@ ctrl.controller('projectsCreate', ['$scope', '$rootScope', '$http',
 
 		$scope.removeTask = function (index) {
 			if (confirm('Are you sure you want to remove this task?') == true) {
-				$scope.newProject.tasks.splice(index, 1);
+				$scope.venture.tasks.splice(index, 1);
 			}
 		}
 
@@ -225,26 +242,18 @@ ctrl.controller('projectsCreate', ['$scope', '$rootScope', '$http',
 		}
 
 		$scope.createProject = function () {
-			$scope.newProject.slug = $rootScope.slugify($scope.newProject.title);
-			$scope.newProject.postDate = moment();
-			$scope.newProject.author = $rootScope.user._id;
+			$scope.venture.slug = $rootScope.slugify($scope.venture.title);
+			$scope.venture.postDate = moment();
+			$scope.venture.author = $rootScope.user._id;
 
-			if ($scope.newProject.categories.length < 1) {
-				$scope.newProject.categories.push(uncategorized);
+			if ($scope.venture.categories.length < 1) {
+				$scope.venture.categories.push(uncategorized);
 			}
 			
-			$http.post('/projects/create', $scope.newProject).success( function (data) {
+			$http.post('/projects/create', $scope.venture).success( function (data) {
 				alert('Klaar!');
 			});			
 		}
-	}
-]);
-
-ctrl.controller('projectsUpdate', ['$scope', '$rootScope', '$routeParams', '$http',
-	function ($scope, $rootScope, $routeParams, $http) {
-		$rootScope.slug = 'projects';
-		$rootScope.heading = 'Update project'; 
-		$rootScope.moniker = $rootScope.heading + $rootScope.seperator + $rootScope.masthead;
 	}
 ]);
 

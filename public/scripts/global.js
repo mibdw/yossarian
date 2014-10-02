@@ -32,7 +32,7 @@ app.config(['$routeProvider', function ($routeProvider) {
 		}).
 		when('/projects/:slug/update', {
 		templateUrl: 'partials/projects/update',
-		controller: 'projectsUpdate'
+		controller: 'projectsCreate'
 		}).
 		when('/projects/create', {
 		templateUrl: 'partials/projects/create',

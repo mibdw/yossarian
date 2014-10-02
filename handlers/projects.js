@@ -68,7 +68,12 @@ exports.update = function(req, res, next) {
 };
 
 exports.detail = function(req, res, next) {
-
+	Project.findOne({ 'slug': req.body.slug })
+	.populate('author editor participants tasks.participants', 'email name role picture department')
+	.exec(function (err, projectData) {
+		if (err) console.log(err);
+		return res.send(projectData);
+	});
 };
 
 exports.list = function(req, res, next) {

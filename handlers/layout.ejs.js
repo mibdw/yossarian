@@ -44,7 +44,11 @@ module.exports = function (app, res, req) {
 	app.post('/marked', ensureAuthenticated, function(req, res) {
 		res.send(marked(req.body.text));
 	});
-	
+
+	app.get('/test', function (req, res) {
+		res.render('partials/settings/nogmaals.html');
+	});
+
 	var users = require(__dirname + '/users.js');
 	app.post('/users/create', ensureAuthenticated, users.create);
 	app.post('/users/remove', ensureAuthenticated, users.remove);

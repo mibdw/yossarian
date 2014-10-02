@@ -83,7 +83,6 @@
 				</li>
 			</ul>
 
-
 			<ul class="project-tasks">
 				<small class="project-tasks-count" ng-show="project.tasks.length == 0">No tasks</small>
 				<small class="project-tasks-count" ng-show="project.tasks.length == 1">1 task / {{project.completedTasks}} completed:</small>
@@ -95,6 +94,26 @@
 			</ul>			
 		</div>
 
-
+		<div class="project-meta">
+			<dl>
+				<dt>Author:</dt>
+				<dd>
+					<strong>{{project.author.name.first}} {{project.author.name.last}}</strong> 
+					<small><time datetime="{{project.postDate}}">{{fromNow(project.postDate)}}</time></small>
+				</dd>
+				<dt ng-if="project.editor">Editor:</dt>
+				<dd ng-if="project.editor">
+					<strong>{{project.editor.name.first}} {{project.editor.name.last}}</strong>
+					<small><time datetime="{{project.editDate}}">{{fromNow(project.editDate)}}</time></small>
+				</dd>
+			</dl>
+			
+			<ul class="badges" ng-if="project.categories">
+				<li ng-repeat="category in project.categories" style="background-color: {{category.color}}" title="{{category.name}}">
+					{{category.name}}
+				</li>
+			</ul><br>
+			<a href="/#/projects/{{project.slug}}/update" title="Update '{{project.title}}'" class="project-update">Update</a>
+		</div>
 	</li>
 </ul>

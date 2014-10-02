@@ -24,6 +24,7 @@ var projectSchema = mongoose.Schema({
 		description: String,
 		author: { type: String, ref: 'User' },
 		editor: { type: String, ref: 'User' },
+		owner: { type: String, ref: 'User' },
 		participants: [{ type: String, ref: 'User' }],
 		completed: { type: Boolean, default: false },
 		postDate: Date,
