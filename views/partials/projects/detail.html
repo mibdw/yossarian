@@ -1,64 +1,153 @@
-<aside class="left">
+<div class="project-detail content right" style="width: 75%">
+	<h1 ng-class="{completed: currentProject.tasks.length == currentProject.completedTasks}">{{currentProject.title}}</h1>
+
+	<div ng-bind-html="currentProject.markedDescription"></div>
+
+	<div class="tasks-header">
+		<h2 ng-show="currentProject.tasks.length == 0">No tasks</h2>
+		<h2 ng-show="currentProject.tasks.length == 1">1 Task <small>/ {{currentProject.completedTasks}} completed</small></h2>
+		<h2 ng-show="currentProject.tasks.length > 1">{{currentProject.tasks.length}} tasks <small>/ {{currentProject.completedTasks}} completed</small></h2>
+
+		<select id="tasks-sorting" ng-model="sortTasks" ng-show="currentProject.tasks.length > 1">
+			<option value="priority">Priority</option>
+			<option value="start">Start date</option>
+			<option value="end">End date</option>
+		</select>
+		<label for="tasks-sorting">Sort by: </label>
+	</div>
+
+	<ul class="task-list">
+		<li class="task task-{{$index}}" ng-repeat="task in currentProject.tasks | orderBy: sortTasks">
+
+			<h3 ng-class="{completed: task.completed == true}"><span>{{task.title}}</span> <small ng-show="task.completed == true">Completed</small></h3>
+			<small ng-show="task.start || task.end">
+				<span ng-show="task.start">{{task.start}}</span>
+				<span ng-show="task.start && task.end"> &mdash; </span> 
+				<span ng-show="task.end">{{task.end}}</span> 
+			</small>
+
+			<div class="task-description" ng-bind-html="task.markedDescription"><em>Task description</em></div>
+
+			<small class="tasked-count" ng-show="task.participants.length == 0">No participants</small>
+			<small class="tasked-count" ng-show="task.participants.length == 1">1 participant:</small>
+			<small class="tasked-count" ng-show="task.participants.length > 1">{{task.participants.length}} participants:</small>
+			<ul class="tasked" ng-show="task.participants.length > 0">
+				<li ng-repeat="tasked in task.participants" ng-class="{owner: tasked._id == task.owner}">
+					<img src="/avatar.gif" title="{{tasked.name.first}} {{tasked.name.last}}">
+				</li>
+			</ul>
+			
+			<span ng-show="task.priority == 1" class="task-priority high">Priority: <strong>High</strong></span>
+			<span ng-show="task.priority == 2" class="task-priority normal">Priority: <strong>Normal</strong></span>
+			<span ng-show="task.priority == 3" class="task-priority low">Priority: <strong>Low</strong></span><br>
+
+			<ul class="task-options">
+				<li>
+					<a href="" ng-click="updateTask($index)">Update</a></li>
+				<li>
+					<a href="" ng-click="removeTask($index)">Remove</a></li>
+				<li>
+					<a href="" ng-show="task.completed != true" ng-click="completeTask(task._id)">Mark done</a>
+					<a href="" ng-show="task.completed == true" ng-click="uncompleteTask(task._id)">Mark undone</a>
+				</li>
+			</ul>
+			
+		</li>
+
+		<li class="new-task">
+			<label for="task-title">Title</label>
+			<input type="text" id="task-title" ng-model="newTask.title">
+
+			<label for="task-description">Description</label>
+			<textarea id="task-description" ng-model="newTask.description" rows="8" placeholder="Use Markdown to style your text"></textarea>
+
+			<label for="task-start">Period</label>
+			<input type="text" ng-model="newTask.start" id="task-start" placeholder="Start date">
+			<input type="text" ng-model="newTask.end" id="task-end" placeholder="End date">
+
+			<label for="task-priority">Priority</label>
+			<select id="task-priority" ng-model="newTask.priority" style="width: 40%;">
+				<option value="1">High</option>
+				<option value="2">Normal</option>
+				<option value="3">Low</option>
+			</select>
+
+			<label for="task-participants">Participants</label>
+			<input type="text" id="task-participants" placeholder="Search and add people" ng-model="humanSearch" tabindex="2000">
+			<ul class="user-list credits" ng-show="humanSearch">
+				<li ng-repeat="human in humanList = (userList | filter: {name: humanSearch} | limitTo: 3)" ng-click="addTaskParticipant(human)" ng-keydown="addTaskParticipantKeydown($event, human)" tabindex="{{2001 + $index}}" ng-hide="newTask.participants.indexOf(human) > -1">
+					<img src="/avatar.gif" title="{{human.name.first}} {{human.name.last}}">
+					<strong ng-bind-html="human.name.first + ' ' + human.name.last | highlight: humanSearch"></strong><br>
+					<a href="mailto:{{human.email}}">{{human.email}}</a>
+				</li>
+				<li ng-hide="humanList.length > 0" class="no-users">No results for <em>{{humanSearch}}</em></li>
+			</ul>
+
+			<ul class="participant-list" ng-show="newTask.participants.length > 0">
+				<li ng-repeat="participant in newTask.participants" ng-class="{owner: participant._id == newTask.owner}">
+					<img src="/avatar.gif" title="{{participant.name.first}} {{participant.name.last}}"><br>
+					<a href="" ng-click="removeTaskParticipant($index)">Remove</a>
+				</li>
+			</ul>
+
+			<label for="task-owner" ng-show="newTask.participants.length > 0">Owner</label>
+			<select id="task-owner" ng-model="newTask.owner" ng-show="newTask.participants.length > 0">
+				<option ng-repeat="participant in newTask.participants" value="{{participant._id}}">{{participant.name.first}} {{participant.name.last}}</option>
+			</select>
+
+			<button ng-show="updatingTask == 'none'" type="button" class="create" ng-click="addTask()">Create</button>
+			<button ng-show="updatingTask != 'none'" type="button" class="update" ng-click="confirmUpdateTask()">Update</button>
+			<a ng-show="updatingTask != 'none'" href="" class="cancel" ng-click="cancelUpdateTask()">Cancel</a>
+			<a href="" ng-click="initTask()" class="clear">Clear</a>
+		</li>
+	</ul>
+</div>
+
+<aside class="project-detail left" style="width: 25%">
+
+	<span class="project-completed" ng-show="currentProject.tasks.length == currentProject.completedTasks && currentProject.tasks.length != 0">Project completed!</span>
+
+	<dl class="project-dates" ng-show="currentProject.start || currentProject.end">
+		<dt ng-show="currentProject.start">Start date:</dt>
+		<dd ng-show="currentProject.start">{{displayDate(currentProject.start)}} <small>({{fromNow(currentProject.start)}})</small></dd>
+		<dt ng-show="currentProject.end">End date:</dt>
+		<dd ng-show="currentProject.end">{{displayDate(currentProject.end)}} <small>({{fromNow(currentProject.end)}})</small></dd>
+		<dt>Duration:</dt>
+		<dd>{{currentProject.duration}}</dd>
+	</dl>
+
+	<ul class="credits">
+		<li>
+			<img src="/avatar.gif">
+			<strong>{{currentProject.author.name.first}} {{currentProject.author.name.last}}</strong> <small>Author</small><br>
+			<a href="mailto:{{currentProject.author.email}}">{{currentProject.author.email}}</a><br>
+			<small>Created <time datetime="{{currentProject.postDate}}">{{fromNow(currentProject.postDate)}}</time></small>
+		</li>
+		<li ng-if="currentProject.editor">
+			<img src="/avatar.gif">
+			<strong>{{currentProject.editor.name.first}} {{currentProject.editor.name.last}}</strong> <small>Editor</small><br>
+			<a href="mailto:{{currentProject.editor.email}}">{{currentProject.editor.email}}</a><br>
+			<small>Last updated <time datetime="{{currentProject.editDate}}">{{fromNow(currentProject.editDate)}}</time></small>
+		</li>
+	</ul>
+	
+	<label>Participants:</label>
+	<ul class="project-participants" ng-show="currentProject.participants.length > 0">
+		<li ng-repeat="participant in currentProject.participants" ng-class="{owner: participant._id == currentProject.owner}">
+			<img src="/avatar.gif" title="{{participant.name.first}} {{participant.name.last}}">
+		</li>
+	</ul>
+
+	<label>Categories:</label>
+	<ul class="badges project-categories">
+		<li ng-repeat="category in currentProject.categories" style="background-color: {{category.color}}" title="{{category.name}}">
+			{{category.name}}
+		</li>
+	</ul>
+
 
 	<ul class="links">
-		<li><a href="">New document</a></li>
-	</ul>
-
-	<ul class="menu">
-		<li><a href="">Frozen</a></li>
-		<li><a href="">Whatever snow does</a></li>
-		<li class="active">
-			<a href="">Puddle</a>
-			<ul class="submenu">
-				<li><a href="">Ik wil nagellak</a></li>
-				<li><a href="">Prinsessen</a></li>
-				<li class="active"><a href="">Elsa en Anna</a></li>
-				<li><a href="">Huilen</a></li>
-			</ul>
-		</li>
-		<li><a href="">Happy snowman</a></li>
-		<li><a href="">Letting of steam</a></li>
-		<li><a href="">In summer</a></li>
-	</ul>
+		<li><a href="/#/projects/{{currentProject.slug}}/update">Update project</a></li>
+		<li><a href="/#/projects">Back to projects</a></li>
+	</ul> 
 </aside>
-
-<div class="content right">
-	<h1>Lorem ipsum dolor sit amet</h1>
-
-	<p>Consectetur adipisicing elit. Magni error necessitatibus consequuntur est voluptates vel dolorum, blanditiis saepe quasi adipisci quibusdam pariatur, eos porro doloremque? Dolores mollitia quae assumenda voluptas! Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magni error <strong>necessitatibus consequuntur</strong> est voluptates vel dolorum, blanditiis saepe quasi adipisci quibusdam pariatur, eos porro doloremque? Dolores mollitia quae assumenda voluptas! Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magni error necessitatibus <em>consequuntur est voluptates vel dolorum</em>, blanditiis saepe quasi adipisci quibusdam pariatur, eos porro doloremque?</p>
-
-	<h2>Dolores mollitia quae assumenda voluptas!</h2> 
-
-	<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magni error necessitatibus consequuntur est voluptates vel dolorum, blanditiis saepe quasi adipisci quibusdam pariatur, eos porro doloremque? Dolores mollitia quae assumenda voluptas! <a href="http://www.lipsum.com">Lorem ipsum</a> dolor sit amet, consectetur adipisicing elit. Magni error necessitatibus consequuntur est voluptates vel dolorum, blanditiis saepe quasi adipisci quibusdam pariatur, eos porro doloremque?</p>
-
-	<p>Dolores mollitia quae assumenda voluptas! Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magni error necessitatibus consequuntur est voluptates vel dolorum, blanditiis saepe quasi adipisci quibusdam pariatur, eos porro doloremque? 
-
-	<ul>
-		<li>Dolores mollitia quae assumenda voluptas </li>
-		<li>Lorem ipsum dolor sit amet</li>
-		<li>Consectetur <strong>adipisicing elit</strong></li>
-		<li>Magni error necessitatibus</li>
-		<li>Consequuntur est voluptates</li>
-	</ul>
-
-	<p>Vel dolorum, blanditiis saepe quasi adipisci quibusdam pariatur, eos porro doloremque?</p> 
-
-	<blockquote>Dolores mollitia quae assumenda voluptas! Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magni error necessitatibus consequuntur est voluptates vel dolorum, blanditiis saepe quasi adipisci quibusdam pariatur, eos porro doloremque?</blockquote> 
-
-	<p>Dolores mollitia quae assumenda voluptas! Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magni error necessitatibus consequuntur est voluptates vel dolorum, blanditiis saepe quasi adipisci quibusdam pariatur, eos porro doloremque?</p> 
-
-	<h2>Magni error necessitatibus</h2>
-
-	<p>Dolores mollitia quae assumenda voluptas! Lorem ipsum dolor sit amet, consectetur adipisicing elit. <a href="http://duckduckgo.com">Magni error necessitatibus consequuntur</a> est voluptates vel dolorum, blanditiis saepe quasi adipisci quibusdam pariatur, eos porro doloremque? Dolores mollitia quae assumenda voluptas! Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magni error necessitatibus consequuntur est voluptates vel dolorum, blanditiis saepe quasi adipisci quibusdam pariatur, eos porro doloremque? 
-
-	<ol>
-		<li>Dolores mollitia quae assumenda voluptas</li>
-		<li>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</li>
-		<li>Magni error necessitatibus consequuntur est voluptates vel dolorum</li>
-		<li>Blanditiis saepe quasi adipisci quibusdam pariatur</li>
-		<li>Eos porro doloremque?</li>
-		<li>Dolores mollitia quae assumenda voluptas! </li>
-	</ol>
-
-	<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magni error necessitatibus consequuntur est voluptates vel dolorum, blanditiis saepe quasi adipisci quibusdam pariatur, eos porro doloremque? Dolores mollitia quae assumenda voluptas!</p>
-</div>

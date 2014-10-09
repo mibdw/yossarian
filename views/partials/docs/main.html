@@ -4,7 +4,7 @@
 	<a href="" class="clear" ng-show="docSearch" ng-click="docSearch = ''">Clear</a>
 
 	<ul class="results" ng-show="docSearch">
-		<li ng-repeat="result in docResults = (docsMenu |filter: {title: docSearch} | limitTo: 7)" ng-click="gotoDoc(result.slug)">	
+		<li ng-repeat="result in docResults = (docsMenu | filter: { title: docSearch } | limitTo: 7)" ng-click="gotoDoc(result.slug)">	
 			<strong ng-bind-html="result.title | highlight: docSearch"></strong>
 			<dl>
 				<dt>Author: </dt>

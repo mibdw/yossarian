@@ -1,4 +1,4 @@
-var app = angular.module('yossarian', ['ngRoute', 'ngSanitize', 'ui.highlight', 'dashboard', 'docs', 'calendar', 'projects', 'relations', 'settings']);
+var app = angular.module('yossarian', ['ngRoute', 'ngCookies', 'ngSanitize', 'ui.highlight', 'dashboard', 'docs', 'calendar', 'projects', 'relations', 'settings']);
 
 app.config(['$routeProvider', function ($routeProvider) {
 	$routeProvider.
@@ -32,11 +32,11 @@ app.config(['$routeProvider', function ($routeProvider) {
 		}).
 		when('/projects/:slug/update', {
 		templateUrl: 'partials/projects/update',
-		controller: 'projectsCreate'
+		controller: 'projectsForm'
 		}).
 		when('/projects/create', {
 		templateUrl: 'partials/projects/create',
-		controller: 'projectsCreate'
+		controller: 'projectsForm'
 		}).
 		when('/projects/:slug', {
 		templateUrl: 'partials/projects/detail',

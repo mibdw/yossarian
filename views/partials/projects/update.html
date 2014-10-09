@@ -35,8 +35,11 @@
 					<span ng-show="task.priority == 2" class="task-priority normal">Priority: <strong>Normal</strong></span>
 					<span ng-show="task.priority == 3" class="task-priority low">Priority: <strong>Low</strong></span><br>
 
-					<a href="" ng-click="updateTask($index)" class="task-options">Update</a>
-					<a href="" ng-click="removeTask($index)" class="task-options">Remove</a>
+					<ul class="task-options">
+						<li><a href="" ng-click="updateTask($index)" class="task-options">Update</a></li>
+						<li><a href="" ng-click="removeTask($index)" class="task-options">Remove</a></li>
+					</ul>
+					
 				</li>
 
 				<li ng-show="venture.tasks.length < 1" class="no-tasks">There are no tasks for this project</li>
@@ -100,7 +103,19 @@
 		<ul class="form-credits credits">
 			<li>
 				<img src="/avatar.gif">
-				<strong>{{user.name.first}} {{user.name.last}}</strong><br>
+				<strong>{{venture.author.name.first}} {{venture.author.name.last}}</strong> <small>Author</small><br>
+				<a href="mailto:{{venture.author.email}}">{{venture.author.email}}</a><br>
+				<small>Created <time datetime="{{venture.postDate}}">{{fromNow(venture.postDate)}}</time></small>
+			</li>
+			<li ng-if="venture.editor">
+				<img src="/avatar.gif">
+				<strong>{{venture.editor.name.first}} {{venture.editor.name.last}}</strong> <small>Editor</small><br>
+				<a href="mailto:{{venture.editor.email}}">{{venture.editor.email}}</a><br>
+				<small>Last updated <time datetime="{{venture.editDate}}">{{fromNow(venture.editDate)}}</time></small>
+			</li>
+			<li ng-if="!venture.editor">
+				<img src="/avatar.gif">
+				<strong>{{user.name.first}} {{user.name.last}}</strong> <small>Editor</small><br>
 				<a href="mailto:{{user.email}}">{{user.email}}</a>
 			</li>
 		</ul>

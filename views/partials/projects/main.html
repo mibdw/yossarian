@@ -3,45 +3,21 @@
 	<input type="text" class="search" ng-model="projectSearch" placeholder="Search projects" ng-change="projectQuery()">
 	<a href="" class="clear" ng-show="projectSearch" ng-click="projectSearch = ''">Clear</a>
 
-	<ul class="results" ng-show="projectSearch">
-		<li ng-repeat="result in projectResults | filter: projectSearch | limitTo: 7" ng-click="gotoProject(result.slug)" title="{{result.title}}">	
-			<strong>{{result.title}}</strong>
-			<dl>
-				<dt>Author: </dt>
-				<dd><strong>{{result.author.name.first}} {{result.author.name.last}}</strong> <small>{{fromNow(result.postDate)}}</small></dd>
-				<dt ng-show="result.editor">Editor: </dt>
-				<dd ng-show="result.editor"><strong>{{result.author.name.first}} {{result.author.name.last}}</strong> <small>{{fromNow(result.editDate)}}</small></dd>
-			</dl>
-			<ul class="categories">
-				<li ng-repeat="category in result.categories" style="background-color: {{category.color}}">
-					{{category.name}}
-				</li>
-			</ul>
-		</li>
-		<li ng-show="projectResults.length == 0" class="no-results">No results for <em>{{projectSearch}}</em></li>
-	</ul>
-
-	<ul class="radio" ng-hide="projectSearch" style="margin-top: 1em;">
+	<ul class="radio" style="margin-top: 1em;">
 		<li>
-			<label for="open">
-				<input type="radio" id="open" ng-model="visibleProjects" value="open"> Open projects
-			</label>
+			<label for="open" ng-click="getProjects()"><input type="radio" id="open" ng-model="statusProjects" value="open"> Open projects</label>
 		</li>
 		<li>
-			<label for="closed">
-				<input type="radio" id="closed" ng-model="visibleProjects" value="closed"> Closed projects
-			</label>
+			<label for="closed" ng-click="getProjects()"><input type="radio" id="closed" ng-model="statusProjects" value="closed"> Closed projects</label>
 		</li>
 		<li>
-			<label for="all">
-				<input type="radio" id="all" ng-model="visibleProjects" value="all"> All projects
-			</label>
+			<label for="all" ng-click="getProjects()"><input type="radio" id="all" ng-model="statusProjects" value="all"> All projects</label>
 		</li>
 	</ul>
 
-	<ul class="checkboxes" ng-hide="projectSearch">
+	<ul class="checkboxes">
 		<li ng-repeat="category in categoryList">
-			<label for="{{category.slug}}">
+			<label for="{{category.slug}}" ng-click="getProjects()">
 				<input type="checkbox" id="{{category.slug}}" value="{{category._id}}" ng-checked="createDoc.categories.indexOf(category._id) > -1" ng-click="categoryToggle(category._id)"> 
 				<span class="color-block" style="background-color: {{category.color }};"></span>
 				{{category.name}}
@@ -49,18 +25,33 @@
 		</li>
 	</ul>
 
-	<ul class="links" ng-hide="projectSearch">
-		<li><a href="/#/projects/create">Create project</a></li>
+	<ul class="select">
+		<li>
+			<label for="projects-sort">Sort by</label>
+			<select ng-model="sortProjects" id="projects-sort" ng-change="getProjects()">
+				<option value="-postDate">Post date</option>
+				<option value="title">Title</option>
+				<option value="start">Start date</option>
+				<option value="end">End date</option>
+			</select>
+		</li>	
 	</ul>
 
+	<ul class="links">
+		<li><a href="/#/projects/create">Create project</a></li>
+	</ul>
 	
 </aside>
 
 <ul class="project-list content left" style="width: 78%">
-	<li ng-repeat="project in projectList">
+	<li class="no-projects" ng-show="projectResults == 0">No results <span ng-show="projectSearch">for <em>{{projectSearch}}</em></span></li>
+	<li ng-repeat="project in projectResults = (projectList | filter: {title: projectSearch} | limitTo: projectsOffset - projectList.length | limitTo: projectsLimit)">
 		<div class="project-left">
 			
-			<h2><a href="/#/projects/{{project.slug}}">{{project.title}}</a></h2>
+			<h2>
+				<a href="/#/projects/{{project.slug}}" ng-class="{completed: project.completed == true}" ng-bind-html="project.title | highlight: projectSearch">Project title</a> 
+				<small ng-show="project.completed == true">Completed</small>
+			</h2>
 
 			<small class="project-period">
 				<span ng-show="project.start">{{displayDate(project.start)}}</span>
@@ -78,7 +69,7 @@
 				<small class="project-participants-count" ng-show="project.participants.length == 1">1 participant:</small>
 				<small class="project-participants-count" ng-show="project.participants.length > 1">{{project.participants.length}} participants:</small>
 				
-				<li ng-repeat="participant in project.participants"  ng-class="{owner: project.owner._id == participant._id}">
+				<li ng-repeat="participant in project.participants"  ng-class="{owner: project.owner == participant._id}">
 					<img src="/avatar.gif" title="{{participant.name.first}} {{participant.name.last}}">
 				</li>
 			</ul>
@@ -88,9 +79,10 @@
 				<small class="project-tasks-count" ng-show="project.tasks.length == 1">1 task / {{project.completedTasks}} completed:</small>
 				<small class="project-tasks-count" ng-show="project.tasks.length > 1">{{project.tasks.length}} tasks / {{project.completedTasks}} completed:</small>
 				
-				<li ng-repeat="task in project.tasks">
-					
+				<li ng-repeat="task in project.tasks | limitTo: 3">
+					{{task.title}}
 				</li>
+				<li ng-show="project.tasks.length > 3"><a href="/#/projects/{{project.slug}}">More...</a></li>
 			</ul>			
 		</div>
 
@@ -112,8 +104,13 @@
 				<li ng-repeat="category in project.categories" style="background-color: {{category.color}}" title="{{category.name}}">
 					{{category.name}}
 				</li>
-			</ul><br>
-			<a href="/#/projects/{{project.slug}}/update" title="Update '{{project.title}}'" class="project-update">Update</a>
+			</ul>
 		</div>
 	</li>
 </ul>
+
+<div class="project-nav content left" ng-hide="projectSearch || projectsPages < 2" style="width: 78%">
+	<a href="" class="project-prev" ng-show="projectsOffset > 1" ng-click="projectsOffset = projectsOffset - projectsLimit">&laquo; Previous</a>
+	{{(projectsOffset / projectsLimit + 1)}} of {{projectsPages}} 
+	<a href="" class="project-next" ng-show="(projectsOffset / projectsLimit + 1) < projectsPages" ng-click="projectsOffset = projectsOffset + projectsLimit">Next &raquo;</a>
+</div>
