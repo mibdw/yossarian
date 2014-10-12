@@ -533,14 +533,21 @@
 
 				&.task {
 					border-top: 1px solid @line;
-					padding: .5em 0 .5em;
+					padding: .5em 0;
 					.clearfix;
+
+					&.completed {
+						border-left: .5em solid @hover;
+						padding-left: .5em;
+					}
 
 					&:first-child { border-top-width: 0; }
 
 					h3 {
 						margin-bottom: 0;
-						width: 70%;
+						float: left;
+						width: 75%;
+						.box-sizing (border-box);
 						
 						&.completed span {
 							text-decoration: line-through;
@@ -551,14 +558,18 @@
 							background-color: @hover;
 							color: @text;
 							padding: 0 .2em;
+							float: none;
+							width: auto;
 						}
 					}	
 
 					small {
-						width: 70%;
 						display: block;
 						line-height: 1.4em;
 						margin-bottom: .4em;
+						float: left;
+						width: 75%;
+						.box-sizing (border-box);
 
 						&.tasked-count {
 							margin: .4em 3px -.1em;
@@ -566,6 +577,10 @@
 					}
 
 					.task-description {
+						width: 75%;
+						padding-right: 1em;
+						float: left;
+						.box-sizing (border-box);
 
 						ul, ol {
 							list-style-type: initial;
@@ -573,11 +588,23 @@
 						}
 					}
 
+					.task-sidebar {
+						float: right;
+						width: 25%;
+						border-left: 1px solid @line;
+						padding-left: 1em;
+						.box-sizing (border-box);
+					}
+
+					.tasked-count {
+						float: none;
+						width: 100%;
+					}
+
 					.tasked {
 						margin: 0;
 						padding: 0;
 						list-style-type: none;
-						float: left;
 
 						li {
 							display: inline-block;
@@ -594,21 +621,76 @@
 					}
 
 					.task-priority {
-						float: right;
 						color: @vague;
+						margin-bottom: .5em;
 
 						strong { color: @text; }
 					}
 
 					.task-options {
-						float: right;
-						margin: 0;
-						padding: 0;
+						margin: .7em 0 0;
+						padding: .2em 0 0;
+						border-top: 1px solid @line;
 						list-style-type: none;
+					}
 
-						li {
-							display: inline-block;
-							margin-left: 0.3em;
+					.edit-task {
+						.edit-task-main {
+							float: left;
+							width: 65%;
+							padding-right: 1em;
+							.box-sizing (border-box);
+
+							label {
+								width: 18%;
+								display: block;
+								float: left;
+							}
+							input, textarea {
+								float: left;
+								width: 82%;
+							}
+
+							.task-start, .task-end {
+								width: 30%;
+								margin-right: 3px;
+							}
+						}
+
+						.edit-task-sidebar {
+							float: left;
+							width: 35%;
+							padding-left: 1em;
+							border-left: 1px solid @line;
+							.box-sizing (border-box);
+							
+							label {
+								width: 30%;
+								float: left;
+								display: block;
+							}
+
+							select, input {
+								float: left;
+								width: 70%;
+							}
+
+							.edit-task-options {
+								float: left;
+								width: 100%;
+								margin-top: 1em;
+								padding-top: .5em;
+								border-top: 1px solid @line;
+
+								button, .remove {
+									float: right;
+									margin-left: .4em;
+								}
+
+								.remove, .cancel {
+									line-height: 2em;
+								}
+							}
 						}
 					}
 				}

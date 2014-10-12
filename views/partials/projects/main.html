@@ -1,24 +1,24 @@
 <aside class="right" style="width: 22%">
-	
+
 	<input type="text" class="search" ng-model="projectSearch" placeholder="Search projects" ng-change="projectQuery()">
 	<a href="" class="clear" ng-show="projectSearch" ng-click="projectSearch = ''">Clear</a>
 
 	<ul class="radio" style="margin-top: 1em;">
 		<li>
-			<label for="open" ng-click="getProjects()"><input type="radio" id="open" ng-model="statusProjects" value="open"> Open projects</label>
+			<label for="open" ng-click="setStatusProjects('open')"><input type="radio" id="open" ng-model="statusProjects" value="open"> Open projects</label>
 		</li>
 		<li>
-			<label for="closed" ng-click="getProjects()"><input type="radio" id="closed" ng-model="statusProjects" value="closed"> Closed projects</label>
+			<label for="closed" ng-click="setStatusProjects('closed')"><input type="radio" id="closed" ng-model="statusProjects" value="closed"> Closed projects</label>
 		</li>
 		<li>
-			<label for="all" ng-click="getProjects()"><input type="radio" id="all" ng-model="statusProjects" value="all"> All projects</label>
+			<label for="all" ng-click="setStatusProjects('all')"><input type="radio" id="all" ng-model="statusProjects" value="all"> All projects</label>
 		</li>
 	</ul>
 
 	<ul class="checkboxes">
 		<li ng-repeat="category in categoryList">
-			<label for="{{category.slug}}" ng-click="getProjects()">
-				<input type="checkbox" id="{{category.slug}}" value="{{category._id}}" ng-checked="createDoc.categories.indexOf(category._id) > -1" ng-click="categoryToggle(category._id)"> 
+			<label for="{{category.slug}}">
+				<input type="checkbox" id="{{category.slug}}" value="{{category._id}}" ng-checked="categoriesProjects.indexOf(category._id) > -1" ng-click="categoryToggle(category._id)"> 
 				<span class="color-block" style="background-color: {{category.color }};"></span>
 				{{category.name}}
 			</label>
@@ -28,7 +28,7 @@
 	<ul class="select">
 		<li>
 			<label for="projects-sort">Sort by</label>
-			<select ng-model="sortProjects" id="projects-sort" ng-change="getProjects()">
+			<select ng-model="sortProjects" id="projects-sort" ng-change="setSortProjects()">
 				<option value="-postDate">Post date</option>
 				<option value="title">Title</option>
 				<option value="start">Start date</option>

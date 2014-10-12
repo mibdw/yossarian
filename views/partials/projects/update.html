@@ -11,9 +11,39 @@
 		<div class="tasks">
 			<label for="tasks">Tasks</label>
 			<ul class="task-list">
-				<li class="task task-{{$index}}" ng-repeat="task in venture.tasks">
+				<li class="task" ng-repeat="task in venture.tasks" ng-class="{completed: task.completed == true}">
 
-					<h3>{{task.title}}</h3>
+					<div class="task-sidebar">
+
+						<span ng-show="task.priority == 1" class="task-priority">Priority: <strong>High</strong></span>
+						<span ng-show="task.priority == 2" class="task-priority">Priority: <strong>Normal</strong></span>
+						<span ng-show="task.priority == 3" class="task-priority">Priority: <strong>Low</strong></span><br>
+
+						<label class="tasked-count" ng-show="task.participants.length == 0">No participants</label>
+						<label class="tasked-count" ng-show="task.participants.length == 1">1 participant:</label>
+						<label class="tasked-count" ng-show="task.participants.length > 1">{{task.participants.length}} participants:</label>
+						<ul class="tasked" ng-show="task.participants.length > 0">
+							<li ng-repeat="tasked in task.participants" ng-class="{owner: tasked._id == task.owner}">
+								<img src="/avatar.gif" title="{{tasked.name.first}} {{tasked.name.last}}">
+							</li>
+						</ul>
+
+						<ul class="task-options">
+							<li>
+								<a href="" ng-show="task.completed != true" ng-click="completeTask($index)">Mark done</a>
+								<a href="" ng-show="task.completed == true" ng-click="uncompleteTask($index)">Mark undone</a>
+							</li>
+							<li>
+								<a href="" ng-click="updateTask($index)">Update</a>
+							</li>
+							<li>
+								<a href="" ng-click="removeTask($index)">Remove</a>
+							</li>
+						</ul>
+					</div>
+
+					<h3 ng-class="{completed: task.completed == true}"><span>{{task.title}}</span> <small ng-show="task.completed == true">Completed</small></h3>
+
 					<small ng-show="task.start || task.end">
 						<span ng-show="task.start">{{task.start}}</span>
 						<span ng-show="task.start && task.end"> &mdash; </span> 
@@ -22,24 +52,6 @@
 
 					<div class="task-description" ng-bind-html="task.markedDescription"><em>Task description</em></div>
 
-					<small class="tasked-count" ng-show="task.participants.length == 0">No participants</small>
-					<small class="tasked-count" ng-show="task.participants.length == 1">1 participant:</small>
-					<small class="tasked-count" ng-show="task.participants.length > 1">{{task.participants.length}} participants:</small>
-					<ul class="tasked" ng-show="task.participants.length > 0">
-						<li ng-repeat="tasked in task.participants" ng-class="{owner: tasked._id == task.owner}">
-							<img src="/avatar.gif" title="{{tasked.name.first}} {{tasked.name.last}}">
-						</li>
-					</ul>
-					
-					<span ng-show="task.priority == 1" class="task-priority high">Priority: <strong>High</strong></span>
-					<span ng-show="task.priority == 2" class="task-priority normal">Priority: <strong>Normal</strong></span>
-					<span ng-show="task.priority == 3" class="task-priority low">Priority: <strong>Low</strong></span><br>
-
-					<ul class="task-options">
-						<li><a href="" ng-click="updateTask($index)" class="task-options">Update</a></li>
-						<li><a href="" ng-click="removeTask($index)" class="task-options">Remove</a></li>
-					</ul>
-					
 				</li>
 
 				<li ng-show="venture.tasks.length < 1" class="no-tasks">There are no tasks for this project</li>
@@ -129,8 +141,13 @@
 		<div class="form-inputs" style="margin-bottom: 0">
 			<label for="participants">Participants</label>
 			<input type="text" id="participants" placeholder="Search and add people" ng-model="userSearch" tabindex="1000">
+
 			<ul class="user-list credits" ng-show="userSearch">
-				<li ng-repeat="person in personList = (userList | filter: {name: userSearch} | limitTo: 3)" ng-click="addParticipant(person)" ng-keydown="addParticipantKeydown($event, $index, person)" tabindex="{{1001 + $index}}" ng-hide="venture.participants.indexOf(person) > -1">
+				<li 
+				ng-repeat="person in personList = (userList | filter: {name: userSearch} | limitTo: 3)" 
+				ng-click="addParticipant(person)" 
+				ng-keydown="addParticipantKeydown($event, $index, person)" tabindex="{{1001 + $index}}"
+				ng-hide="venture.participants.indexOf(person) > -1">
 					<img src="/avatar.gif" title="{{person.name.first}} {{person.name.last}}">
 					<strong ng-bind-html="person.name.first + ' ' + person.name.last | highlight: userSearch"></strong><br>
 					<a href="mailto:{{person.email}}">{{person.email}}</a>

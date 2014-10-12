@@ -1,14 +1,32 @@
 var ctrl = angular.module('projects', []);
 
-ctrl.controller('projectsController', ['$scope', '$rootScope', '$http',
-	function ($scope, $rootScope, $http) {
+ctrl.controller('projectsController', ['$scope', '$rootScope', '$http', '$cookies',
+	function ($scope, $rootScope, $http, $cookies) {
 		$rootScope.slug = 'projects';
 		$rootScope.heading = 'Projects'; 
 		$rootScope.moniker = $rootScope.heading + $rootScope.seperator + $rootScope.masthead;
 
-		$scope.statusProjects = 'open';
-		$scope.sortProjects = '-postDate';
-		$scope.categoriesProjects = [];
+		if (!$cookies.statusProjects) $cookies.statusProjects = 'all';
+		$scope.statusProjects = $cookies.statusProjects;
+		$scope.setStatusProjects = function (status) {
+			$cookies.statusProjects = status;
+			$scope.statusProjects = $cookies.statusProjects;
+			$scope.getProjects();
+		}
+
+		if (!$cookies.sortProjects) $cookies.sortProjects = '-postDate';
+		$scope.sortProjects = $cookies.sortProjects;
+		$scope.setSortProjects = function () {
+			$cookies.sortProjects = $scope.sortProjects;
+			$scope.getProjects();
+		}
+
+		if (!$cookies.categoriesProjects) $cookies.categoriesProjects = [];
+		if (typeof $cookies.categoriesProjects == 'string') {
+			$scope.categoriesProjects = $cookies.categoriesProjects.split(',');
+		} else {
+			$scope.categoriesProjects = $cookies.categoriesProjects;
+		}
 
 		$scope.categoryToggle = function (id) {
 			if ($scope.categoriesProjects.indexOf(id) > -1) {
@@ -17,18 +35,16 @@ ctrl.controller('projectsController', ['$scope', '$rootScope', '$http',
 			} else if ($scope.categoriesProjects.indexOf(id) == -1) {
 				$scope.categoriesProjects.push(id);
 			}
+			$scope.getProjects();
+			$cookies.categoriesProjects = $scope.categoriesProjects;
 		}
 
-		$scope.getProjects = function (page) {
+		$scope.getProjects = function () {
 			$scope.projectList = [];
-
-			if (!page) page = 0;
-
 			$http.post('/projects/list', {
 				'sort': $scope.sortProjects,
 				'completed': $scope.statusProjects,
-				'categories': $scope.categoriesProjects,
-				'page': page
+				'categories': $scope.categoriesProjects
 			}).success(function (projectData) {
 				$scope.projectList = projectData;
 
@@ -93,6 +109,10 @@ ctrl.controller('projectsForm', ['$scope', '$rootScope', '$http', '$routeParams'
 						task.markedDescription = markedText;
 					});
 				});
+
+				for (i in $scope.venture.categories) {
+					$scope.venture.categories[i] = $scope.venture.categories[i]._id;
+				}
 			});
 		} else {
 			$scope.initProject();
@@ -268,6 +288,15 @@ ctrl.controller('projectsForm', ['$scope', '$rootScope', '$http', '$routeParams'
 			}
 		}
 
+
+		$scope.completeTask = function (index) {
+			$scope.venture.tasks[index].completed = true;		
+		}
+
+		$scope.uncompleteTask = function (index) {
+			$scope.venture.tasks[index].completed = false;
+		}
+
 		$scope.createProject = function () {
 			$scope.venture.slug = $rootScope.slugify($scope.venture.title);
 			$scope.venture.postDate = moment();
@@ -299,8 +328,8 @@ ctrl.controller('projectsForm', ['$scope', '$rootScope', '$http', '$routeParams'
 	}
 ]);
 
-ctrl.controller('projectsDetail', ['$scope', '$rootScope', '$routeParams', '$http',
-	function ($scope, $rootScope, $routeParams, $http) {
+ctrl.controller('projectsDetail', ['$scope', '$rootScope', '$routeParams', '$http', '$cookies',
+	function ($scope, $rootScope, $routeParams, $http, $cookies) {
 		$rootScope.slug = 'projects';
 		$rootScope.heading = 'Update project'; 
 		$rootScope.moniker = $rootScope.heading + $rootScope.seperator + $rootScope.masthead;
@@ -336,7 +365,12 @@ ctrl.controller('projectsDetail', ['$scope', '$rootScope', '$routeParams', '$htt
 					});
 				});
 
-				$scope.sortTasks = 'start';
+				$scope.updatingTask = 'none';
+
+				$scope.userList = [];
+				$http.post('/users/list').success( function (userData) {
+					$scope.userList = userData;
+				});
 			});
 		}
 		$scope.getProject();
@@ -355,6 +389,14 @@ ctrl.controller('projectsDetail', ['$scope', '$rootScope', '$routeParams', '$htt
 			$http.post('/projects/update', $scope.sendProject).success( function (data) {
 				$scope.sendProject = {};
 			});
+
+			$scope.updatingTask = 'none';
+		}
+
+		if (!$cookies.sortTasks) $cookies.sortTasks = 'priority';
+		$scope.sortTasks = $cookies.sortTasks;
+		$scope.setSortTasks = function () {
+			$cookies.sortTasks = $scope.sortTasks;
 		}
 
 		$scope.completeTask = function (id) {
@@ -378,6 +420,71 @@ ctrl.controller('projectsDetail', ['$scope', '$rootScope', '$routeParams', '$htt
 					$scope.currentProject.tasks[i].editDate = moment().format();
 				} 
 				if (i ==  $scope.currentProject.tasks.length - 1)$scope.updateProject(); 
+			}
+		}
+
+		$scope.copyTask = {};
+		$scope.updateTask = function (index) {
+			$scope.copyTask = angular.copy($scope.currentProject.tasks[index]);
+			$scope.updatingTask = index;
+		}
+
+		$scope.cancelUpdateTask = function (index) {
+			$scope.currentProject.tasks[index] = $scope.copyTask;
+			$scope.copyTask = {};
+			$scope.updatingTask = 'none';
+		}
+
+		$scope.addTaskParticipant =  function (id, person) {
+			for (i in $scope.currentProject.tasks) {
+				if ($scope.currentProject.tasks[i]._id == id) {
+					$scope.humanSearch = '';
+					if ($scope.currentProject.tasks[i].participants.length == 0) {
+						$scope.currentProject.tasks[i].owner = person._id;
+					}
+					$scope.currentProject.tasks[i].participants.push(person);	
+				}
+			}
+		}
+
+		$scope.addTaskParticipantKeydown =  function (id, $event, index, person) {
+			for (i in $scope.currentProject.tasks) {
+				if ($scope.currentProject.tasks[i]._id == id && $event.keyCode == 13) {
+					$scope.humanSearch = '';
+					if ($scope.currentProject.tasks[i].participants.length == 0) {
+						$scope.currentProject.tasks[i].owner = person._id;
+					}
+					$scope.currentProject.tasks[i].participants.push(person);
+				}
+			}
+				
+		}
+
+		$scope.removeTaskParticipant = function (id, index) {
+			for (i in $scope.currentProject.tasks) {
+				if ($scope.currentProject.tasks[i]._id == id) {
+					if ($scope.currentProject.tasks[i].participants[index]._id == $scope.currentProject.tasks[i].owner) {
+						$scope.currentProject.tasks[i].participants.splice(index, 1);
+						if ($scope.currentProject.tasks[i].participants.length == 0) {
+							$scope.currentProject.tasks[i].owner = '';
+						} else {
+							$scope.currentProject.tasks[i].owner = $scope.currentProject.tasks[i].participants[0]._id;
+						}
+					} else {
+						$scope.currentProject.tasks[i].participants.splice(index, 1);
+					}
+				}
+			}
+		}
+
+		$scope.removeTask = function (index) {
+			if (confirm('Are you sure you want to remove this task?') == true) {
+				
+				if ($scope.currentProject.tasks[index].completed == true) {
+					$scope.currentProject.completedTasks = $scope.currentProject.completedTasks - 1;
+				}
+				$scope.currentProject.tasks.splice(index, 1);
+				$scope.updateProject();
 			}
 		}
 	}
