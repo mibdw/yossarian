@@ -1,17 +1,18 @@
 <aside class="right" style="width: 22%">
 
-	<input type="text" class="search" ng-model="projectSearch" placeholder="Search projects" ng-change="projectQuery()">
-	<a href="" class="clear" ng-show="projectSearch" ng-click="projectSearch = ''">Clear</a>
+	<input type="text" class="search" ng-model="projectSearch" placeholder="Search projects">
+	<a href="" class="clear" ng-show="projectSearch" ng-click="clearProjectSearch()">Clear</a>
 
-	<ul class="radio" style="margin-top: 1em;">
+	<ul class="checkboxes" style="margin-top: 1em; padding-bottom: 0;">
 		<li>
-			<label for="open" ng-click="setStatusProjects('open')"><input type="radio" id="open" ng-model="statusProjects" value="open"> Open projects</label>
+			<label for="open">
+				<input type="checkbox" id="open" ng-click="setStatusProjects('open')" ng-checked="statusProjects == 'open'"> Open projects
+			</label>
 		</li>
 		<li>
-			<label for="closed" ng-click="setStatusProjects('closed')"><input type="radio" id="closed" ng-model="statusProjects" value="closed"> Closed projects</label>
-		</li>
-		<li>
-			<label for="all" ng-click="setStatusProjects('all')"><input type="radio" id="all" ng-model="statusProjects" value="all"> All projects</label>
+			<label for="closed">
+				<input type="checkbox" id="closed" ng-click="setStatusProjects('closed')" ng-checked="statusProjects == 'closed'"> Completed projects
+			</label>
 		</li>
 	</ul>
 
@@ -39,13 +40,12 @@
 
 	<ul class="links">
 		<li><a href="/#/projects/create">Create project</a></li>
-	</ul>
-	
+	</ul>	
 </aside>
 
 <ul class="project-list content left" style="width: 78%">
-	<li class="no-projects" ng-show="projectResults == 0">No results <span ng-show="projectSearch">for <em>{{projectSearch}}</em></span></li>
-	<li ng-repeat="project in projectResults = (projectList | filter: {title: projectSearch} | limitTo: projectsOffset - projectList.length | limitTo: projectsLimit)">
+	<li class="no-projects" ng-show="projectList.length == 0">No results <span ng-show="projectSearch">for <em>{{projectSearch}}</em></span></li>
+	<li ng-repeat="project in projectList">
 		<div class="project-left">
 			
 			<h2>
@@ -110,7 +110,7 @@
 </ul>
 
 <div class="project-nav content left" ng-hide="projectSearch || projectsPages < 2" style="width: 78%">
-	<a href="" class="project-prev" ng-show="projectsOffset > 1" ng-click="projectsOffset = projectsOffset - projectsLimit">&laquo; Previous</a>
-	{{(projectsOffset / projectsLimit + 1)}} of {{projectsPages}} 
-	<a href="" class="project-next" ng-show="(projectsOffset / projectsLimit + 1) < projectsPages" ng-click="projectsOffset = projectsOffset + projectsLimit">Next &raquo;</a>
+	<a href="" class="project-prev" ng-show="projectsPage > 0" ng-click="navProjects('prev')">&laquo; Previous</a>
+	{{(projectsPage + 1)}} of {{projectsPages}} 
+	<a href="" class="project-next" ng-show="projectsPage + 1 < projectsPages" ng-click="navProjects('next')">Next &raquo;</a>
 </div>

@@ -1,16 +1,18 @@
 var ctrl = angular.module('projects', []);
 
-ctrl.controller('projectsController', ['$scope', '$rootScope', '$http', '$cookies',
-	function ($scope, $rootScope, $http, $cookies) {
+ctrl.controller('projectsController', ['$scope', '$rootScope', '$http', '$cookies', '$timeout',
+	function ($scope, $rootScope, $http, $cookies, $timeout) {
 		$rootScope.slug = 'projects';
 		$rootScope.heading = 'Projects'; 
 		$rootScope.moniker = $rootScope.heading + $rootScope.seperator + $rootScope.masthead;
 
-		if (!$cookies.statusProjects) $cookies.statusProjects = 'all';
+		if (!$cookies.statusProjects) $cookies.statusProjects = ['all'];
 		$scope.statusProjects = $cookies.statusProjects;
 		$scope.setStatusProjects = function (status) {
-			$cookies.statusProjects = status;
+			if ($scope.statusProjects != status) $cookies.statusProjects = status;
+			if ($scope.statusProjects == status) $cookies.statusProjects = 'all';
 			$scope.statusProjects = $cookies.statusProjects;
+			$scope.projectsCriteria.completed = $scope.statusProjects;
 			$scope.getProjects();
 		}
 
@@ -18,6 +20,7 @@ ctrl.controller('projectsController', ['$scope', '$rootScope', '$http', '$cookie
 		$scope.sortProjects = $cookies.sortProjects;
 		$scope.setSortProjects = function () {
 			$cookies.sortProjects = $scope.sortProjects;
+			$scope.projectsCriteria.sort = $scope.sortProjects;
 			$scope.getProjects();
 		}
 
@@ -35,18 +38,39 @@ ctrl.controller('projectsController', ['$scope', '$rootScope', '$http', '$cookie
 			} else if ($scope.categoriesProjects.indexOf(id) == -1) {
 				$scope.categoriesProjects.push(id);
 			}
+			$scope.projectsCriteria.categories = $scope.categoriesProjects;
 			$scope.getProjects();
 			$cookies.categoriesProjects = $scope.categoriesProjects;
 		}
 
+		$scope.clearProjectSearch = function () {
+			delete $scope.projectSearch;
+			delete $scope.projectsCriteria.search;
+			$scope.getProjects();
+		}
+
+		$scope.navProjects = function (direction) {
+			if (direction == 'next') $scope.projectsPage = $scope.projectsPage + 1;
+			if (direction == 'prev') $scope.projectsPage = $scope.projectsPage - 1;
+			$scope.getProjects();
+		}
+
+		$scope.projectsPage = 0;
+		$scope.projectsLimit = 8	;
+		$scope.projectsPages = 1;
+
+		$scope.projectsCriteria = {
+			'limit': $scope.projectsLimit,
+			'page': $scope.projectsPage,
+			'sort': $scope.sortProjects,
+			'completed': $scope.statusProjects,
+			'categories': $scope.categoriesProjects		
+		}
+
 		$scope.getProjects = function () {
 			$scope.projectList = [];
-			$http.post('/projects/list', {
-				'sort': $scope.sortProjects,
-				'completed': $scope.statusProjects,
-				'categories': $scope.categoriesProjects
-			}).success(function (projectData) {
-				$scope.projectList = projectData;
+			$http.post('/projects/list', $scope.projectsCriteria).success(function (projectResults) {
+				$scope.projectList = projectResults.data;
 
 				for (i in $scope.projectList) {
 					if (moment($scope.projectList[i].start).isAfter()) {
@@ -66,14 +90,24 @@ ctrl.controller('projectsController', ['$scope', '$rootScope', '$http', '$cookie
 
 						if ($scope.projectList[i].tasks[j].completed == true) $scope.projectList[i].completedTasks = $scope.projectList[i].completedTasks + 1;
 					}
-
-					$scope.projectsLimit = 8;
-					$scope.projectsOffset = 0;
-					$scope.projectsPages = Math.ceil($scope.projectList.length / $scope.projectsLimit);
 				}
+
+				$scope.projectsPages = Math.ceil(projectResults.count / $scope.projectsLimit);
 			});
 		}
 		$scope.getProjects();
+		
+		var timer = false;
+		$scope.$watch('projectSearch', function () {
+			if ($scope.projectSearch) {
+				if (timer) $timeout.cancel(timer);
+				timer = $timeout(function () {
+					$scope.projectsCriteria["search"] = $scope.projectSearch;
+					$scope.getProjects();
+				}, 500);
+			}
+		});
+		
 	}
 ]);
 
@@ -207,31 +241,28 @@ ctrl.controller('projectsForm', ['$scope', '$rootScope', '$http', '$routeParams'
 			}
 		}
 
-		$scope.updateTask = function (index) {
+		$scope.copyTask = {};
+		$scope.updateTask = function (task, index) {
+			$scope.copyTask = task;
 			$scope.updatingTask = index;
-			$scope.newTask = $scope.venture.tasks[index];
-			$('.task-' + index).hide();
 		}
 
 		$scope.cancelUpdateTask = function () {
 			$scope.initTask();
-			$('.task').show();
+			$scope.copyTask = {};
 		}
 
-		$scope.confirmUpdateTask = function () {
-			$scope.newTask.author = $scope.user._id;
-			$scope.newTask.postDate = moment();
-			$http.post('/marked', {'text': $scope.newTask.description}).success(function (markedText) {
-				$scope.newTask.markedDescription = markedText;
-				$scope.venture.tasks[$scope.updatingTask] = $scope.newTask;
-				$('.task').show();
-				$scope.initTask();
-			});
+		$scope.confirmUpdateTask = function (task) {
+			$scope.venture.tasks[$scope.venture.tasks.indexOf(task)] = $scope.copyTask;
+			$scope.initTask();
+			$scope.copyTask = {};
 		}
 
-		$scope.removeTask = function (index) {
+		$scope.removeTask = function (task) {
 			if (confirm('Are you sure you want to remove this task?') == true) {
-				$scope.venture.tasks.splice(index, 1);
+				$scope.venture.tasks.splice($scope.venture.tasks.indexOf(task), 1);
+				$scope.initTask();
+				$scope.copyTask = {};
 			}
 		}
 
@@ -253,7 +284,24 @@ ctrl.controller('projectsForm', ['$scope', '$rootScope', '$http', '$routeParams'
 			}
 		}
 
-		$scope.removeTaskParticipant = function (index) {
+		$scope.removeTaskParticipant = function (id, index) {
+			for (i in $scope.venture.tasks) {
+				if ($scope.venture.tasks[i]._id == id) {
+					if ($scope.venture.tasks[i].participants[index]._id == $scope.venture.tasks[i].owner) {
+						$scope.venture.tasks[i].participants.splice(index, 1);
+						if ($scope.venture.tasks[i].participants.length == 0) {
+							$scope.venture.tasks[i].owner = '';
+						} else {
+							$scope.venture.tasks[i].owner = $scope.venture.tasks[i].participants[0]._id;
+						}
+					} else {
+						$scope.venture.tasks[i].participants.splice(index, 1);
+					}				
+				}
+			}
+		}
+
+		$scope.removeNewTaskParticipant = function (index) {
 			if ($scope.newTask.participants[index]._id == $scope.newTask.owner) {
 				$scope.newTask.participants.splice(index, 1);
 				if ($scope.newTask.participants.length == 0) {
@@ -263,8 +311,7 @@ ctrl.controller('projectsForm', ['$scope', '$rootScope', '$http', '$routeParams'
 				}
 			} else {
 				$scope.newTask.participants.splice(index, 1);
-			}
-			
+			}			
 		}
 
 		$('#task-start').datepicker({
@@ -288,13 +335,21 @@ ctrl.controller('projectsForm', ['$scope', '$rootScope', '$http', '$routeParams'
 			}
 		}
 
-
-		$scope.completeTask = function (index) {
-			$scope.venture.tasks[index].completed = true;		
+		$scope.completeTask = function (task) {
+			$scope.venture.tasks[$scope.venture.tasks.indexOf(task)].completed = true;
 		}
 
-		$scope.uncompleteTask = function (index) {
-			$scope.venture.tasks[index].completed = false;
+		$scope.uncompleteTask = function (task) {
+			$scope.venture.tasks[$scope.venture.tasks.indexOf(task)].completed = false;
+		}
+
+		$scope.addNewTask = function () {
+			if (!$scope.newTask.title) return alert("Please give your task a title");
+			$http.post('/marked', {'text': $scope.newTask.description}).success(function (markedText) {
+				$scope.newTask.markedDescription = markedText;
+				$scope.venture.tasks.push($scope.newTask);
+				$scope.initTask();
+			});
 		}
 
 		$scope.createProject = function () {
@@ -447,17 +502,18 @@ ctrl.controller('projectsDetail', ['$scope', '$rootScope', '$routeParams', '$htt
 			}
 		}
 
-		$scope.addTaskParticipantKeydown =  function (id, $event, index, person) {
-			for (i in $scope.currentProject.tasks) {
-				if ($scope.currentProject.tasks[i]._id == id && $event.keyCode == 13) {
-					$scope.humanSearch = '';
-					if ($scope.currentProject.tasks[i].participants.length == 0) {
-						$scope.currentProject.tasks[i].owner = person._id;
+		$scope.addTaskParticipantKeydown =  function (id, $event, person) {
+			if ($event.keyCode == 13) {
+				for (i in $scope.currentProject.tasks) {
+					if ($scope.currentProject.tasks[i]._id == id) {
+						$scope.humanSearch = '';
+						if ($scope.currentProject.tasks[i].participants.length == 0) {
+							$scope.currentProject.tasks[i].owner = person._id;
+						}
+						$scope.currentProject.tasks[i].participants.push(person);
 					}
-					$scope.currentProject.tasks[i].participants.push(person);
 				}
-			}
-				
+			}				
 		}
 
 		$scope.removeTaskParticipant = function (id, index) {

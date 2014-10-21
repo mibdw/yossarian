@@ -1,7 +1,7 @@
 var ctrl = angular.module('calendar', []);
 
-ctrl.controller('calendarController', ['$scope', '$rootScope', '$routeParams', '$http',
-	function ($scope, $rootScope, $routeParams, $http) {	
+ctrl.controller('calendarController', ['$scope', '$rootScope', '$routeParams', '$http', '$cookies',
+	function ($scope, $rootScope, $routeParams, $http, $cookies) {	
 		$rootScope.slug = 'calendar';
 
 		$scope.displayDate = moment();
@@ -335,7 +335,12 @@ ctrl.controller('calendarController', ['$scope', '$rootScope', '$routeParams', '
 			$scope.getEvent(stuff);
 		}
 
-		$scope.eventFilter = [];
+		if (!$cookies.eventFilter) $cookies.eventFilter = [];
+		if (typeof $cookies.eventFilter == 'string') {
+			$scope.eventFilter = $cookies.eventFilter.split(',');
+		} else {
+			$scope.eventFilter = $cookies.eventFilter;
+		}
 		$scope.categoryToggle = function (id) {
 			if ($scope.eventFilter.indexOf(id) > -1) {
 				var index = $scope.eventFilter.indexOf(id);
@@ -343,6 +348,7 @@ ctrl.controller('calendarController', ['$scope', '$rootScope', '$routeParams', '
 			} else if ($scope.eventFilter.indexOf(id) == -1) {
 				$scope.eventFilter.push(id);
 			}
+			$cookies.eventFilter = $scope.eventFilter;
 		}
 
 		$scope.$watch('eventFilter', function() {

@@ -132,43 +132,25 @@ exports.detail = function(req, res, next) {
 };
 
 exports.list = function(req, res, next) {
-	var completion = [true, false];
-	if (req.body.completed == 'open') completion = [false];
-	if (req.body.completed == 'closed') completion = [true];
+	var conditions = {};
+	conditions.completed = { $in: [true, false] };
+	if (req.body.completed == 'open') conditions.completed = { $in: [false] };
+	if (req.body.completed == 'closed') conditions.completed = { $in: [true] };
+	if (req.body.categories && req.body.categories.length > 0) conditions.categories = { $in: req.body.categories };
+	if (req.body.search) conditions.title = new RegExp(req.body.search, "i");
 
-	if (req.body.categories && req.body.categories.length > 0) {
-		Project.find({})
-		.where('categories').in(req.body.categories)
-		.where('completed').in(completion)
-		.sort(req.body.sort)
-		.populate('author editor participants tasks.participants', 'email name role picture department')
-		.populate('categories')	
-		.exec(function (err, projectData) {
+	Project.find(conditions)
+	.sort(req.body.sort)
+	.limit(req.body.limit)
+	.skip(req.body.page * req.body.limit)
+	.populate('author editor participants tasks.participants', 'email name role picture department')
+	.populate('categories')	
+	.exec(function (err, data) {
+		if (err) console.log(err);
+
+		Project.count(conditions, function (err, count) {
 			if (err) console.log(err);
-			return res.send(projectData);
+			return res.send({'count': count, 'data': data });
 		});
-	} else {
-		Project.find({})
-		.where('completed').in(completion)
-		.sort(req.body.sort)
-		.populate('author editor participants tasks.participants', 'email name role picture department')
-		.populate('categories')	
-		.exec(function (err, projectData) {
-			if (err) console.log(err);
-			return res.send(projectData);
-		});
-
-	}
-};
-
-exports.taskCreate = function(req, res, next) {
-	
-};
-
-exports.taskUpdate = function(req, res, next) {
-	
-};
-
-exports.taskRemove = function(req, res, next) {
-
+	});
 };
