@@ -208,10 +208,35 @@
 			.credits li  {
 				padding-left: 50px;
 			}
+		}		
+
+		.projects-calendar-title { 
+			font-size: 1.6em; 
+		}
+
+		.projects-calendar-nav {
+			margin: -40px 0 0;
+			padding: 0;
+			list-style-type: none;
+			float: right;
+
+			li {
+				display: inline;
+				margin-left: .2em;
+
+				&.calendar-today { margin-right: 1em; }
+			}
+		}
+
+		.projects-calendar-view {
+			.fc-event {
+				background-color: @link;
+			}
 		}
 
 		.project-list {
 			margin: 0;
+			padding: 0;
 			list-style-type: none;
 
 			& > li { .clearfix; }
@@ -709,7 +734,7 @@
 						width: 80%;
 					}
 
-					#task-start, #task-end {
+					#new-task-start, #new-task-end {
 						width: 30%;
 						margin-right: 3px;
 					}
@@ -768,8 +793,6 @@
 				list-style-type: none;	
 			}
 		}
-
-
 	}
 
 	&.settings {

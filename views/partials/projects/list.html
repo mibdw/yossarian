@@ -1,0 +1,71 @@
+<ul class="project-list">
+	<li class="no-projects" ng-show="projectList.length == 0">No results <span ng-show="projectSearch">for <em>{{projectSearch}}</em></span></li>
+	<li ng-repeat="project in projectList">
+		<div class="project-left">
+			
+			<h2>
+				<a href="/#/projects/{{project.slug}}" ng-class="{completed: project.completed == true}" ng-bind-html="project.title | highlight: projectSearch">Project title</a> 
+				<small ng-show="project.completed == true">Completed</small>
+			</h2>
+
+			<small class="project-period">
+				<span ng-show="project.start">{{displayDate(project.start)}}</span>
+				<span ng-show="project.start && project.end"> &mdash; </span> 
+				<span ng-show="project.end">{{displayDate(project.end)}}</span> 
+				(<em>{{project.time}}</em>) 
+			</small>
+
+			<div ng-show="project.description" class="project-description">{{project.description}}</div>
+		</div>
+
+		<div class="project-right">
+			<ul class="project-participants">
+				<small class="project-participants-count" ng-show="project.participants.length == 0">No participants</small>
+				<small class="project-participants-count" ng-show="project.participants.length == 1">1 participant:</small>
+				<small class="project-participants-count" ng-show="project.participants.length > 1">{{project.participants.length}} participants:</small>
+				
+				<li ng-repeat="participant in project.participants"  ng-class="{owner: project.owner == participant._id}">
+					<img src="/avatar.gif" title="{{participant.name.first}} {{participant.name.last}}">
+				</li>
+			</ul>
+
+			<ul class="project-tasks">
+				<small class="project-tasks-count" ng-show="project.tasks.length == 0">No tasks</small>
+				<small class="project-tasks-count" ng-show="project.tasks.length == 1">1 task / {{project.completedTasks}} completed:</small>
+				<small class="project-tasks-count" ng-show="project.tasks.length > 1">{{project.tasks.length}} tasks / {{project.completedTasks}} completed:</small>
+				
+				<li ng-repeat="task in project.tasks | limitTo: 3">
+					{{task.title}}
+				</li>
+				<li ng-show="project.tasks.length > 3"><a href="/#/projects/{{project.slug}}">More...</a></li>
+			</ul>			
+		</div>
+
+		<div class="project-meta">
+			<dl>
+				<dt>Author:</dt>
+				<dd>
+					<strong>{{project.author.name.first}} {{project.author.name.last}}</strong> 
+					<small><time datetime="{{project.postDate}}">{{fromNow(project.postDate)}}</time></small>
+				</dd>
+				<dt ng-if="project.editor">Editor:</dt>
+				<dd ng-if="project.editor">
+					<strong>{{project.editor.name.first}} {{project.editor.name.last}}</strong>
+					<small><time datetime="{{project.editDate}}">{{fromNow(project.editDate)}}</time></small>
+				</dd>
+			</dl>
+			
+			<ul class="badges" ng-if="project.categories">
+				<li ng-repeat="category in project.categories" style="background-color: {{category.color}}" title="{{category.name}}">
+					{{category.name}}
+				</li>
+			</ul>
+		</div>
+	</li>
+</ul>
+
+<div class="project-nav" ng-hide="projectSearch || projectsPages < 2">
+	<a href="" class="project-prev" ng-show="projectsPage > 0" ng-click="navProjects('prev')">&laquo; Previous</a>
+	{{(projectsPage + 1)}} of {{projectsPages}} 
+	<a href="" class="project-next" ng-show="projectsPage + 1 < projectsPages" ng-click="navProjects('next')">Next &raquo;</a>
+</div>

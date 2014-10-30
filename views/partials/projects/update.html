@@ -61,9 +61,9 @@
 							<label for="task-description-{{$index}}">Description</label>
 							<textarea id="task-description-{{$index}}" ng-model="copyTask.description" rows="10" placeholder="Use Markdown to style your text"></textarea>
 
-							<label for="task-start-{{$index}}">Period</label>
-							<input type="text" ng-model="copyTask.start" class="task-start" id="task-start-{{$index}}" placeholder="Start date">
-							<input type="text" ng-model="copyTask.end" class="task-end" id="task-end-{{$index}}" placeholder="End date">
+							<label for="task-start">Period</label>
+							<input type="text" ng-model="copyTask.start" class="task-start" id="task-start" placeholder="Start date">
+							<input type="text" ng-model="copyTask.end" class="task-end" id="task-end" placeholder="End date">
 						</div>
 
 						<div class="edit-task-sidebar">					
@@ -115,9 +115,9 @@
 					<label for="task-description">Description</label>
 					<textarea id="task-description" ng-model="newTask.description" rows="8" placeholder="Use Markdown to style your text"></textarea>
 
-					<label for="task-start">Period</label>
-					<input type="text" ng-model="newTask.start" id="task-start" placeholder="Start date">
-					<input type="text" ng-model="newTask.end" id="task-end" placeholder="End date">
+					<label for="new-task-start">Period</label>
+					<input type="text" ng-model="newTask.start" id="new-task-start" placeholder="Start date">
+					<input type="text" ng-model="newTask.end" id="new-task-end" placeholder="End date">
 
 					<label for="task-priority">Priority</label>
 					<select id="task-priority" ng-model="newTask.priority" style="width: 40%;">
@@ -150,7 +150,7 @@
 					</select>
 	
 					<button type="button" class="create" ng-click="addNewTask()">Create</button>
-					<a ng-show="updatingTask != 'none'" href="" class="cancel" ng-click="cancelNewTask()">Cancel</a>
+					<a href="" class="cancel" ng-click="cancelNewTask()">Cancel</a>
 				</li>
 			</ul>
 		</div>
@@ -159,6 +159,7 @@
 	<aside class="right" style="width: 28%">
 		<div class="form-controls">	
 			<button type="submit" class="form-submit">Update</button>
+			<a href="" ng-click="removeProject()" class="form-remove">Remove</a>
 			<a href="" ng-click="initProject()" class="form-clear">Clear</a>
 		</div>
 

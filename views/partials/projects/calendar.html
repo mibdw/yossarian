@@ -1,0 +1,9 @@
+<h1 class="projects-calendar-title">{{projCalMonth}}</h1>
+
+<ul class="projects-calendar-nav">
+	<li ng-show="projCalMonth != projCalActual" class="calendar-today"><a href="" ng-click="navMonth()">Today</a></li>	
+	<li><a href="" ng-click="navMonth('prev')">&laquo; Previous</a></li>
+	<li><a href="" ng-click="navMonth('next')">Next &raquo;</a></li>
+</ul>
+
+<div class="projects-calendar-view" ng-init="projectsCalendar()"></div>

@@ -6,6 +6,13 @@ ctrl.controller('projectsController', ['$scope', '$rootScope', '$http', '$cookie
 		$rootScope.heading = 'Projects'; 
 		$rootScope.moniker = $rootScope.heading + $rootScope.seperator + $rootScope.masthead;
 
+		$scope.projectViews = [
+			{ 'name': 'list', 'url': '/partials/projects/list' },
+			{ 'name': 'calendar', 'url': '/partials/projects/calendar' }
+		];
+
+		$scope.projectView = $scope.projectViews[0];
+
 		if (!$cookies.statusProjects) $cookies.statusProjects = ['all'];
 		$scope.statusProjects = $cookies.statusProjects;
 		$scope.setStatusProjects = function (status) {
@@ -13,7 +20,8 @@ ctrl.controller('projectsController', ['$scope', '$rootScope', '$http', '$cookie
 			if ($scope.statusProjects == status) $cookies.statusProjects = 'all';
 			$scope.statusProjects = $cookies.statusProjects;
 			$scope.projectsCriteria.completed = $scope.statusProjects;
-			$scope.getProjects();
+			if ($scope.projectView.name == 'list') $scope.getProjects();
+			if ($scope.projectView.name == 'calendar') $('.projects-calendar-view').fullCalendar('refetchEvents');
 		}
 
 		if (!$cookies.sortProjects) $cookies.sortProjects = '-postDate';
@@ -34,12 +42,13 @@ ctrl.controller('projectsController', ['$scope', '$rootScope', '$http', '$cookie
 		$scope.categoryToggle = function (id) {
 			if ($scope.categoriesProjects.indexOf(id) > -1) {
 				var index = $scope.categoriesProjects.indexOf(id);
-				$scope.categoriesProjects.splice(index, 1);
+			$scope.categoriesProjects.splice(index, 1);
 			} else if ($scope.categoriesProjects.indexOf(id) == -1) {
 				$scope.categoriesProjects.push(id);
 			}
 			$scope.projectsCriteria.categories = $scope.categoriesProjects;
-			$scope.getProjects();
+			if ($scope.projectView.name == 'list') $scope.getProjects();
+			if ($scope.projectView.name == 'calendar') $('.projects-calendar-view').fullCalendar('refetchEvents');
 			$cookies.categoriesProjects = $scope.categoriesProjects;
 		}
 
@@ -56,7 +65,7 @@ ctrl.controller('projectsController', ['$scope', '$rootScope', '$http', '$cookie
 		}
 
 		$scope.projectsPage = 0;
-		$scope.projectsLimit = 8	;
+		$scope.projectsLimit = 8;
 		$scope.projectsPages = 1;
 
 		$scope.projectsCriteria = {
@@ -108,6 +117,57 @@ ctrl.controller('projectsController', ['$scope', '$rootScope', '$http', '$cookie
 			}
 		});
 		
+		$scope.projectsCalendar = function () {
+			setTimeout(function () {
+				$('.projects-calendar-view').fullCalendar({
+					firstDay: 1,
+					eventSources: [
+						{
+							url: '/projects/calendar',
+							method: 'POST',
+							data: {
+								'completed': $scope.statusProjects,
+								'categories': $scope.categoriesProjects		
+							},
+							error: function() {
+								alert('there was an error while fetching events!');
+							}
+						}
+					],
+					eventRender: function (event, element) {
+						
+					},
+					eventMouseover: function (event, jsEvent, view) {
+						
+					},
+					eventMouseout: function (event, jsEvent, view) {
+						
+					},
+					eventClick: function (event, jsEvent, view) {
+						window.location.pathname = '/#/projects/' + event.slug; 
+					}
+				});
+			}, 1);
+		};
+
+		$scope.projCalDate = moment();
+		$scope.projCalActual = moment().format('MMMM YYYY');
+		$scope.projCalMonth = moment($scope.projCalDate).format('MMMM YYYY');
+
+		$scope.navMonth = function (arg) {
+			var gotoMonth = moment()
+			if (arg == 'next') {
+				gotoMonth = moment($scope.projCalDate).add('1', 'month');
+			} else if (arg == 'prev') {
+				gotoMonth = moment($scope.projCalDate).subtract('1', 'month');
+			} else if (moment(arg).isValid) {
+				gotoMonth = arg;
+			}
+
+			$scope.projCalDate = moment(gotoMonth);
+			$scope.projCalMonth = moment(gotoMonth).format('MMMM YYYY');
+			$('.projects-calendar-view').fullCalendar('gotoDate', gotoMonth);
+		}
 	}
 ]);
 
@@ -217,29 +277,13 @@ ctrl.controller('projectsForm', ['$scope', '$rootScope', '$http', '$routeParams'
 				priority: 2,
 				participants: [],
 				start: '',
-				end: ''
+				end: '',
+				author: '',
+				postDate: ''
 			}
 			$scope.updatingTask = 'none';
 		}
 		$scope.initTask();
-
-		$scope.addTask = function () {
-			if (!$scope.newTask.title) {
-				alert('Please give this task a title');
-				$('#task-title').focus();
-			} else if (!$scope.newTask.description) {
-				alert('Please give this task a description');
-				$('#task-description').focus();
-			} else {
-				$scope.newTask.author = $scope.user._id;
-				$scope.newTask.postDate = moment();
-				$http.post('/marked', {'text': $scope.newTask.description}).success(function (markedText) {
-					$scope.newTask.markedDescription = markedText;
-					$scope.venture.tasks.push($scope.newTask);
-					$scope.initTask();
-				});
-			}
-		}
 
 		$scope.copyTask = {};
 		$scope.updateTask = function (task, index) {
@@ -314,17 +358,17 @@ ctrl.controller('projectsForm', ['$scope', '$rootScope', '$http', '$routeParams'
 			}			
 		}
 
-		$('#task-start').datepicker({
+		$('#new-task-start').datepicker({
 			dateFormat: 'dd-mm-yy',
 			onClose: function (selectedDate) {
-				$('#task-end').datepicker('option', 'minDate', selectedDate);
+				$('#new-task-end').datepicker('option', 'minDate', selectedDate);
 			}
 		});
 
-		$('#task-end').datepicker({
+		$('#new-task-end').datepicker({
 			dateFormat: 'dd-mm-yy',
 			onClose: function (selectedDate) {
-				$('#task-start').datepicker('option', 'maxDate', selectedDate);
+				$('#new-task-start').datepicker('option', 'maxDate', selectedDate);
 			}
 		});
 
@@ -347,9 +391,19 @@ ctrl.controller('projectsForm', ['$scope', '$rootScope', '$http', '$routeParams'
 			if (!$scope.newTask.title) return alert("Please give your task a title");
 			$http.post('/marked', {'text': $scope.newTask.description}).success(function (markedText) {
 				$scope.newTask.markedDescription = markedText;
+				$scope.newTask.author = $scope.user._id;
+				$scope.newTask.postDate = moment().format();
 				$scope.venture.tasks.push($scope.newTask);
 				$scope.initTask();
 			});
+		}
+
+		$scope.removeProject = function () {
+			if (confirm('Are you sure you want to remove this project?') == true) {
+				$http.post('/projects/remove', {'remove': $scope.venture._id}).success( function (data) {
+					window.location.pathname = "/#/projects";
+				});	
+			}
 		}
 
 		$scope.createProject = function () {
@@ -533,14 +587,16 @@ ctrl.controller('projectsDetail', ['$scope', '$rootScope', '$routeParams', '$htt
 			}
 		}
 
-		$scope.removeTask = function (index) {
+		$scope.removeTask = function (task) {
 			if (confirm('Are you sure you want to remove this task?') == true) {
 				
-				if ($scope.currentProject.tasks[index].completed == true) {
+				if ($scope.currentProject.tasks[$scope.currentProject.tasks.indexOf(task)].completed == true) {
 					$scope.currentProject.completedTasks = $scope.currentProject.completedTasks - 1;
 				}
-				$scope.currentProject.tasks.splice(index, 1);
+				$scope.currentProject.tasks.splice($scope.currentProject.tasks.indexOf(task), 1);
 				$scope.updateProject();
+				$scope.copyTask = {};
+				$scope.updatingTask = 'none';
 			}
 		}
 	}

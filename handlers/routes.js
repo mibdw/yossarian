@@ -87,6 +87,7 @@ module.exports = function (app, res, req) {
 	app.post('/projects/update', ensureAuthenticated, projects.update);
 	app.post('/projects/detail', ensureAuthenticated, projects.detail);
 	app.post('/projects/list', ensureAuthenticated, projects.list);
+	app.post('/projects/calendar', ensureAuthenticated, projects.calendar);
 
 	var relations = require(__dirname + '/relations.js');
 	app.post('/relations/create', ensureAuthenticated, relations.create);

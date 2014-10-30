@@ -11,16 +11,20 @@ exports.create = function(req, res, next) {
 			if (req.body.tasks[y].start) req.body.tasks[y].start = moment(req.body.tasks[y].start, 'DD-MM-YYYY').format(); 
 			if (req.body.tasks[y].end) req.body.tasks[y].end = moment(req.body.tasks[y].end, 'DD-MM-YYYY').format(); 
 
-			for (z in req.body.tasks[y].participants) {
-				if (req.body.participants.indexOf(req.body.tasks[y].participants[z]._id) == -1) {
-					req.body.participants.push(req.body.tasks[y].participants[z]._id);
-				}
+			if (req.body.tasks[y].participants.length > 0) {
+				for (z in req.body.tasks[y].participants) {
+					if (req.body.participants.indexOf(req.body.tasks[y].participants[z]._id) == -1) {
+						req.body.participants.push(req.body.tasks[y].participants[z]._id);
+					}
 
-				req.body.tasks[y].participants[z] = req.body.tasks[y].participants[z]._id;
+					req.body.tasks[y].participants[z] = req.body.tasks[y].participants[z]._id;
 
-				if (y == req.body.tasks.length - 1 && z == req.body.tasks[y].participants.length - 1) {
-					done();
+					if (y == req.body.tasks.length - 1 && z == req.body.tasks[y].participants.length - 1) {
+						done();
+					}
 				}
+			} else {
+				done();
 			}
 		}
 	}
@@ -60,7 +64,10 @@ exports.create = function(req, res, next) {
 };
 
 exports.remove = function(req, res, next) {
-
+	Project.findByIdAndRemove(req.body.remove, function (err) {
+		if (err) return console.log(err);
+		res.send('success');
+	});
 };
 
 exports.update = function(req, res, next) {
@@ -72,16 +79,20 @@ exports.update = function(req, res, next) {
 			if (req.body.tasks[y].end) req.body.tasks[y].end = moment(req.body.tasks[y].end, 'DD-MM-YYYY').format();
 			if (req.body.tasks[y].completed == true) completedTasks = completedTasks + 1; 
 
-			for (z in req.body.tasks[y].participants) {
-				if (req.body.participants.indexOf(req.body.tasks[y].participants[z]._id) == -1) {
-					req.body.participants.push(req.body.tasks[y].participants[z]._id);
-				}
+			if (req.body.tasks[y].participants.length > 0) {
+				for (z in req.body.tasks[y].participants) {
+					if (req.body.participants.indexOf(req.body.tasks[y].participants[z]._id) == -1) {
+						req.body.participants.push(req.body.tasks[y].participants[z]._id);
+					}
 
-				req.body.tasks[y].participants[z] = req.body.tasks[y].participants[z]._id;
+					req.body.tasks[y].participants[z] = req.body.tasks[y].participants[z]._id;
 
-				if (y == req.body.tasks.length - 1 && z == req.body.tasks[y].participants.length - 1) {
-					done();
+					if (y == req.body.tasks.length - 1 && z == req.body.tasks[y].participants.length - 1) {
+						done();
+					}
 				}
+			} else {
+				done();
 			}
 		}
 	}
@@ -152,5 +163,27 @@ exports.list = function(req, res, next) {
 			if (err) console.log(err);
 			return res.send({'count': count, 'data': data });
 		});
+	});
+};
+
+exports.calendar = function(req, res, next) {
+	console.log(req.body);
+	var conditions = { $or: [
+		{ start: { $gt: req.body.start, $lte: req.body.end }}, 
+		{ end: { $gt: req.body.start, $lte: req.body.end }}, 
+		{ start: { $lt: req.body.start }, end: { $gt: req.body.end }}
+	] };
+
+	conditions.completed = { $in: [true, false] };
+	if (req.body.completed == 'open') conditions.completed = { $in: [false] };
+	if (req.body.completed == 'closed') conditions.completed = { $in: [true] };
+
+	if (req.body.categories && req.body.categories.length > 0) conditions.categories = { $in: req.body.categories };
+
+	Project.find(conditions)
+	.select('title slug start end')
+	.exec(function (err, data) {
+		if (err) console.log(err);
+		return res.send(data);
 	});
 };
