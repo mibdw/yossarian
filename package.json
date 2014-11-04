@@ -1,24 +1,30 @@
 {
-	"name": "Yossarian",
-	"description": "Intranet mess",
-	"author": "Ben van den Ende <ben@meedoenisbelangrijkerdanwinnen.nl>",
-	"version": "0.0.1",
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/mibdw/yossarian.git"
-	},
-	"dependencies": {
-		"bcryptjs": "2.x",
-		"ejs": ">= 0.0.0",
-		"express": "3.x.x",
-		"less-middleware": ">= 0.0.0",
-   		"marked": "0.3.x",
-		"moment": ">= 0.0.0",
-		"mongodb": ">= 0.0.0",
-		"mongoose": ">= 0.0.0",
-		"passport": ">= 0.0.0",
-		"passport-local": ">= 0.0.0"
-	},
-	"engine": "node >= 0.10.x",
-	"license": "MIT"
+  "name": "Yossarian",
+  "description": "Intranet mess",
+  "author": "Ben van den Ende <ben@meedoenisbelangrijkerdanwinnen.nl>",
+  "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mibdw/yossarian.git"
+  },
+  "dependencies": {
+    "bcryptjs": "2.x",
+    "ejs": ">= 0.0.0",
+    "express": "3.x.x",
+    "marked": "0.3.x",
+    "moment": ">= 0.0.0",
+    "mongodb": ">= 0.0.0",
+    "mongoose": ">= 0.0.0",
+    "passport": ">= 0.0.0",
+    "passport-local": ">= 0.0.0"
+  },
+  "devDependencies": {
+    "grunt": "0.4.x",
+    "grunt-contrib-uglify": "^0.6.0",
+    "grunt-ng-annotate": "^0.4.0",
+    "grunt-contrib-watch": "^0.6.1",
+    "grunt-contrib-less": "^0.12.0"
+  },
+  "engine": "node >= 0.10.x",
+  "license": "MIT"
 }

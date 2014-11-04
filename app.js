@@ -1,5 +1,4 @@
 var express = require('express');
-var less = require('less-middleware');
 var moment = require('moment');
 
 var mongodb = require('mongodb');
@@ -41,11 +40,6 @@ var app = express();
 
 app.engine('html', require('ejs').renderFile);
 app.set('views', __dirname + '/views');
-
-app.use(less(__dirname + '/', {
-	force: true,
-	dest: __dirname + '/public'
-}));
 
 app.use(express.json());
 app.use(express.urlencoded());
