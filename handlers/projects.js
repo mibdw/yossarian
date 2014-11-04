@@ -167,7 +167,6 @@ exports.list = function(req, res, next) {
 };
 
 exports.calendar = function(req, res, next) {
-	console.log(req.body);
 	var conditions = { $or: [
 		{ start: { $gt: req.body.start, $lte: req.body.end }}, 
 		{ end: { $gt: req.body.start, $lte: req.body.end }}, 
