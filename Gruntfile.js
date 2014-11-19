@@ -13,9 +13,9 @@ module.exports = function(grunt) {
 		},
 
 		ngAnnotate: {
-			yossarian: {	
+			prod: {	
 				files: {
-					'public/scripts/yossarian.js': [
+					'public/scripts/src/prod.js': [
 						'public/scripts/libs/angular/angular.min.js',
 						'public/scripts/libs/angular/angular-route.min.js',
 						'public/scripts/libs/angular/angular-cookies.min.js',
@@ -32,8 +32,21 @@ module.exports = function(grunt) {
 			}
 		},
 
+		concat: {
+			yossarian: {
+				src: [
+					'public/scripts/libs/jquery-1.11.1.js', 
+					'public/scripts/libs/jquery-ui.js', 
+					'public/scripts/libs/moment-with-locales.js', 
+					'public/scripts/libs/fullcalendar.js',
+					'public/scripts/src/prod.js', 
+				],
+				dest: 'public/scripts/yossarian.js',
+			},
+		},
+
 		uglify: {
-			build: {
+			yossarian: {
 				src: 'public/scripts/yossarian.js',
 				dest: 'public/scripts/yossarian.min.js'
 			},
@@ -44,8 +57,12 @@ module.exports = function(grunt) {
 
 		watch: {
 			scripts: {
-				files: ['public/scripts/src/*.js'],
-				tasks: ['ngAnnotate', 'uglify'],
+				files: [
+					'public/scripts/src/*.js', 
+					'public/scripts/libs/*.js', 
+					'public/scripts/libs/angular/*.js'
+				],
+				tasks: ['ngAnnotate', 'concat'],
 				options: {
 					spawn: false,
 				},
@@ -62,8 +79,9 @@ module.exports = function(grunt) {
 
 	grunt.loadNpmTasks('grunt-contrib-less');
 	grunt.loadNpmTasks('grunt-ng-annotate');
+	grunt.loadNpmTasks('grunt-contrib-concat');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
 	grunt.loadNpmTasks('grunt-contrib-watch');
 
-	grunt.registerTask('default', ['less', 'ngAnnotate', 'uglify', 'watch']);
+	grunt.registerTask('default', ['less', 'ngAnnotate', 'concat', 'uglify', 'watch']);
 };

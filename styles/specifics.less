@@ -54,39 +54,32 @@
 				li {
 					position: relative;
 					cursor: pointer;
+					border-bottom: 1px solid @line;
+					padding: .3em 0;
 
-					.upcoming-category {
-						position: absolute;
-						display: block;
-						top: 0;
-						left: 0;
-						bottom: 0;
-						width: 1em;
+					&:hover { 
+						background-color: @hover; 
+
+						dl { color: @text; }
 					}
 
-					.upcoming-content {
-						margin-left: 1em;
-						padding: .3em .7em .6em 1em;
-						border-width: 1px 1px 0 0;
-						border-color: @line;
-						border-style: solid;
-						font-size: .8em;
-
-						.upcoming-title {
-							font-weight: bold;
-							font-size: 1.3em;
-						}
-
-						.upcoming-timeline {
-							float: right;
-							line-height: 20px;
-						}
+					.upcoming-title {
+						font-weight: bold;
+						float: left;
 					}
 
-					&:hover { background-color: @hover }
-					&:last-child .upcoming-content { border-bottom-width: 1px }
+					.upcoming-timeline {
+						font-size: .9em;
+						font-style: italic;
+						float: right;
+					}
 
 					dl {
+						margin-top: .1em;
+						float: left;
+						width: 100%;
+						font-size: .9em;
+						line-height: 1.2em;
 						color: @vague;
 
 						dt { float: left }
@@ -229,8 +222,31 @@
 		}
 
 		.projects-calendar-view {
+
 			.fc-event {
-				background-color: @link;
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis;
+			}
+
+			.fc-event > span {
+				position: absolute;
+				top: 0;
+				right: 0;
+				bottom: 0;
+				z-index: 777;
+				width: .5em;
+
+				&.cat-0 { display: none }
+				&.cat-2 { margin-right: .5em; }
+				&.cat-3 { margin-right: 1em; }
+				&.cat-4 { margin-right: 1.5em; }
+				&.cat-5 { margin-right: 2em; }
+				&.cat-6 { margin-right: 2.5em; }
+				&.cat-7 { margin-right: 3em; }
+				&.cat-8 { margin-right: 3.5em; }
+				&.cat-9 { margin-right: 4em; }
+				&.cat-10 { margin-right: 4.5em; }
 			}
 		}
 
@@ -791,6 +807,218 @@
 				padding: 0;
 				margin: 0 0 0 13%;
 				list-style-type: none;	
+			}
+		}
+
+		.timeline-text {
+			list-style-type: none;
+			margin: .5em 0;
+			padding: 0;
+			width: 60%;
+			float: left;
+			position: relative;
+
+			li {
+				min-height: 2em;
+				border-bottom: 1px solid transparent;
+
+				&.start {
+					padding-top: .9em; 
+					border-top: .5em solid @line; 
+
+					.indicator { top: 1px; 	}
+				}
+
+				&.end { 
+					border-bottom: .5em solid @line;
+
+					&.none { 
+						border-bottom-color: transparent;
+
+						.marker	{ display: none; }
+					}
+				}				
+
+				.marker {
+					background-color: @back;
+					padding: 0 .4em 0 0;
+					position: absolute;
+					z-index: 999;
+
+					&.start { top: -.35em; }
+					&.end { bottom: -.4em; }
+				}
+
+				.indicator-container {
+
+					.indicator {
+						border-top: .3em solid @line;
+						position: relative;
+						top: -3px;
+						z-index: 999;
+						cursor: pointer;
+
+						&.priority-1 { border-top: .3em solid @high; }
+						&.priority-2 { border-top: .3em solid @medium; }
+						&.priority-3 { border-top: .3em solid @low; }
+
+						.indicator-title {
+							color: @link;
+							position: relative;
+							top: -.7em;
+							padding: 0 .4em 0 0;
+							background-color: @back;
+
+							&:hover { text-decoration: underline; }
+						}
+					}
+
+					.timeline-detail {
+						padding: .2em 1em 0 0;  
+						border-bottom-width: 0;
+						background-color: @back;
+						.box-sizing (border-box);
+
+						.close { 
+							float: right; 
+						}
+
+						h3 {
+							padding-right: 6em;
+							margin-bottom: -3px;
+
+							&.completed span {
+								text-decoration: line-through;
+							}
+
+							small {	
+								display: inline-block; 
+								background-color: @hover;
+								color: @text;
+								padding: 0 .2em;
+								float: none;
+								width: auto;
+								line-height: initial;
+							}
+						}
+
+						.task-description {
+							padding-top: .5em;
+
+							ul, ol {
+								margin-bottom: 1em;
+
+								li {
+									border-width: 0;
+									padding: 0;
+									min-height: initial;
+								} 
+							}
+						}
+
+						.task-sidebar {
+							border-top: 1px solid @line;
+
+							.tasked {
+								margin: -.2em 0 0;
+								padding: 0;
+								list-style-type: none;
+								display: inline-block;
+
+								li {
+									display: inline-block;
+									border-width: 0;
+									padding-top: 0;
+
+
+									img {
+										border: 3px solid transparent;
+									}
+
+									&.owner img {
+										border-color: @mark;
+									}
+								}
+							}
+
+							.task-priority {
+								float: right;
+								margin-top: .5em;
+							}
+
+							.task-options {
+								float: right;
+								padding: .3em 0 0;
+								margin: .3em 0 0;
+								list-style-type: none;
+								border-top: 1px solid @line;
+
+								li {
+									border-width: 0;
+									padding: 0;
+									margin: 0;
+									text-align: right;
+									min-height: initial;
+								}
+							}
+						}
+					}	
+
+					&.completed .indicator { 
+						border-top: .3em solid @completed; 
+						text-decoration: line-through;
+					}
+
+					&.hide {
+						display: none;
+
+						&.none { display: block; }
+					}
+
+					&.active .indicator-title { display: none; }
+
+				}
+			}		
+		}
+
+		.timeline-blocks {
+			list-style-type: none;
+			margin: .5em 0;
+			padding: 0;
+			width: 40%;
+			float: left;
+
+			li {
+				position: relative;
+				min-height: 2em;
+				border-bottom: 1px solid @line;
+
+				&:first-child {
+					padding-top: .9em; 
+					border-top: .5em solid @line 
+				}
+				&:last-child { border-bottom: .5em solid @line }
+				&.today { background-color: @mark; }
+
+				.task {
+					position: absolute;
+					left: 0;
+					top: -3px;
+					bottom: 2px;
+					background-color: @line;
+					z-index: 999;
+					cursor: pointer;
+
+					&.priority-1 { background-color: @high; }
+					&.priority-2 { background-color: @medium; }
+					&.priority-3 { background-color: @low; }
+
+					&.completed { background-color: @completed; }
+
+					&.fade { opacity: .25; &.active { opacity: 1; }}
+
+					&.end { bottom: -3px; }
+				}
 			}
 		}
 	}

@@ -6,12 +6,12 @@
 
 	<label ng-hide="eventRange" for="start">Date</label>
 	<label ng-show="eventRange" for="start">Start</label>
-	<input type="date" id="start" ng-model="incident.start" placeholder="DD/MM/YYYY" required="required" ng-change="checkStart()" ng-click="resetStartDate()">
+	<input type="text" id="start" ng-model="incident.start" placeholder="DD/MM/YYYY" required="required" ng-change="checkStart()" ng-click="resetStartDate()">
 
 	<a href="" ng-hide="eventRange" class="event-range" ng-click="rangeToggle()">Range</a>
 
 	<label ng-show="eventRange" for="end">End</label>
-	<input ng-show="eventRange" type="date" id="end" ng-model="incident.end" placeholder="DD/MM/YYYY" ng-change="checkEnd()">
+	<input ng-show="eventRange" type="text" id="end" ng-model="incident.end" placeholder="DD/MM/YYYY" ng-change="checkEnd()">
 
 	<a ng-show="eventRange" href="" class="event-range" ng-click="rangeToggle()">Cancel</a>
 	
@@ -40,4 +40,4 @@
 		<a href="mailto:{{incident.editor.email}}">{{incident.editor.email}}</a><br>
 		<small>Last updated <time datetime="{{incident.editDate}}">{{fromNow(incident.editDate)}}</time></small>
 	</li>
-</ul>
+</ul>	

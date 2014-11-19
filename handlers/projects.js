@@ -180,7 +180,8 @@ exports.calendar = function(req, res, next) {
 	if (req.body.categories && req.body.categories.length > 0) conditions.categories = { $in: req.body.categories };
 
 	Project.find(conditions)
-	.select('title slug start end')
+	.select('title slug start end categories')
+	.populate('categories')	
 	.exec(function (err, data) {
 		if (err) console.log(err);
 		return res.send(data);

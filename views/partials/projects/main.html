@@ -1,10 +1,5 @@
 <aside class="right" style="width: 22%">
 
-	<ul class="menu" style="margin: .5em 0;">
-		<li ng-class="{active: projectView.name == 'list'}"><a href="" ng-click="projectView = projectViews[0]">List</a></li>
-		<li ng-class="{active: projectView.name == 'calendar'}"><a href="" ng-click="projectView = projectViews[1]">Calendar</a></li>
-	</ul>	
-
 	<input type="text" class="search" ng-model="projectSearch" placeholder="Search projects" ng-show="projectView.name == 'list'">
 	<a href="" class="clear" ng-show="projectSearch" ng-click="clearProjectSearch()" ng-show="projectView.name == 'list'">Clear</a>
 
@@ -42,10 +37,12 @@
 			</select>
 		</li>	
 	</ul>
-
-	<ul class="links">
+			
+	<ul class="menu" style="margin: .5em 0 0;">
+		<li ng-class="{active: projectView.name == 'list'}"><a href="" ng-click="setProjectView(0)">List</a></li>
+		<li ng-class="{active: projectView.name == 'calendar'}"><a href="" ng-click="setProjectView(1)">Calendar</a></li>
 		<li><a href="/#/projects/create">Create project</a></li>
-	</ul>
+	</ul>	
 </aside>
 
 <div class="content left" style="width: 78%" ng-include="projectView.url">

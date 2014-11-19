@@ -11,9 +11,14 @@ ctrl.controller('projectsController', ['$scope', '$rootScope', '$http', '$cookie
 			{ 'name': 'calendar', 'url': '/partials/projects/calendar' }
 		];
 
-		$scope.projectView = $scope.projectViews[0];
+		if (!$cookies.projectView) $cookies.projectView = 0;
+		$scope.projectView = $scope.projectViews[$cookies.projectView];
+		$scope.setProjectView = function (view) {
+			$cookies.projectView = view;
+			$scope.projectView = $scope.projectViews[$cookies.projectView];
+		};
 
-		if (!$cookies.statusProjects) $cookies.statusProjects = ['all'];
+		if (!$cookies.statusProjects) $cookies.statusProjects = 'all';
 		$scope.statusProjects = $cookies.statusProjects;
 		$scope.setStatusProjects = function (status) {
 			if ($scope.statusProjects != status) $cookies.statusProjects = status;
@@ -135,13 +140,24 @@ ctrl.controller('projectsController', ['$scope', '$rootScope', '$http', '$cookie
 						}
 					],
 					eventRender: function (event, element) {
-						
+						element.addClass(event._id);
+						element.attr('title', event.title);
+						element.css({'background-color': event.categories[0].color});
+						if (event.categories.length > 1) {
+							for (i in event.categories) {
+								element.append('<span class="cat-' + i + '" style="background-color: ' + event.categories[i].color + '"></span>');
+							}
+						}
 					},
 					eventMouseover: function (event, jsEvent, view) {
-						
+						var scope = angular.element('#main').scope();
+						var rootScope = scope.$root;
+						var hoverColor = rootScope.morphColor(event.categories[0].color, 40);
+
+						$('.' + event._id).css('background-color', hoverColor);
 					},
 					eventMouseout: function (event, jsEvent, view) {
-						
+						$('.' + event._id).css('background-color', event.categories[0].color);
 					},
 					eventClick: function (event, jsEvent, view) {
 						window.location.pathname = '/#/projects/' + event.slug; 
@@ -189,6 +205,7 @@ ctrl.controller('projectsForm', ['$scope', '$rootScope', '$http', '$routeParams'
 				tasks: []
 			}
 		}
+		$scope.initProject();
 
 		if ($routeParams.slug) {
 			$http.post('/projects/detail', { slug: $routeParams.slug }).success(function (projectData) {
@@ -208,8 +225,6 @@ ctrl.controller('projectsForm', ['$scope', '$rootScope', '$http', '$routeParams'
 					$scope.venture.categories[i] = $scope.venture.categories[i]._id;
 				}
 			});
-		} else {
-			$scope.initProject();
 		}
 
 		$scope.addParticipant =  function (person) {
@@ -252,25 +267,45 @@ ctrl.controller('projectsForm', ['$scope', '$rootScope', '$http', '$routeParams'
 			}
 		}
 
-		$('#start').datepicker({
+		$('#new-task-start').datepicker({
 			dateFormat: 'dd-mm-yy',
 			beforeShow: function (input, inst) {
 				$('#ui-datepicker-div').addClass('right');
 			},
 			onClose: function (selectedDate) {
-				$('#end').datepicker('option', 'minDate', selectedDate);
+				$('#new-task-end').datepicker('option', 'minDate', selectedDate);
 			}
 		});
 
-		$('#end').datepicker({
+		$('#new-task-end').datepicker({
 			dateFormat: 'dd-mm-yy',
 			beforeShow: function (input, inst) {
 				$('#ui-datepicker-div').addClass('right');
 			},
 			onClose: function (selectedDate) {
-				$('#start').datepicker('option', 'maxDate', selectedDate);
+				$('#new-task-start').datepicker('option', 'maxDate', selectedDate);
 			}
 		});
+
+		$scope.checkDates = function () {
+			$scope.venture.start = '';
+			$scope.venture.end = '';
+
+			for (i in $scope.venture.tasks) {
+				if (!$scope.venture.start) $scope.venture.start = $scope.venture.tasks[i].start;
+				if (!$scope.venture.end) $scope.venture.end = $scope.venture.tasks[i].end;
+
+				var projectStart = moment($scope.venture.start, 'DD-MM-YYYY');
+				var projectEnd = moment($scope.venture.end, 'DD-MM-YYYY');
+				var taskStart = moment($scope.venture.tasks[i].start, 'DD-MM-YYYY');
+				var taskEnd = moment($scope.venture.tasks[i].end, 'DD-MM-YYYY');
+
+				if (moment(projectStart).isAfter(taskStart)) $scope.venture.start = $scope.venture.tasks[i].start;
+				if (moment(projectEnd).isBefore(taskEnd)) $scope.venture.end = $scope.venture.tasks[i].end;
+
+				console.log($scope.venture.tasks[i].start + "---" +$scope.venture.tasks[i].end + "- - - - -" + $scope.venture.start + "---" + $scope.venture.end);
+			}
+		}
 
 		$scope.initTask = function () {
 			$scope.newTask = {
@@ -280,7 +315,7 @@ ctrl.controller('projectsForm', ['$scope', '$rootScope', '$http', '$routeParams'
 				end: '',
 				author: '',
 				postDate: ''
-			}
+			};
 			$scope.updatingTask = 'none';
 		}
 		$scope.initTask();
@@ -300,6 +335,7 @@ ctrl.controller('projectsForm', ['$scope', '$rootScope', '$http', '$routeParams'
 			$scope.venture.tasks[$scope.venture.tasks.indexOf(task)] = $scope.copyTask;
 			$scope.initTask();
 			$scope.copyTask = {};
+			$scope.checkDates();
 		}
 
 		$scope.removeTask = function (task) {
@@ -307,6 +343,7 @@ ctrl.controller('projectsForm', ['$scope', '$rootScope', '$http', '$routeParams'
 				$scope.venture.tasks.splice($scope.venture.tasks.indexOf(task), 1);
 				$scope.initTask();
 				$scope.copyTask = {};
+				$scope.checkDates();
 			}
 		}
 
@@ -358,20 +395,6 @@ ctrl.controller('projectsForm', ['$scope', '$rootScope', '$http', '$routeParams'
 			}			
 		}
 
-		$('#new-task-start').datepicker({
-			dateFormat: 'dd-mm-yy',
-			onClose: function (selectedDate) {
-				$('#new-task-end').datepicker('option', 'minDate', selectedDate);
-			}
-		});
-
-		$('#new-task-end').datepicker({
-			dateFormat: 'dd-mm-yy',
-			onClose: function (selectedDate) {
-				$('#new-task-start').datepicker('option', 'maxDate', selectedDate);
-			}
-		});
-
 		var uncategorized = '';
 		for (i in $rootScope.categoryList) {
 			if ($rootScope.categoryList[i].slug == 'uncategorized') {
@@ -389,12 +412,16 @@ ctrl.controller('projectsForm', ['$scope', '$rootScope', '$http', '$routeParams'
 
 		$scope.addNewTask = function () {
 			if (!$scope.newTask.title) return alert("Please give your task a title");
+			if (!$scope.newTask.description) return alert("Please give your task a description");
+			if (!$scope.newTask.start) return alert("Please give your task a start date");
+			if (!$scope.newTask.end) return alert("Please give your task an end date");
 			$http.post('/marked', {'text': $scope.newTask.description}).success(function (markedText) {
 				$scope.newTask.markedDescription = markedText;
 				$scope.newTask.author = $scope.user._id;
 				$scope.newTask.postDate = moment().format();
 				$scope.venture.tasks.push($scope.newTask);
 				$scope.initTask();
+				$scope.checkDates();
 			});
 		}
 
@@ -437,11 +464,23 @@ ctrl.controller('projectsForm', ['$scope', '$rootScope', '$http', '$routeParams'
 	}
 ]);
 
-ctrl.controller('projectsDetail', ['$scope', '$rootScope', '$routeParams', '$http', '$cookies',
+ctrl.controller('projectsDetail', ['$scope', '$rootScope', '$routeParams', '$http', '$cookies', 
 	function ($scope, $rootScope, $routeParams, $http, $cookies) {
 		$rootScope.slug = 'projects';
 		$rootScope.heading = 'Update project'; 
 		$rootScope.moniker = $rootScope.heading + $rootScope.seperator + $rootScope.masthead;
+
+		$scope.projectDetails = [
+			{ 'name': 'description', 'url': '/partials/projects/description' },
+			{ 'name': 'timeline', 'url': '/partials/projects/timeline' }
+		];
+
+		if (!$cookies.projectDetail) $cookies.projectDetail = 0;
+		$scope.projectDetail = $scope.projectDetails[$cookies.projectDetail];
+		$scope.setProjectDetail = function (detail) {
+			$cookies.projectDetail = detail;
+			$scope.projectDetail = $scope.projectDetails[$cookies.projectDetail];
+		};
 
 		$scope.getProject = function () {
 			$scope.currentProject = {};
@@ -461,7 +500,20 @@ ctrl.controller('projectsDetail', ['$scope', '$rootScope', '$routeParams', '$htt
 					var start = moment($scope.currentProject.start);
 					var end = moment($scope.currentProject.end);
 					$scope.currentProject.duration = end.from(start, true);
+					$scope.currentProject.daysCount = start.diff(end, 'days');
+					$scope.currentProject.today = moment().format();
+
+					$scope.currentProject.days = [];
+					for (day = 0; day >= $scope.currentProject.daysCount; day--) {
+						var time = {
+							'tasks': 0,
+							'date': moment(start).subtract(day, 'day')
+						};
+						$scope.currentProject.days.push(time);
+					}
 				}
+
+				$scope.currentProject.tasks.sort(function (a, b) { return new Date(a.start) - new Date(b.start); });
 
 				$scope.currentProject.completedTasks = 0;
 				angular.forEach($scope.currentProject.tasks, function (task) {
@@ -484,14 +536,34 @@ ctrl.controller('projectsDetail', ['$scope', '$rootScope', '$routeParams', '$htt
 		}
 		$scope.getProject();
 
+		$scope.checkDates = function () {
+			$scope.currentProject.start = '';
+			$scope.currentProject.end = '';
+
+			for (i in $scope.currentProject.tasks) {
+				if (!$scope.currentProject.start) $scope.currentProject.start = $scope.currentProject.tasks[i].start;
+				if (!$scope.currentProject.end) $scope.currentProject.end = $scope.currentProject.tasks[i].end;
+
+				var projectStart = moment($scope.currentProject.start, 'DD-MM-YYYY');
+				var projectEnd = moment($scope.currentProject.end, 'DD-MM-YYYY');
+				var taskStart = moment($scope.currentProject.tasks[i].start, 'DD-MM-YYYY');
+				var taskEnd = moment($scope.currentProject.tasks[i].end, 'DD-MM-YYYY');
+
+				if (moment(projectStart).isAfter(taskStart)) $scope.currentProject.start = $scope.currentProject.tasks[i].start;
+				if (moment(projectEnd).isBefore(taskEnd)) $scope.currentProject.end = $scope.currentProject.tasks[i].end;
+
+				console.log($scope.currentProject.tasks[i].start + "---" +$scope.currentProject.tasks[i].end + "- - - - -" + $scope.currentProject.start + "---" + $scope.currentProject.end);
+			}
+		}
+
 		$scope.sendProject = {}
 		$scope.updateProject = function () {
 			$scope.sendProject = angular.copy($scope.currentProject);
 			$scope.sendProject.author = $scope.sendProject.author._id;
 			$scope.sendProject.editDate = moment();
 			$scope.sendProject.editor = $rootScope.user._id;
-			if ($scope.sendProject.start) $scope.sendProject.start = moment($scope.sendProject.start).format("DD-MM-YYYY");
-			if ($scope.sendProject.end) $scope.sendProject.end = moment($scope.sendProject.end).format("DD-MM-YYYY");
+			$scope.sendProject.start = moment($scope.sendProject.start).format("DD-MM-YYYY");
+			$scope.sendProject.end = moment($scope.sendProject.end).format("DD-MM-YYYY");
 			delete $scope.sendProject.markedDescription;
 			delete $scope.sendProject.completedTasks;
 			
@@ -505,7 +577,7 @@ ctrl.controller('projectsDetail', ['$scope', '$rootScope', '$routeParams', '$htt
 		if (!$cookies.sortTasks) $cookies.sortTasks = 'priority';
 		$scope.sortTasks = $cookies.sortTasks;
 		$scope.setSortTasks = function () {
-			$cookies.sortTasks = $scope.sortTasks;
+				$cookies.sortTasks = this.sortTasks;
 		}
 
 		$scope.completeTask = function (id) {
@@ -598,6 +670,20 @@ ctrl.controller('projectsDetail', ['$scope', '$rootScope', '$routeParams', '$htt
 				$scope.copyTask = {};
 				$scope.updatingTask = 'none';
 			}
+		}
+
+		$scope.timelineTask = function (day, index) {
+			var time = moment(day);
+			var start = moment($scope.currentProject.tasks[index].start, 'DD-MM-YYYY');
+			var end = moment($scope.currentProject.tasks[index].end, 'DD-MM-YYYY');
+
+			if (moment(start).isSame(time, 'day') || moment(end).isSame(time, 'day') || moment(time).isAfter(start, 'day') && moment(time).isBefore(end, 'day')) return true;
+		}	
+
+		$scope.timelineDetail = 'none';
+		$scope.timelineView = function (index) {
+			$scope.timelineDetail = index;
+			$scope.displayTask = $scope.currentProject.tasks[index];
 		}
 	}
 ]);
