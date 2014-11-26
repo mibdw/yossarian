@@ -52,6 +52,7 @@ module.exports = function (app, res, req) {
 	app.post('/users/detail', ensureAuthenticated, users.detail);
 	app.post('/users/list', ensureAuthenticated, users.list);
 	app.post('/users/user', ensureAuthenticated, users.user);
+	app.post('/users/avatar', ensureAuthenticated, users.avatar);
 
 	var categories = require(__dirname + '/categories.js');
 	app.post('/categories/create', ensureAuthenticated, categories.create);

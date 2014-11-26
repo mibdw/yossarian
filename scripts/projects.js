@@ -191,6 +191,7 @@ ctrl.controller('projectsForm', ['$scope', '$rootScope', '$http', '$routeParams'
 	function ($scope, $rootScope, $http, $routeParams) {
 		$rootScope.slug = 'projects';
 		$rootScope.heading = 'Create project'; 
+		if ($routeParams.slug) $rootScope.heading = 'Update project'; 
 		$rootScope.moniker = $rootScope.heading + $rootScope.seperator + $rootScope.masthead;
 
 		$scope.userList = [];
@@ -467,7 +468,7 @@ ctrl.controller('projectsForm', ['$scope', '$rootScope', '$http', '$routeParams'
 ctrl.controller('projectsDetail', ['$scope', '$rootScope', '$routeParams', '$http', '$cookies', 
 	function ($scope, $rootScope, $routeParams, $http, $cookies) {
 		$rootScope.slug = 'projects';
-		$rootScope.heading = 'Update project'; 
+		$rootScope.heading = 'Project detail'; 
 		$rootScope.moniker = $rootScope.heading + $rootScope.seperator + $rootScope.masthead;
 
 		$scope.projectDetails = [
@@ -551,24 +552,45 @@ ctrl.controller('projectsDetail', ['$scope', '$rootScope', '$routeParams', '$htt
 
 				if (moment(projectStart).isAfter(taskStart)) $scope.currentProject.start = $scope.currentProject.tasks[i].start;
 				if (moment(projectEnd).isBefore(taskEnd)) $scope.currentProject.end = $scope.currentProject.tasks[i].end;
-
-				console.log($scope.currentProject.tasks[i].start + "---" +$scope.currentProject.tasks[i].end + "- - - - -" + $scope.currentProject.start + "---" + $scope.currentProject.end);
 			}
 		}
 
 		$scope.sendProject = {}
 		$scope.updateProject = function () {
-			$scope.sendProject = angular.copy($scope.currentProject);
-			$scope.sendProject.author = $scope.sendProject.author._id;
-			$scope.sendProject.editDate = moment();
-			$scope.sendProject.editor = $rootScope.user._id;
-			$scope.sendProject.start = moment($scope.sendProject.start).format("DD-MM-YYYY");
-			$scope.sendProject.end = moment($scope.sendProject.end).format("DD-MM-YYYY");
-			delete $scope.sendProject.markedDescription;
-			delete $scope.sendProject.completedTasks;
-			
-			$http.post('/projects/update', $scope.sendProject).success( function (data) {
-				$scope.sendProject = {};
+			$scope.currentProject.start = '';
+			$scope.currentProject.end = '';
+			var i = 0;
+
+			angular.forEach($scope.currentProject.tasks, function (task) {
+				$http.post('/marked', {'text': task.description}).success(function (markedText) {
+					task.markedDescription = markedText;
+				});
+
+				var projectStart = moment($scope.currentProject.start, 'DD-MM-YYYY');
+				var projectEnd = moment($scope.currentProject.end, 'DD-MM-YYYY');
+				var taskStart = moment(task.start, 'DD-MM-YYYY');
+				var taskEnd = moment(task.end, 'DD-MM-YYYY');
+
+				if (!$scope.currentProject.start) $scope.currentProject.start = taskStart;
+				if (!$scope.currentProject.end) $scope.currentProject.end = taskEnd;
+				if (moment(projectStart).isAfter(taskStart)) $scope.currentProject.start = taskStart;
+				if (moment(projectEnd).isBefore(taskEnd)) $scope.currentProject.end = taskEnd;
+
+				i = i + 1;
+				if (i == $scope.currentProject.tasks.length) {
+					$scope.sendProject = angular.copy($scope.currentProject);
+					$scope.sendProject.author = $scope.sendProject.author._id;
+					$scope.sendProject.editDate = moment();
+					$scope.sendProject.editor = $rootScope.user._id;
+					$scope.sendProject.start = moment($scope.sendProject.start).format("DD-MM-YYYY");
+					$scope.sendProject.end = moment($scope.sendProject.end).format("DD-MM-YYYY");
+					delete $scope.sendProject.markedDescription;
+					delete $scope.sendProject.completedTasks;
+					
+					$http.post('/projects/update', $scope.sendProject).success( function (data) {
+						$scope.sendProject = {};
+					});
+				}
 			});
 
 			$scope.updatingTask = 'none';
@@ -684,6 +706,11 @@ ctrl.controller('projectsDetail', ['$scope', '$rootScope', '$routeParams', '$htt
 		$scope.timelineView = function (index) {
 			$scope.timelineDetail = index;
 			$scope.displayTask = $scope.currentProject.tasks[index];
+		}
+
+		$scope.updateTimelineTask = 'none';
+		$scope.updatingTimelineTask = function (index) {
+			$scope.updateTimelineTask = index;
 		}
 	}
 ]);

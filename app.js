@@ -1,9 +1,8 @@
 var express = require('express');
 var moment = require('moment');
-
 var mongodb = require('mongodb');
 var mongoose = require('mongoose');
-
+var multer = require('multer');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var User = require(__dirname + '/models/user');
@@ -38,9 +37,11 @@ passport.use(new LocalStrategy(function(username, password, done) {
 
 var app = express();
 
+
 app.engine('html', require('ejs').renderFile);
 app.set('views', __dirname + '/views');
 
+app.use(multer({ dest: __dirname + '/public/uploads' }));
 app.use(express.json());
 app.use(express.urlencoded());
 app.use(express.cookieParser()); 	
@@ -51,6 +52,7 @@ app.use(passport.session());
 
 app.use(app.router);
 app.use(express.static(__dirname + '/public')); 
+
 
 var routes = require(__dirname + '/handlers/routes')(app);
 

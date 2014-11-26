@@ -24,7 +24,7 @@
 				</select>
 
 			<label for="new-birthday">Birthday</label>
-			<input type="date" ng-model="newUser.birthday" id="new-birthday" placeholder="DD-MM-YYYY" required="required">
+			<input type="text" ng-model="newUser.birthday" id="new-birthday" placeholder="DD-MM-YYYY" required="required">
 
 			<label for="new-department">Department</label>
 			<select ng-model="newUser.department" id="new-department" required="required">
@@ -40,7 +40,7 @@
 			</select>
 
 			<label for="new-picture">Picture</label>
-			<input type="file" id="new-picture" accept=".jpg,.gif,.png">
+			<input type="file" id="new-picture" accept="images\*" ng-file-select="selectFile($files)">
 
 			<label for="new-note">Note</label>
 			<textarea rows="8"  ng-model="newUser.note" id="new-note"></textarea>
@@ -74,7 +74,7 @@
 			</select>
 
 			<label for="update-birthday">Birthday</label>
-			<input type="date" ng-model="editUser.birthday" id="update-birthday" placeholder="DD-MM-YYYY">
+			<input type="text" ng-model="editUser.birthday" id="update-birthday" placeholder="DD-MM-YYYY">
 
 			<label for="update-department">Department</label>
 			<select ng-model="editUser.department" id="update-department">
@@ -90,14 +90,14 @@
 			</select>
 
 			<label for="update-picture">Picture</label>
-			<input type="file" id="update-picture" accept=".jpg,.gif,.png">
+			<input type="file" id="update-picture" accept="images\*" ng-file-select="selectFile($files)">
 
 			<label for="update-note">Note</label>
 			<textarea rows="8" ng-model="editUser.note" id="update-note"></textarea>
 
 			<label class="wrapper"><input type="checkbox" ng-model="editUser.active" id="update-active"> Active user</label>
 
-			<button ng-click="updateUser()">Update</button>
+			<button type="submit">Update</button>
 			<a href="" ng-click="removeUser()" class="user-remove">Remove</a>
 		</form>
 	</section>
@@ -110,7 +110,7 @@
 
 		<ul class="user-list">
 			<li ng-repeat="user in userList | filter: {name: userSearch} | orderBy: '-postDate' | limitTo: userOffset - userList.length | limitTo: userLimit" ng-click="userEditor(user._id)" ng-class="{active: user._id == editUser._id}">
-				<img src="/avatar.gif">
+				<img src="/uploads/{{user.picture}}">
 				<strong ng-bind-html="user.name.first + ' ' + user.name.last | highlight: userSearch"></strong> <small><time datetime={{user.postDate}}>{{fromNow(user.postDate)}}</time></small><br>
 				<a href="mailto:{{user.email}}">{{user.email}}</a>
 			</li>

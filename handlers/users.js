@@ -31,6 +31,13 @@ exports.update = function(req, res, next) {
 	});
 };
 
+exports.avatar = function(req, res, next) {
+	User.findByIdAndUpdate(req.body._id, { $set: { 'picture': req.files.file.name }}, function (err, user) {
+		if (err) console.log(err);
+		return res.send(user);
+	});
+};
+
 exports.detail = function(req, res, next) {
 	User.findById(req.body._id)
 	.select('-password')
@@ -42,7 +49,7 @@ exports.detail = function(req, res, next) {
 
 exports.list = function(req, res, next) {
 	User.find({})
-	.select('_id email name postDate')
+	.select('_id email name postDate picture')
 	.exec(function (err, userList) {
 		if (err) console.log(err);
 		return res.send(userList);

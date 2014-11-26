@@ -25,7 +25,7 @@
 						<label class="tasked-count" ng-show="task.participants.length > 1">{{task.participants.length}} participants:</label>
 						<ul class="tasked" ng-show="task.participants.length > 0">
 							<li ng-repeat="tasked in task.participants" ng-class="{owner: tasked._id == task.owner}">
-								<img src="/avatar.gif" title="{{tasked.name.first}} {{tasked.name.last}}">
+								<img src="/uploads/{{tasked.picture}}" title="{{tasked.name.first}} {{tasked.name.last}}">
 							</li>
 						</ul>
 
@@ -78,7 +78,7 @@
 							<input type="text" id="task-participants-{{$index}}" placeholder="Search and add people" ng-model="humanSearch" tabindex="2000">
 							<ul class="user-list credits" ng-show="humanSearch">
 								<li ng-repeat="human in humanList = (userList | filter: {name: humanSearch} | limitTo: 3)" ng-click="addTaskParticipant(copyTask._id, human)" ng-keydown="addTaskParticipantKeydown(copyTask._id, $event, human)" tabindex="{{2001 + $index}}" ng-hide="copyTask.participants.indexOf(human) > -1">
-									<img src="/avatar.gif" title="{{human.name.first}} {{human.name.last}}">
+									<img src="/uploads/{{human.picture}}" title="{{human.name.first}} {{human.name.last}}">
 									<strong ng-bind-html="human.name.first + ' ' + human.name.last | highlight: humanSearch"></strong><br>
 									<a href="mailto:{{human.email}}">{{human.email}}</a>
 								</li>
@@ -87,7 +87,7 @@
 
 							<ul class="participant-list" ng-show="copyTask.participants.length > 0">
 								<li ng-repeat="participant in copyTask.participants" ng-class="{owner: participant._id == copyTask.owner}">
-									<img src="/avatar.gif" title="{{participant.name.first}} {{participant.name.last}}"><br>
+									<img src="/uploads/{{participant.picture}}" title="{{participant.name.first}} {{participant.name.last}}"><br>
 									<a href="" ng-click="removeTaskParticipant(copyTask._id, $index)">Remove</a>
 								</li>
 							</ul>
@@ -130,7 +130,7 @@
 					<input type="text" id="task-participants" placeholder="Search and add people" ng-model="humanSearch" tabindex="2000">
 					<ul class="user-list credits" ng-show="humanSearch">
 						<li ng-repeat="human in humanList = (userList | filter: {name: humanSearch} | limitTo: 3)" ng-click="addTaskParticipant(human)" ng-keydown="addTaskParticipantKeydown($event, human)" tabindex="{{2001 + $index}}" ng-hide="newTask.participants.indexOf(human) > -1">	
-							<img src="/avatar.gif" title="{{human.name.first}} {{human.name.last}}">
+							<img src="/uploads/{{human.picture}}" title="{{human.name.first}} {{human.name.last}}">
 							<strong ng-bind-html="human.name.first + ' ' + human.name.last | highlight: humanSearch"></strong><br>
 							<a href="mailto:{{human.email}}">{{human.email}}</a>
 						</li>
@@ -139,7 +139,7 @@
 
 					<ul class="participant-list" ng-show="newTask.participants.length > 0">
 						<li ng-repeat="participant in newTask.participants" ng-class="{owner: participant._id == newTask.owner}">
-							<img src="/avatar.gif" title="{{participant.name.first}} {{participant.name.last}}"><br>
+							<img src="/uploads/{{participant.picture}}" title="{{participant.name.first}} {{participant.name.last}}"><br>
 							<a href="" ng-click="removeNewTaskParticipant($index)">Remove</a>
 						</li>
 					</ul>
@@ -165,19 +165,19 @@
 
 		<ul class="form-credits credits">
 			<li>
-				<img src="/avatar.gif">
+				<img src="/uploads/{{venture.author.picture}}">
 				<strong>{{venture.author.name.first}} {{venture.author.name.last}}</strong> <small>Author</small><br>
 				<a href="mailto:{{venture.author.email}}">{{venture.author.email}}</a><br>
 				<small>Created <time datetime="{{venture.postDate}}">{{fromNow(venture.postDate)}}</time></small>
 			</li>
 			<li ng-if="venture.editor">
-				<img src="/avatar.gif">
+				<img src="/uploads/{{venture.editor.picture}}">
 				<strong>{{venture.editor.name.first}} {{venture.editor.name.last}}</strong> <small>Editor</small><br>
 				<a href="mailto:{{venture.editor.email}}">{{venture.editor.email}}</a><br>
 				<small>Last updated <time datetime="{{venture.editDate}}">{{fromNow(venture.editDate)}}</time></small>
 			</li>
 			<li ng-if="!venture.editor">
-				<img src="/avatar.gif">
+				<img src="/uploads/{{user.picture}}">
 				<strong>{{user.name.first}} {{user.name.last}}</strong> <small>Editor</small><br>
 				<a href="mailto:{{user.email}}">{{user.email}}</a>
 			</li>
@@ -199,7 +199,7 @@
 				ng-click="addParticipant(person)" 
 				ng-keydown="addParticipantKeydown($event, $index, person)" tabindex="{{1001 + $index}}"
 				ng-hide="venture.participants.indexOf(person) > -1">
-					<img src="/avatar.gif" title="{{person.name.first}} {{person.name.last}}">
+					<img src="/uploads/{{person.picture}}" title="{{person.name.first}} {{person.name.last}}">
 					<strong ng-bind-html="person.name.first + ' ' + person.name.last | highlight: userSearch"></strong><br>
 					<a href="mailto:{{person.email}}">{{person.email}}</a>
 				</li>
@@ -208,7 +208,7 @@
 
 			<ul class="participant-list" ng-show="venture.participants.length > 0">
 				<li ng-repeat="participant in venture.participants" ng-class="{owner: participant._id == venture.owner}">
-					<img src="/avatar.gif" title="{{participant.name.first}} {{participant.name.last}}"><br>
+					<img src="/uploads/{{participant.picture}}" title="{{participant.name.first}} {{participant.name.last}}"><br>
 					<a href="" ng-click="removeParticipant($index)">Remove</a>
 				</li>
 			</ul>

@@ -270,6 +270,8 @@ n.directive("ngView",x);n.directive("ngView",z);x.$inject=["$route","$anchorScro
 ["$cookies",function(e){return{get:function(b){return(b=e[b])?f.fromJson(b):b},put:function(b,c){e[b]=f.toJson(c)},remove:function(b){delete e[b]}}}])})(window,window.angular);
 //# sourceMappingURL=angular-cookies.min.js.map
 
+/*! 1.6.12 */
+!function(){var a=angular.module("angularFileUpload",[]);a.service("$upload",["$http","$q","$timeout",function(a,b,c){function d(d){d.method=d.method||"POST",d.headers=d.headers||{},d.transformRequest=d.transformRequest||function(b,c){return window.ArrayBuffer&&b instanceof window.ArrayBuffer?b:a.defaults.transformRequest[0](b,c)};var e=b.defer();window.XMLHttpRequest.__isShim&&(d.headers.__setXHR_=function(){return function(a){a&&(d.__XHR=a,d.xhrFn&&d.xhrFn(a),a.upload.addEventListener("progress",function(a){e.notify(a)},!1),a.upload.addEventListener("load",function(a){a.lengthComputable&&e.notify(a)},!1))}}),a(d).then(function(a){e.resolve(a)},function(a){e.reject(a)},function(a){e.notify(a)});var f=e.promise;return f.success=function(a){return f.then(function(b){a(b.data,b.status,b.headers,d)}),f},f.error=function(a){return f.then(null,function(b){a(b.data,b.status,b.headers,d)}),f},f.progress=function(a){return f.then(null,null,function(b){a(b)}),f},f.abort=function(){return d.__XHR&&c(function(){d.__XHR.abort()}),f},f.xhr=function(a){return d.xhrFn=function(b){return function(){b&&b.apply(f,arguments),a.apply(f,arguments)}}(d.xhrFn),f},f}this.upload=function(b){b.headers=b.headers||{},b.headers["Content-Type"]=void 0,b.transformRequest=b.transformRequest||a.defaults.transformRequest;var c=new FormData,e=b.transformRequest,f=b.data;return b.transformRequest=function(a,c){if(f)if(b.formDataAppender)for(var d in f){var g=f[d];b.formDataAppender(a,d,g)}else for(var d in f){var g=f[d];if("function"==typeof e)g=e(g,c);else for(var h=0;h<e.length;h++){var i=e[h];"function"==typeof i&&(g=i(g,c))}a.append(d,g)}if(null!=b.file){var j=b.fileFormDataName||"file";if("[object Array]"===Object.prototype.toString.call(b.file))for(var k="[object String]"===Object.prototype.toString.call(j),h=0;h<b.file.length;h++)a.append(k?j:j[h],b.file[h],b.fileName&&b.fileName[h]||b.file[h].name);else a.append(j,b.file,b.fileName||b.file.name)}return a},b.data=c,d(b)},this.http=function(a){return d(a)}}]),a.directive("ngFileSelect",["$parse","$timeout",function(a,b){return function(c,d,e){var f=a(e.ngFileSelect);if("input"!==d[0].tagName.toLowerCase()||"file"!==(d.attr("type")&&d.attr("type").toLowerCase())){for(var g=angular.element('<input type="file">'),h=d[0].attributes,i=0;i<h.length;i++)"type"!==h[i].name.toLowerCase()&&g.attr(h[i].name,h[i].value);e.multiple&&g.attr("multiple","true"),g.css("width","1px").css("height","1px").css("opacity",0).css("position","absolute").css("filter","alpha(opacity=0)").css("padding",0).css("margin",0).css("overflow","hidden"),g.attr("__wrapper_for_parent_",!0),d.append(g),d[0].__file_click_fn_delegate_=function(){g[0].click()},d.bind("click",d[0].__file_click_fn_delegate_),d.css("overflow","hidden"),d=g}d.bind("change",function(a){var d,e,g=[];if(d=a.__files_||a.target.files,null!=d)for(e=0;e<d.length;e++)g.push(d.item(e));b(function(){f(c,{$files:g,$event:a})})})}}]),a.directive("ngFileDropAvailable",["$parse","$timeout",function(a,b){return function(c,d,e){if("draggable"in document.createElement("span")){var f=a(e.ngFileDropAvailable);b(function(){f(c)})}}}]),a.directive("ngFileDrop",["$parse","$timeout","$location",function(a,b,c){return function(d,e,f){function g(a){return/^[\000-\177]*$/.test(a)}function h(a,d){var e=[],f=a.dataTransfer.items;if(f&&f.length>0&&f[0].webkitGetAsEntry&&"file"!=c.protocol()&&f[0].webkitGetAsEntry().isDirectory)for(var h=0;h<f.length;h++){var j=f[h].webkitGetAsEntry();null!=j&&(g(j.name)?i(e,j):f[h].webkitGetAsEntry().isDirectory||e.push(f[h].getAsFile()))}else{var k=a.dataTransfer.files;if(null!=k)for(var h=0;h<k.length;h++)e.push(k.item(h))}!function m(a){b(function(){l?m(10):d(e)},a||0)}()}function i(a,b,c){if(null!=b)if(b.isDirectory){var d=b.createReader();l++,d.readEntries(function(d){for(var e=0;e<d.length;e++)i(a,d[e],(c?c:"")+b.name+"/");l--})}else l++,b.file(function(b){l--,b._relativePath=(c?c:"")+b.name,a.push(b)})}if("draggable"in document.createElement("span")){var j=null;e[0].addEventListener("dragover",function(c){if(c.preventDefault(),b.cancel(j),!e[0].__drag_over_class_)if(f.ngFileDragOverClass&&f.ngFileDragOverClass.search(/\) *$/)>-1){var g=a(f.ngFileDragOverClass)(d,{$event:c});e[0].__drag_over_class_=g}else e[0].__drag_over_class_=f.ngFileDragOverClass||"dragover";e.addClass(e[0].__drag_over_class_)},!1),e[0].addEventListener("dragenter",function(a){a.preventDefault()},!1),e[0].addEventListener("dragleave",function(){j=b(function(){e.removeClass(e[0].__drag_over_class_),e[0].__drag_over_class_=null},f.ngFileDragOverDelay||1)},!1);var k=a(f.ngFileDrop);e[0].addEventListener("drop",function(a){a.preventDefault(),e.removeClass(e[0].__drag_over_class_),e[0].__drag_over_class_=null,h(a,function(b){k(d,{$files:b,$event:a})})},!1);var l=0}}}])}();
 /*
  AngularJS v1.2.24
  (c) 2010-2014 Google, Inc. http://angularjs.org
@@ -286,7 +288,7 @@ function(){this.$get=["$$sanitizeUri",function(a){return function(d){var c=[];G(
 if(!e)return e;for(var n,h=e,k=[],m,p;n=h.match(d);)m=n[0],n[2]==n[3]&&(m="mailto:"+m),p=n.index,l(h.substr(0,p)),f(m,n[0].replace(c,"")),h=h.substring(p+n[0].length);l(h);return a(k.join(""))}}])})(window,window.angular);
 //# sourceMappingURL=angular-sanitize.min.js.map
 
-var app = angular.module('yossarian', ['ngRoute', 'ngCookies', 'ngSanitize', 'ui.highlight', 'dashboard', 'docs', 'calendar', 'projects', 'relations', 'settings']);
+var app = angular.module('yossarian', ['ngRoute', 'ngCookies', 'ngSanitize', 'ui.highlight', 'angularFileUpload', 'dashboard', 'docs', 'calendar', 'projects', 'relations', 'settings']);
 
 app.config(['$routeProvider', function ($routeProvider) {
 	$routeProvider.
@@ -1189,6 +1191,7 @@ ctrl.controller('projectsForm', ['$scope', '$rootScope', '$http', '$routeParams'
 	function ($scope, $rootScope, $http, $routeParams) {
 		$rootScope.slug = 'projects';
 		$rootScope.heading = 'Create project'; 
+		if ($routeParams.slug) $rootScope.heading = 'Update project'; 
 		$rootScope.moniker = $rootScope.heading + $rootScope.seperator + $rootScope.masthead;
 
 		$scope.userList = [];
@@ -1465,7 +1468,7 @@ ctrl.controller('projectsForm', ['$scope', '$rootScope', '$http', '$routeParams'
 ctrl.controller('projectsDetail', ['$scope', '$rootScope', '$routeParams', '$http', '$cookies', 
 	function ($scope, $rootScope, $routeParams, $http, $cookies) {
 		$rootScope.slug = 'projects';
-		$rootScope.heading = 'Update project'; 
+		$rootScope.heading = 'Project detail'; 
 		$rootScope.moniker = $rootScope.heading + $rootScope.seperator + $rootScope.masthead;
 
 		$scope.projectDetails = [
@@ -1549,24 +1552,45 @@ ctrl.controller('projectsDetail', ['$scope', '$rootScope', '$routeParams', '$htt
 
 				if (moment(projectStart).isAfter(taskStart)) $scope.currentProject.start = $scope.currentProject.tasks[i].start;
 				if (moment(projectEnd).isBefore(taskEnd)) $scope.currentProject.end = $scope.currentProject.tasks[i].end;
-
-				console.log($scope.currentProject.tasks[i].start + "---" +$scope.currentProject.tasks[i].end + "- - - - -" + $scope.currentProject.start + "---" + $scope.currentProject.end);
 			}
 		}
 
 		$scope.sendProject = {}
 		$scope.updateProject = function () {
-			$scope.sendProject = angular.copy($scope.currentProject);
-			$scope.sendProject.author = $scope.sendProject.author._id;
-			$scope.sendProject.editDate = moment();
-			$scope.sendProject.editor = $rootScope.user._id;
-			$scope.sendProject.start = moment($scope.sendProject.start).format("DD-MM-YYYY");
-			$scope.sendProject.end = moment($scope.sendProject.end).format("DD-MM-YYYY");
-			delete $scope.sendProject.markedDescription;
-			delete $scope.sendProject.completedTasks;
-			
-			$http.post('/projects/update', $scope.sendProject).success( function (data) {
-				$scope.sendProject = {};
+			$scope.currentProject.start = '';
+			$scope.currentProject.end = '';
+			var i = 0;
+
+			angular.forEach($scope.currentProject.tasks, function (task) {
+				$http.post('/marked', {'text': task.description}).success(function (markedText) {
+					task.markedDescription = markedText;
+				});
+
+				var projectStart = moment($scope.currentProject.start, 'DD-MM-YYYY');
+				var projectEnd = moment($scope.currentProject.end, 'DD-MM-YYYY');
+				var taskStart = moment(task.start, 'DD-MM-YYYY');
+				var taskEnd = moment(task.end, 'DD-MM-YYYY');
+
+				if (!$scope.currentProject.start) $scope.currentProject.start = taskStart;
+				if (!$scope.currentProject.end) $scope.currentProject.end = taskEnd;
+				if (moment(projectStart).isAfter(taskStart)) $scope.currentProject.start = taskStart;
+				if (moment(projectEnd).isBefore(taskEnd)) $scope.currentProject.end = taskEnd;
+
+				i = i + 1;
+				if (i == $scope.currentProject.tasks.length) {
+					$scope.sendProject = angular.copy($scope.currentProject);
+					$scope.sendProject.author = $scope.sendProject.author._id;
+					$scope.sendProject.editDate = moment();
+					$scope.sendProject.editor = $rootScope.user._id;
+					$scope.sendProject.start = moment($scope.sendProject.start).format("DD-MM-YYYY");
+					$scope.sendProject.end = moment($scope.sendProject.end).format("DD-MM-YYYY");
+					delete $scope.sendProject.markedDescription;
+					delete $scope.sendProject.completedTasks;
+					
+					$http.post('/projects/update', $scope.sendProject).success( function (data) {
+						$scope.sendProject = {};
+					});
+				}
 			});
 
 			$scope.updatingTask = 'none';
@@ -1683,6 +1707,11 @@ ctrl.controller('projectsDetail', ['$scope', '$rootScope', '$routeParams', '$htt
 			$scope.timelineDetail = index;
 			$scope.displayTask = $scope.currentProject.tasks[index];
 		}
+
+		$scope.updateTimelineTask = 'none';
+		$scope.updatingTimelineTask = function (index) {
+			$scope.updateTimelineTask = index;
+		}
 	}
 ]);
 var ctrl = angular.module('relations', []);
@@ -1751,7 +1780,7 @@ ctrl.controller('settingsCategories', ['$scope', '$rootScope', '$routeParams', '
 
 		$scope.updateCategory = function (index) {
 			 $rootScope.categoryList[index].slug = $rootScope.slugify( $rootScope.categoryList[index].name);
-			$http.post('/categories/update', $rootScope.categoryList[index]);
+			$http.post('/categories/update', $rootScope.categoryList[ipndex]);
 		};
 
 		$scope.redirectCategory = { from: 0, to: 0 };
@@ -1772,8 +1801,8 @@ ctrl.controller('settingsCategories', ['$scope', '$rootScope', '$routeParams', '
 	}
 ]);
 
-ctrl.controller('settingsUsers', ['$scope', '$rootScope', '$routeParams', '$http', '$filter',
-	function ($scope, $rootScope, $routeParams, $http, $filter) {	
+ctrl.controller('settingsUsers', ['$scope', '$rootScope', '$routeParams', '$http', '$filter', '$upload', 
+	function ($scope, $rootScope, $routeParams, $http, $filter, $upload) {	
 		$rootScope.datePicker();
 		$scope.userView = 'create';
 		$scope.userList = [];
@@ -1809,6 +1838,11 @@ ctrl.controller('settingsUsers', ['$scope', '$rootScope', '$routeParams', '$http
 			}
 		};
 
+		$scope.selectFile = function ($files) {
+			$scope.files = $files;
+			console.log($files[0]);
+		}
+
 		$scope.createUser = function () {
 			if ($scope.newUser.password != $scope.newUser.confirm) {
 				alert("Your passwords do not match, please retry")
@@ -1816,10 +1850,17 @@ ctrl.controller('settingsUsers', ['$scope', '$rootScope', '$routeParams', '$http
 				var username = $scope.newUser.name.first + " " + $scope.newUser.name.last;
 
 				$scope.newUser.username = $rootScope.slugify(username);
-				$scope.newUser.birthday = moment($scope.newUser.birthday, "DD-MM-YYYY");
-				$scope.newUser.postDate = moment();
+				if ($scope.newUser.birthday) $scope.newUser.birthday = moment($scope.newUser.birthday, "DD-MM-YYYY").format();
+				$scope.newUser.postDate = moment().format();
 				$http.post('/users/create', $scope.newUser).success( function (data) {
-					window.location.reload();	
+					if ($scope.files) {
+						var picture = $scope.files[0];
+						$scope.upload = $upload.upload({ url: '/users/avatar', data: { '_id': data._id }, file: picture }).success( function (data) {
+							window.location.reload();
+						});
+					} else {
+						window.location.reload();	
+					}	
 				});
 			}
 		};
@@ -1841,6 +1882,7 @@ ctrl.controller('settingsUsers', ['$scope', '$rootScope', '$routeParams', '$http
 				$scope.editUser = {};
 			}
 		};
+		
 
 		$scope.updateUser = function () {
 			if ($scope.editUser.password != $scope.editUser.confirm) {
@@ -1849,13 +1891,22 @@ ctrl.controller('settingsUsers', ['$scope', '$rootScope', '$routeParams', '$http
 				var username = $scope.editUser.name.first + " " + $scope.editUser.name.last;
 
 				$scope.editUser.username = $rootScope.slugify(username);
-				$scope.editUser.birthday = moment($scope.editUser.birthday, "DD-MM-YYYY");
-				$scope.editUser.editDate = moment();
+				if ($scope.editUser.birthday) $scope.editUser.birthday = moment($scope.editUser.birthday, "DD-MM-YYYY").format();
+				$scope.editUser.editDate = moment().format();
+				
 				$http.post('/users/update', $scope.editUser).success( function (data) {
-					window.location.reload();
+					if ($scope.files) {
+						var picture = $scope.files[0];
+						$scope.upload = $upload.upload({ url: '/users/avatar', data: { '_id': data._id }, file: picture }).success( function (data) {
+							window.location.reload();
+						});
+					} else {
+						window.location.reload();	
+					}
 				});
 			}
 		};
+
 
 		$scope.removeUser = function () {
 			if (confirm('Are you sure you want to remove this user?') == true) {

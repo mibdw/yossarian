@@ -25,7 +25,7 @@
 				<small class="project-participants-count" ng-show="project.participants.length > 1">{{project.participants.length}} participants:</small>
 				
 				<li ng-repeat="participant in project.participants"  ng-class="{owner: project.owner == participant._id}">
-					<img src="/avatar.gif" title="{{participant.name.first}} {{participant.name.last}}">
+					<img src="/uploads/{{participant.picture}}" title="{{participant.name.first}} {{participant.name.last}}">
 				</li>
 			</ul>
 

@@ -55,7 +55,7 @@ ctrl.controller('settingsCategories', ['$scope', '$rootScope', '$routeParams', '
 
 		$scope.updateCategory = function (index) {
 			 $rootScope.categoryList[index].slug = $rootScope.slugify( $rootScope.categoryList[index].name);
-			$http.post('/categories/update', $rootScope.categoryList[index]);
+			$http.post('/categories/update', $rootScope.categoryList[ipndex]);
 		};
 
 		$scope.redirectCategory = { from: 0, to: 0 };
@@ -76,8 +76,8 @@ ctrl.controller('settingsCategories', ['$scope', '$rootScope', '$routeParams', '
 	}
 ]);
 
-ctrl.controller('settingsUsers', ['$scope', '$rootScope', '$routeParams', '$http', '$filter',
-	function ($scope, $rootScope, $routeParams, $http, $filter) {	
+ctrl.controller('settingsUsers', ['$scope', '$rootScope', '$routeParams', '$http', '$filter', '$upload', 
+	function ($scope, $rootScope, $routeParams, $http, $filter, $upload) {	
 		$rootScope.datePicker();
 		$scope.userView = 'create';
 		$scope.userList = [];
@@ -113,6 +113,11 @@ ctrl.controller('settingsUsers', ['$scope', '$rootScope', '$routeParams', '$http
 			}
 		};
 
+		$scope.selectFile = function ($files) {
+			$scope.files = $files;
+			console.log($files[0]);
+		}
+
 		$scope.createUser = function () {
 			if ($scope.newUser.password != $scope.newUser.confirm) {
 				alert("Your passwords do not match, please retry")
@@ -120,10 +125,17 @@ ctrl.controller('settingsUsers', ['$scope', '$rootScope', '$routeParams', '$http
 				var username = $scope.newUser.name.first + " " + $scope.newUser.name.last;
 
 				$scope.newUser.username = $rootScope.slugify(username);
-				$scope.newUser.birthday = moment($scope.newUser.birthday, "DD-MM-YYYY");
-				$scope.newUser.postDate = moment();
+				if ($scope.newUser.birthday) $scope.newUser.birthday = moment($scope.newUser.birthday, "DD-MM-YYYY").format();
+				$scope.newUser.postDate = moment().format();
 				$http.post('/users/create', $scope.newUser).success( function (data) {
-					window.location.reload();	
+					if ($scope.files) {
+						var picture = $scope.files[0];
+						$scope.upload = $upload.upload({ url: '/users/avatar', data: { '_id': data._id }, file: picture }).success( function (data) {
+							window.location.reload();
+						});
+					} else {
+						window.location.reload();	
+					}	
 				});
 			}
 		};
@@ -145,6 +157,7 @@ ctrl.controller('settingsUsers', ['$scope', '$rootScope', '$routeParams', '$http
 				$scope.editUser = {};
 			}
 		};
+		
 
 		$scope.updateUser = function () {
 			if ($scope.editUser.password != $scope.editUser.confirm) {
@@ -153,13 +166,22 @@ ctrl.controller('settingsUsers', ['$scope', '$rootScope', '$routeParams', '$http
 				var username = $scope.editUser.name.first + " " + $scope.editUser.name.last;
 
 				$scope.editUser.username = $rootScope.slugify(username);
-				$scope.editUser.birthday = moment($scope.editUser.birthday, "DD-MM-YYYY");
-				$scope.editUser.editDate = moment();
+				if ($scope.editUser.birthday) $scope.editUser.birthday = moment($scope.editUser.birthday, "DD-MM-YYYY").format();
+				$scope.editUser.editDate = moment().format();
+				
 				$http.post('/users/update', $scope.editUser).success( function (data) {
-					window.location.reload();
+					if ($scope.files) {
+						var picture = $scope.files[0];
+						$scope.upload = $upload.upload({ url: '/users/avatar', data: { '_id': data._id }, file: picture }).success( function (data) {
+							window.location.reload();
+						});
+					} else {
+						window.location.reload();	
+					}
 				});
 			}
 		};
+
 
 		$scope.removeUser = function () {
 			if (confirm('Are you sure you want to remove this user?') == true) {

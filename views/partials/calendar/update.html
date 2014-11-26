@@ -29,13 +29,13 @@
 
 <ul class="form-credits credits">
 	<li>
-		<img src="/avatar.gif">
+		<img src="/uploads/{{incident.author.picture}}">
 		<strong>{{incident.author.name.first}} {{incident.author.name.last}}</strong> <small>Author</small><br>
 		<a href="mailto:{{incident.author.email}}">{{incident.author.email}}</a><br>
 		<small>Created <time datetime="{{incident.postDate}}">{{fromNow(incident.postDate)}}</time></small>
 	</li>
 	<li ng-if="incident.editor">
-		<img src="/avatar.gif">
+		<img src="/uploads/{{incident.editor.picture}}">
 		<strong>{{incident.editor.name.first}} {{incident.editor.name.last}}</strong> <small>Editor</small><br>
 		<a href="mailto:{{incident.editor.email}}">{{incident.editor.email}}</a><br>
 		<small>Last updated <time datetime="{{incident.editDate}}">{{fromNow(incident.editDate)}}</time></small>

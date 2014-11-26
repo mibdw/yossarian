@@ -7,7 +7,7 @@ module.exports = function(grunt) {
 					compress: true,
 				},
 				files: {
-					"public/styles/yossarian.min.css": "styles/main.less"
+					"public/yossarian.min.css": "styles/main.less"
 				}
 			}
 		},
@@ -15,18 +15,19 @@ module.exports = function(grunt) {
 		ngAnnotate: {
 			prod: {	
 				files: {
-					'public/scripts/src/prod.js': [
-						'public/scripts/libs/angular/angular.min.js',
-						'public/scripts/libs/angular/angular-route.min.js',
-						'public/scripts/libs/angular/angular-cookies.min.js',
-						'public/scripts/libs/angular/angular-sanitize.min.js',
-						'public/scripts/src/global.js', 
-						'public/scripts/src/dashboard.js', 
-						'public/scripts/src/docs.js', 
-						'public/scripts/src/calendar.js', 
-						'public/scripts/src/projects.js', 
-						'public/scripts/src/relations.js', 
-						'public/scripts/src/settings.js'
+					'scripts/annotated.js': [
+						'scripts/angular/angular.min.js',
+						'scripts/angular/angular-route.min.js',
+						'scripts/angular/angular-cookies.min.js',
+						'scripts/angular/angular-file-upload.min.js',
+						'scripts/angular/angular-sanitize.min.js',
+						'scripts/global.js', 
+						'scripts/dashboard.js', 
+						'scripts/docs.js', 
+						'scripts/calendar.js', 
+						'scripts/projects.js', 
+						'scripts/relations.js', 
+						'scripts/settings.js'
 					]
 				}
 			}
@@ -35,20 +36,20 @@ module.exports = function(grunt) {
 		concat: {
 			yossarian: {
 				src: [
-					'public/scripts/libs/jquery-1.11.1.js', 
-					'public/scripts/libs/jquery-ui.js', 
-					'public/scripts/libs/moment-with-locales.js', 
-					'public/scripts/libs/fullcalendar.js',
-					'public/scripts/src/prod.js', 
+					'scripts/libs/jquery-1.11.1.js', 
+					'scripts/libs/jquery-ui.js', 
+					'scripts/libs/moment-with-locales.js', 
+					'scripts/libs/fullcalendar.js',
+					'scripts/annotated.js', 
 				],
-				dest: 'public/scripts/yossarian.js',
+				dest: 'public/yossarian.js',
 			},
 		},
 
 		uglify: {
 			yossarian: {
-				src: 'public/scripts/yossarian.js',
-				dest: 'public/scripts/yossarian.min.js'
+				src: 'public/yossarian.js',
+				dest: 'public/yossarian.min.js'
 			},
 			options: {
 				mangle: false
@@ -58,9 +59,9 @@ module.exports = function(grunt) {
 		watch: {
 			scripts: {
 				files: [
-					'public/scripts/src/*.js', 
-					'public/scripts/libs/*.js', 
-					'public/scripts/libs/angular/*.js'
+					'scripts/*.js', 
+					'scripts/libs/*.js', 
+					'scripts/angular/*.js'
 				],
 				tasks: ['ngAnnotate', 'concat'],
 				options: {

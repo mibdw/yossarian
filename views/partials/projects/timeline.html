@@ -26,52 +26,54 @@
 	 	</div>
 
 		<div ng-show="timelineDetail != 'none'" class="timeline-detail">
-			<a href="" ng-click="timelineView('none')" class="close">Close</a>
+			<div ng-show="updateTimelineTask != $index">
+				<a href="" ng-click="timelineView('none')" class="close">Close</a>
 
-			<h3 ng-class="{completed: displayTask.completed == true}"  ng-show="updatingTask != $index">
-				<span>{{displayTask.title}}</span>
-				<small ng-show="displayTask.completed == true">Completed</small>
-			</h3>
+				<h3 ng-class="{completed: displayTask.completed == true}"  ng-show="updatingTask != $index">
+					<span>{{displayTask.title}}</span>
+					<small ng-show="displayTask.completed == true">Completed</small>
+				</h3>
 
-			<small ng-show="displayTask.start || displayTask.end" ng-hide="updatingTask == $index" class="task-period">
-				<span ng-show="displayTask.start">{{displayTask.start}}</span>
-				<span ng-show="displayTask.start && displayTask.end"> &mdash; </span> 
-				<span ng-show="displayTask.end">{{displayTask.end}}</span> 
-			</small>
+				<small ng-show="displayTask.start || displayTask.end" ng-hide="updatingTask == $index" class="task-period">
+					<span ng-show="displayTask.start">{{displayTask.start}}</span>
+					<span ng-show="displayTask.start && displayTask.end"> &mdash; </span> 
+					<span ng-show="displayTask.end">{{displayTask.end}}</span> 
+				</small>
 
-			<div class="task-description" ng-bind-html="displayTask.markedDescription"  ng-show="updatingTask != $index"><em>Task description</em></div>
+				<div class="task-description" ng-bind-html="displayTask.markedDescription"  ng-show="updatingTask != $index"><em>Task description</em></div>
 
 
-			<div class="task-sidebar">
+				<div class="task-sidebar">
 
-				<span ng-show="displayTask.priority == 1" class="task-priority">Priority: <strong>High</strong></span>
-				<span ng-show="displayTask.priority == 2" class="task-priority">Priority: <strong>Normal</strong></span>
-				<span ng-show="displayTask.priority == 3" class="task-priority">Priority: <strong>Low</strong></span>
+					<span ng-show="displayTask.priority == 1" class="task-priority">Priority: <strong>High</strong></span>
+					<span ng-show="displayTask.priority == 2" class="task-priority">Priority: <strong>Normal</strong></span>
+					<span ng-show="displayTask.priority == 3" class="task-priority">Priority: <strong>Low</strong></span>
 
-				<label class="tasked-count" ng-show="displayTask.participants.length == 0">No participants</label>
-				<label class="tasked-count" ng-show="displayTask.participants.length == 1">1 participant:</label>
-				<label class="tasked-count" ng-show="displayTask.participants.length > 1">{{displayTask.participants.length}} participants:</label>
+					<label class="tasked-count" ng-show="displayTask.participants.length == 0">No participants</label>
+					<label class="tasked-count" ng-show="displayTask.participants.length == 1">1 participant:</label>
+					<label class="tasked-count" ng-show="displayTask.participants.length > 1">{{displayTask.participants.length}} participants:</label>
 
-				<br>
+					<br>
 
-				<ul class="tasked" ng-show="displayTask.participants.length > 0">
-					<li ng-repeat="tasked in displayTask.participants" ng-class="{owner: tasked._id == displayTask.owner}">
-						<img src="/avatar.gif" title="{{tasked.name.first}} {{tasked.name.last}}">
-					</li>
-				</ul>
+					<ul class="tasked" ng-show="displayTask.participants.length > 0">
+						<li ng-repeat="tasked in displayTask.participants" ng-class="{owner: tasked._id == displayTask.owner}">
+							<img src="/uploads/{{tasked.picture}}" title="{{tasked.name.first}} {{tasked.name.last}}">
+						</li>
+					</ul>
 
-				<ul class="task-options">
-					<li>
-						<a href="" ng-show="displayTask.completed != true" ng-click="completeTask(displayTask._id)">Mark done</a>
-						<a href="" ng-show="displayTask.completed == true" ng-click="uncompleteTask(displayTask._id)">Mark undone</a>
-					</li>
-					<li>
-						<a href="" ng-click="updateTask($index)">Update</a>
-					</li>
-				</ul>
+					<ul class="task-options">
+						<li>
+							<a href="" ng-show="displayTask.completed != true" ng-click="completeTask(displayTask._id)">Mark done</a>
+							<a href="" ng-show="displayTask.completed == true" ng-click="uncompleteTask(displayTask._id)">Mark undone</a>
+						</li>
+						<li>
+							<a href="" ng-click="updatingTimelineTask($index)">Update</a>
+						</li>
+					</ul>
+				</div>				
 			</div>
 
-			<!-- <form class="edit-task" ng-show="updatingTask == $index">
+			<form class="edit-task form" ng-show="updateTimelineTask == $index">
 				<div class="edit-task-main">
 					<label for="task-title-{{$index}}">Title</label>
 					<input type="text" id="task-title-{{$index}}" ng-model="task.title">
@@ -96,7 +98,7 @@
 					<input type="text" id="task-participants-{{$index}}" placeholder="Search and add people" ng-model="humanSearch" tabindex="2000">
 					<ul class="user-list credits" ng-show="humanSearch">
 						<li ng-repeat="human in humanList = (userList | filter: {name: humanSearch} | limitTo: 3)" ng-click="addTaskParticipant(task._id, human)" ng-keydown="addTaskParticipantKeydown(task._id, $event, human)" tabindex="{{2001 + $index}}" ng-hide="task.participants.indexOf(human) > -1">
-							<img src="/avatar.gif" title="{{human.name.first}} {{human.name.last}}">
+							<img src="/uploads/{{human.picture}}" title="{{human.name.first}} {{human.name.last}}">
 							<strong ng-bind-html="human.name.first + ' ' + human.name.last | highlight: humanSearch"></strong><br>
 							<a href="mailto:{{human.email}}">{{human.email}}</a>
 						</li>
@@ -105,7 +107,7 @@
 
 					<ul class="participant-list" ng-show="task.participants.length > 0">
 						<li ng-repeat="participant in task.participants" ng-class="{owner: participant._id == task.owner}">
-							<img src="/avatar.gif" title="{{participant.name.first}} {{participant.name.last}}"><br>
+							<img src="/uploads/{{participant.picture}}" title="{{participant.name.first}} {{participant.name.last}}"><br>
 							<a href="" ng-click="removeTaskParticipant(task._id, $index)">Remove</a>
 						</li>
 					</ul>
@@ -116,13 +118,13 @@
 					</select>
 
 					<div class="edit-task-options">
-						<button type="button" ng-click="updateProject()">Update</button>
+						<button type="button" ng-click="updateProject(); updatingTimelineTask('none')">Update</button>
 
 						<a href="" class="remove" ng-click="removeTask(task)">Remove</a>
-						<a href="" class="cancel" ng-click="cancelUpdateTask($index)">Cancel</a>
+						<a href="" class="cancel" ng-click="updatingTimelineTask('none')">Cancel</a>
 					</div>
 				</div>
-			</form> -->
+			</form>
 		</div>
 	 </div>
 	</li>

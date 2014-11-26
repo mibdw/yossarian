@@ -295,6 +295,8 @@
 
 						img {
 							border: 3px solid transparent;
+							width: 40px;
+							height: 40px;
 						}
 
 						&.owner img {
@@ -339,7 +341,7 @@
 
 					small { 
 						padding: 0 .2em;
-						background-color: @hover;
+						background-color: @completed;
 						color: @text; 	
 					}
 				}
@@ -445,7 +447,7 @@
 				font-weight: bold;
 				margin-bottom: 1em;
 				padding: 0 .2em;
-				background-color: @hover;
+				background-color: @completed;
 			}
 
 			.links {
@@ -479,7 +481,11 @@
 					margin: 0;
 					padding: 0;
 
-					img { border: 3px solid transparent; }
+					img { 
+						border: 3px solid transparent; 
+						width: 40px;
+						height: 40px;
+					}
 
 					&.owner img { border-color: @mark; }
 				}
@@ -536,6 +542,8 @@
 
 				img {
 					border: 3px solid transparent;
+					width: 40px;
+					height: 40px;
 				}
 
 				&.owner img {
@@ -578,7 +586,7 @@
 					.clearfix;
 
 					&.completed {
-						border-left: .5em solid @hover;
+						border-left: .5em solid @completed;
 						padding-left: .5em;
 					}
 
@@ -596,7 +604,7 @@
 
 						small {	
 							display: inline; 
-							background-color: @hover;
+							background-color: @completed;
 							color: @text;
 							padding: 0 .2em;
 							float: none;
@@ -653,6 +661,8 @@
 
 							img {
 								border: 3px solid transparent;
+								width: 40px;
+								height: 40px;
 							}
 
 							&.owner img {
@@ -893,7 +903,7 @@
 
 							small {	
 								display: inline-block; 
-								background-color: @hover;
+								background-color: @completed;
 								color: @text;
 								padding: 0 .2em;
 								float: none;
@@ -933,6 +943,8 @@
 
 									img {
 										border: 3px solid transparent;
+										width: 40px;
+										height: 40px;	
 									}
 
 									&.owner img {
@@ -960,6 +972,31 @@
 									text-align: right;
 									min-height: initial;
 								}
+							}
+						}
+					
+						.edit-task {
+
+							label { width: 20%;	}
+							input, textarea, select { width: 80%; }
+							
+							.task-start, .task-end { width: 35%; }
+							.task-start { margin-right: 1%; }
+
+							.participant-list, .user-list { margin-left: 20%; }
+
+							.edit-task-options {
+								float: left;
+								width: 100%;
+								padding-top: .5em;
+
+								button {
+									float: right;
+									margin-left: .5em;
+								}
+
+								.remove { line-height: 2em; float: right; }
+								.cancel { line-height: 2em; margin-left: 20%; }
 							}
 						}
 					}	

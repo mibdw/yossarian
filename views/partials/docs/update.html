@@ -24,19 +24,19 @@
 
 		<ul class="form-credits credits">
 			<li>
-				<img src="/avatar.gif">
+				<img src="/uploads/{{updateDoc.author.picture}}">
 				<strong>{{updateDoc.author.name.first}} {{updateDoc.author.name.last}}</strong> <small>Author</small><br>
 				<a href="mailto:{{updateDoc.author.email}}">{{updateDoc.author.email}}</a><br>
 				<small>Created <time datetime="{{updateDoc.postDate}}">{{fromNow(updateDoc.postDate)}}</time></small>
 			</li>
 			<li ng-if="updateDoc.editor">
-				<img src="/avatar.gif">
+				<img src="/uploads/{{updateDoc.editor.picture}}">
 				<strong>{{updateDoc.editor.name.first}} {{updateDoc.editor.name.last}}</strong> <small>Editor</small><br>
 				<a href="mailto:{{updateDoc.editor.email}}">{{updateDoc.editor.email}}</a><br>
 				<small>Last updated <time datetime="{{updateDoc.editDate}}">{{fromNow(updateDoc.editDate)}}</time></small>
 			</li>
 			<li ng-if="!updateDoc.editor">
-				<img src="/avatar.gif">
+				<img src="/uploads/{{user.picture}}">
 				<strong>{{user.name.first}} {{user.name.last}}</strong> <small>Editor</small><br>
 				<a href="mailto:{{user.email}}">{{user.email}}</a>
 			</li>

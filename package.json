@@ -16,7 +16,8 @@
     "mongodb": ">= 0.0.0",
     "mongoose": ">= 0.0.0",
     "passport": ">= 0.0.0",
-    "passport-local": ">= 0.0.0"
+    "passport-local": ">= 0.0.0",
+    "multer": "^0.1.6"
   },
   "devDependencies": {
     "grunt": "0.4.x",

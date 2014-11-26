@@ -1,4 +1,4 @@
-var app = angular.module('yossarian', ['ngRoute', 'ngCookies', 'ngSanitize', 'ui.highlight', 'dashboard', 'docs', 'calendar', 'projects', 'relations', 'settings']);
+var app = angular.module('yossarian', ['ngRoute', 'ngCookies', 'ngSanitize', 'ui.highlight', 'angularFileUpload', 'dashboard', 'docs', 'calendar', 'projects', 'relations', 'settings']);
 
 app.config(['$routeProvider', function ($routeProvider) {
 	$routeProvider.

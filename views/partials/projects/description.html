@@ -31,7 +31,7 @@
 			<label class="tasked-count" ng-show="task.participants.length > 1">{{task.participants.length}} participants:</label>
 			<ul class="tasked" ng-show="task.participants.length > 0">
 				<li ng-repeat="tasked in task.participants" ng-class="{owner: tasked._id == task.owner}">
-					<img src="/avatar.gif" title="{{tasked.name.first}} {{tasked.name.last}}">
+					<img src="/uploads/{{tasked.picture}}" title="{{tasked.name.first}} {{tasked.name.last}}">
 				</li>
 			</ul>
 
@@ -84,7 +84,7 @@
 				<input type="text" id="task-participants-{{$index}}" placeholder="Search and add people" ng-model="humanSearch" tabindex="2000">
 				<ul class="user-list credits" ng-show="humanSearch">
 					<li ng-repeat="human in humanList = (userList | filter: {name: humanSearch} | limitTo: 3)" ng-click="addTaskParticipant(task._id, human)" ng-keydown="addTaskParticipantKeydown(task._id, $event, human)" tabindex="{{2001 + $index}}" ng-hide="task.participants.indexOf(human) > -1">
-						<img src="/avatar.gif" title="{{human.name.first}} {{human.name.last}}">
+						<img src="/uploads/{{human.picture}}" title="{{human.name.first}} {{human.name.last}}">
 						<strong ng-bind-html="human.name.first + ' ' + human.name.last | highlight: humanSearch"></strong><br>
 						<a href="mailto:{{human.email}}">{{human.email}}</a>
 					</li>
@@ -93,7 +93,7 @@
 
 				<ul class="participant-list" ng-show="task.participants.length > 0">
 					<li ng-repeat="participant in task.participants" ng-class="{owner: participant._id == task.owner}">
-						<img src="/avatar.gif" title="{{participant.name.first}} {{participant.name.last}}"><br>
+						<img src="/uploads/{{participant.picture}}" title="{{participant.name.first}} {{participant.name.last}}"><br>
 						<a href="" ng-click="removeTaskParticipant(task._id, $index)">Remove</a>
 					</li>
 				</ul>
