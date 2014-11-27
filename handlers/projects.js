@@ -79,20 +79,45 @@ exports.update = function(req, res, next) {
 			if (req.body.tasks[y].end) req.body.tasks[y].end = moment(req.body.tasks[y].end, 'DD-MM-YYYY').format();
 			if (req.body.tasks[y].completed == true) completedTasks = completedTasks + 1; 
 
-			if (req.body.tasks[y].participants.length > 0) {
-				for (z in req.body.tasks[y].participants) {
-					if (req.body.participants.indexOf(req.body.tasks[y].participants[z]._id) == -1) {
-						req.body.participants.push(req.body.tasks[y].participants[z]._id);
-					}
+			if (req.body.tasks[y].comments.length > 0) {
+				for (ci in req.body.tasks[y].comments) {
+					console.log(ci);
+					console.log(req.body.tasks[y].comments[ci].author);
+					req.body.tasks[y].comments[ci].author = req.body.tasks[y].comments[ci].author._id; 
+					if (ci == req.body.tasks[y].comments.length) {
+						if (req.body.tasks[y].participants.length > 0) {
+							for (z in req.body.tasks[y].participants) {
+								if (req.body.participants.indexOf(req.body.tasks[y].participants[z]._id) == -1) {
+									req.body.participants.push(req.body.tasks[y].participants[z]._id);
+								}
 
-					req.body.tasks[y].participants[z] = req.body.tasks[y].participants[z]._id;
+								req.body.tasks[y].participants[z] = req.body.tasks[y].participants[z]._id;
 
-					if (y == req.body.tasks.length - 1 && z == req.body.tasks[y].participants.length - 1) {
-						done();
+								if (y == req.body.tasks.length - 1 && z == req.body.tasks[y].participants.length - 1) {
+									done();
+								}
+							}
+						} else {
+							done();
+						}
 					}
 				}
 			} else {
-				done();
+				if (req.body.tasks[y].participants.length > 0) {
+					for (z in req.body.tasks[y].participants) {
+						if (req.body.participants.indexOf(req.body.tasks[y].participants[z]._id) == -1) {
+							req.body.participants.push(req.body.tasks[y].participants[z]._id);
+						}
+
+						req.body.tasks[y].participants[z] = req.body.tasks[y].participants[z]._id;
+
+						if (y == req.body.tasks.length - 1 && z == req.body.tasks[y].participants.length - 1) {
+							done();
+						}
+					}
+				} else {
+					done();
+				}
 			}
 		}
 	}
@@ -134,7 +159,7 @@ exports.update = function(req, res, next) {
 
 exports.detail = function(req, res, next) {
 	Project.findOne({ 'slug': req.body.slug })
-	.populate('author editor participants tasks.participants', 'email name role picture department')
+	.populate('author editor participants tasks.participants tasks.comments.author', 'email name role picture department')
 	.populate('categories')
 	.exec(function (err, projectData) {
 		if (err) console.log(err);

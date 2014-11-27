@@ -594,6 +594,7 @@ ctrl.controller('projectsDetail', ['$scope', '$rootScope', '$routeParams', '$htt
 			});
 
 			$scope.updatingTask = 'none';
+			$scope.initComment();
 		}
 
 		if (!$cookies.sortTasks) $cookies.sortTasks = 'priority';
@@ -711,6 +712,31 @@ ctrl.controller('projectsDetail', ['$scope', '$rootScope', '$routeParams', '$htt
 		$scope.updateTimelineTask = 'none';
 		$scope.updatingTimelineTask = function (index) {
 			$scope.updateTimelineTask = index;
+		}
+
+		$scope.initComment = function () {
+			$scope.taskSpeak = { 'body': ''	};
+			$scope.currentComment = 'none';
+		}
+		$scope.initComment();
+		
+		$scope.commentTask = function (index) { 
+			$scope.currentComment = index; 
+		}
+
+		$scope.submitComment = function (task) {
+			var index = $scope.currentProject.tasks.indexOf(task); 
+			$scope.taskSpeak.postDate = moment().format();
+			$scope.taskSpeak.author = $rootScope.user;
+			$scope.currentProject.tasks[index].comments.push($scope.taskSpeak);
+			$scope.updateProject();
+		}
+
+		$scope.removeComment = function (task, comment) {
+			var x = $scope.currentProject.tasks.indexOf(task); 
+			var y = $scope.currentProject.tasks[x].comments.indexOf(comment);
+			$scope.currentProject.tasks[x].comments.splice(y, 1);
+			$scope.updateProject();
 		}
 	}
 ]);

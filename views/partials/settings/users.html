@@ -24,7 +24,7 @@
 				</select>
 
 			<label for="new-birthday">Birthday</label>
-			<input type="text" ng-model="newUser.birthday" id="new-birthday" placeholder="DD-MM-YYYY" required="required">
+			<input type="text" ng-model="newUser.birthday" id="new-birthday" placeholder="DD-MM-YYYY" required="required" ng-click="datePicker()">
 
 			<label for="new-department">Department</label>
 			<select ng-model="newUser.department" id="new-department" required="required">
@@ -110,7 +110,7 @@
 
 		<ul class="user-list">
 			<li ng-repeat="user in userList | filter: {name: userSearch} | orderBy: '-postDate' | limitTo: userOffset - userList.length | limitTo: userLimit" ng-click="userEditor(user._id)" ng-class="{active: user._id == editUser._id}">
-				<img src="/uploads/{{user.picture}}">
+				<img src="/uploads/{{user.picture}}" class="avatar">
 				<strong ng-bind-html="user.name.first + ' ' + user.name.last | highlight: userSearch"></strong> <small><time datetime={{user.postDate}}>{{fromNow(user.postDate)}}</time></small><br>
 				<a href="mailto:{{user.email}}">{{user.email}}</a>
 			</li>

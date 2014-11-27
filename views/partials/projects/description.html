@@ -31,7 +31,7 @@
 			<label class="tasked-count" ng-show="task.participants.length > 1">{{task.participants.length}} participants:</label>
 			<ul class="tasked" ng-show="task.participants.length > 0">
 				<li ng-repeat="tasked in task.participants" ng-class="{owner: tasked._id == task.owner}">
-					<img src="/uploads/{{tasked.picture}}" title="{{tasked.name.first}} {{tasked.name.last}}">
+					<img src="/uploads/{{tasked.picture}}" class="avatar" title="{{tasked.name.first}} {{tasked.name.last}}">
 				</li>
 			</ul>
 
@@ -40,9 +40,8 @@
 					<a href="" ng-show="task.completed != true" ng-click="completeTask(task._id)">Mark done</a>
 					<a href="" ng-show="task.completed == true" ng-click="uncompleteTask(task._id)">Mark undone</a>
 				</li>
-				<li>
-					<a href="" ng-click="updateTask($index)">Update</a>
-				</li>
+				<li><a href="" ng-click="commentTask($index)">Comment</a></li>
+				<li><a href="" ng-click="updateTask($index)">Update</a></li>
 			</ul>
 		</div>
 
@@ -57,7 +56,25 @@
 			<span ng-show="task.end">{{task.end}}</span> 
 		</small>
 
-		<div class="task-description" ng-bind-html="task.markedDescription"  ng-show="updatingTask != $index"><em>Task description</em></div>
+		<div class="task-description" ng-bind-html="task.markedDescription" ng-show="updatingTask != $index"><em>Task description</em></div>
+
+		<ul class="task-comments" ng-show="task.comments.length > 0">
+			<li ng-repeat="comment in task.comments">
+				<img src="/uploads/{{comment.author.picture}}" title="{{comment.author.name.first}} {{comment.author.name.last}}" class="avatar">
+				<div class="task-comment-body">{{comment.body}}</div>
+				<span class="task-comment-post-date">{{fromNow(comment.postDate)}}</span>
+				<a href="" class="task-comment-remove" ng-click="removeComment(task, comment)">Remove</a>
+			</li>
+		</ul>
+
+		<div class="task-speak" ng-show="currentComment == $index">
+			<form>
+				<img src="/uploads/{{user.picture}}" title="{{user.name.first}} {{user.name.last}}" class="avatar">
+				<textarea class="task-speak-body" ng-model="taskSpeak.body"></textarea>
+				<button class="task-speak-submit" ng-click="submitComment(task)">Submit</button>
+				<a href="" ng-click="initComment()">Cancel</a>
+			</form>
+		</div>		
 
 		<form class="edit-task" ng-show="updatingTask == $index">
 			<div class="edit-task-main">
@@ -84,7 +101,7 @@
 				<input type="text" id="task-participants-{{$index}}" placeholder="Search and add people" ng-model="humanSearch" tabindex="2000">
 				<ul class="user-list credits" ng-show="humanSearch">
 					<li ng-repeat="human in humanList = (userList | filter: {name: humanSearch} | limitTo: 3)" ng-click="addTaskParticipant(task._id, human)" ng-keydown="addTaskParticipantKeydown(task._id, $event, human)" tabindex="{{2001 + $index}}" ng-hide="task.participants.indexOf(human) > -1">
-						<img src="/uploads/{{human.picture}}" title="{{human.name.first}} {{human.name.last}}">
+						<img src="/uploads/{{human.picture}}" class="avatar" title="{{human.name.first}} {{human.name.last}}">
 						<strong ng-bind-html="human.name.first + ' ' + human.name.last | highlight: humanSearch"></strong><br>
 						<a href="mailto:{{human.email}}">{{human.email}}</a>
 					</li>
@@ -93,7 +110,7 @@
 
 				<ul class="participant-list" ng-show="task.participants.length > 0">
 					<li ng-repeat="participant in task.participants" ng-class="{owner: participant._id == task.owner}">
-						<img src="/uploads/{{participant.picture}}" title="{{participant.name.first}} {{participant.name.last}}"><br>
+						<img src="/uploads/{{participant.picture}}" class="avatar" title="{{participant.name.first}} {{participant.name.last}}"><br>
 						<a href="" ng-click="removeTaskParticipant(task._id, $index)">Remove</a>
 					</li>
 				</ul>

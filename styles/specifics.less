@@ -293,11 +293,7 @@
 						padding: 0;
 						margin: 0;
 
-						img {
-							border: 3px solid transparent;
-							width: 40px;
-							height: 40px;
-						}
+						img { border: 3px solid transparent; }
 
 						&.owner img {
 							border-color: @mark;
@@ -417,7 +413,7 @@
 			
 			.tasks-header {
 				border-bottom: 1px solid @line;
-				margin-bottom: .5em;
+				margin: 2em 0 1em;
 				.clearfix; 
 
 				h2 {
@@ -481,11 +477,7 @@
 					margin: 0;
 					padding: 0;
 
-					img { 
-						border: 3px solid transparent; 
-						width: 40px;
-						height: 40px;
-					}
+					img { border: 3px solid transparent; }
 
 					&.owner img { border-color: @mark; }
 				}
@@ -540,11 +532,7 @@
 				margin-bottom: -3px;
 				position: relative;
 
-				img {
-					border: 3px solid transparent;
-					width: 40px;
-					height: 40px;
-				}
+				img { border: 3px solid transparent; }
 
 				&.owner img {
 					border-color: @mark;
@@ -637,6 +625,66 @@
 						}
 					}
 
+
+					.task-comments {
+						width: 75%;
+						float: left;
+						list-style-type: none;
+						margin: 0;
+						padding: 0 1em 0 0;					
+
+						li {
+							border-top: 1px solid @line;
+							padding: .5em 0 .5em 50px;
+							.box-sizing (border-box);
+
+							.avatar {
+								margin-left: -50px;
+								float: left;
+							}
+							
+							.task-comment-body {
+								margin-bottom: .2em;
+							}
+
+							.task-comment-post-date {
+								font-size: .8em;
+								color: @vague;
+							}
+							.task-comment-remove {
+								float: right;
+								font-size: .8em;
+								color: @vague;
+							}
+						}
+					}
+
+					.task-speak {
+						width: 75%;
+						float: left;
+						padding-right: 1em;
+						.box-sizing (border-box);
+
+						form {
+							padding: .6em 0 0 50px;
+							border-top: 1px solid @line;
+
+							.avatar {
+								float: left;
+								margin: 2px 0 0 -50px;
+
+							}
+
+							textarea {
+								width: 100%;
+								height: 7.5em;
+							}
+
+							button { float: right; }
+							a { line-height: 2em; }
+						}
+					}
+
 					.task-sidebar {
 						float: right;
 						width: 25%;
@@ -659,11 +707,7 @@
 							display: inline-block;
 							border-top-width: 0;
 
-							img {
-								border: 3px solid transparent;
-								width: 40px;
-								height: 40px;
-							}
+							img { border: 3px solid transparent; }
 
 							&.owner img {
 								border-color: @mark;
@@ -684,6 +728,8 @@
 						border-top: 1px solid @line;
 						list-style-type: none;
 					}
+
+
 
 					.edit-task {
 						.edit-task-main {
@@ -941,11 +987,7 @@
 									padding-top: 0;
 
 
-									img {
-										border: 3px solid transparent;
-										width: 40px;
-										height: 40px;	
-									}
+									img {	border: 3px solid transparent; }
 
 									&.owner img {
 										border-color: @mark;
@@ -1122,8 +1164,6 @@
 					&.active { background-color: @mark; }
 
 					img {
-						width: 40px;
-						height: 40px;
 						margin: 0 .5em 0 0;
 						float: left;
 					}

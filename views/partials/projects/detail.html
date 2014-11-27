@@ -15,13 +15,13 @@
 
 	<ul class="credits">
 		<li>
-			<img src="/uploads/{{currentProject.author.picture}}">
+			<img src="/uploads/{{currentProject.author.picture}}" class="avatar">
 			<strong>{{currentProject.author.name.first}} {{currentProject.author.name.last}}</strong> <small>Author</small><br>
 			<a href="mailto:{{currentProject.author.email}}">{{currentProject.author.email}}</a><br>
 			<small>Created <time datetime="{{currentProject.postDate}}">{{fromNow(currentProject.postDate)}}</time></small>
 		</li>
 		<li ng-if="currentProject.editor">
-			<img src="/uploads/{{currentProject.editor.picture}}">
+			<img src="/uploads/{{currentProject.editor.picture}}" class="avatar">
 			<strong>{{currentProject.editor.name.first}} {{currentProject.editor.name.last}}</strong> <small>Editor</small><br>
 			<a href="mailto:{{currentProject.editor.email}}">{{currentProject.editor.email}}</a><br>
 			<small>Last updated <time datetime="{{currentProject.editDate}}">{{fromNow(currentProject.editDate)}}</time></small>
@@ -31,7 +31,7 @@
 	<label>Participants:</label>
 	<ul class="project-participants" ng-show="currentProject.participants.length > 0">
 		<li ng-repeat="participant in currentProject.participants" ng-class="{owner: participant._id == currentProject.owner}">
-			<img src="/uploads/{{participant.picture}}" title="{{participant.name.first}} {{participant.name.last}}">
+			<img src="/uploads/{{participant.picture}}" class="avatar" title="{{participant.name.first}} {{participant.name.last}}">
 		</li>
 	</ul>
 

@@ -2,7 +2,6 @@ body {
 	background-color: @back;
 	color: @text;
 	font-family: sans-serif;
-	font-size: 16px;
 }
 
 p {
@@ -117,29 +116,59 @@ button {
 	.box-sizing (border-box);
 }
 
-.alert {
-	background-color: red;
-	color: white;
-	position: absolute;
-	top: .5em;
-	left: 50%;
-	margin: 0 0 0 -250px;
+.message {
+	background-color: @error;
+	color: @back;
+	position: fixed;
+	top: 1em;
+	left: 25%;
+	right: 25%;
 	padding: .6em 2em .6em 1em;
-	width: 500px;
+	z-index: 9999;
 	.box-sizing (border-box);
 
-	.close {
+	.message-close {
 		position: absolute;
 		right: .3em;
 		top: 0em;
 		font-size: 2em;
-		color: darken(red, 5%);
+		color: darken(@error, 5%);
 		cursor: pointer;
 
 		&:hover {
-			color: darken(red, 10%);
+			color: darken(@error, 10%);
 		}
 	}
+
+	&.info {
+		background-color: @info;
+		.message-close { color: darken(@info, 10%); }
+		.message-close:hover { color: darken(@info, 15%); }
+	}
+
+	&.error {
+		background-color: @error;
+		.message-close { color: darken(@error, 5%); }
+		.message-close:hover { color: darken(@error, 10%); }
+	}
+
+	&.success {
+		background-color: @success;
+		.message-close { color: darken(@success, 5%); }
+		.message-close:hover { color: darken(@success, 10%); }
+	}
+
+	&.alert {
+		background-color: @alert;
+		color: @text;
+		.message-close { color: darken(@alert, 25%); }
+		.message-close:hover { color: darken(@alert, 30%); }
+	}
+}
+
+.avatar {
+	width: 40px;
+	height: 40px;
 }
 
 .color-block {
@@ -158,8 +187,6 @@ button {
 		border-bottom: 1px solid @line;
 
 		img {
-			width: 40px;
-			height: 40px;
 			margin: 0 10px 0 -50px;
 			float: left;
 		}

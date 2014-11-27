@@ -10,7 +10,10 @@
 	<script src="/yossarian.js"></script>
 </head>
 <body>
-
+	<div class="message {{message.type}}" ng-show="message.content">
+		{{message.content}}
+		<span class="message-close" ng-click="message = !message" title="Close message">&times;</span>
+	</div>
 	<header>
 		
 		<a href="/" class="masthead">

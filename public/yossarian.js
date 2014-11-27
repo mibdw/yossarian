@@ -43519,6 +43519,8 @@ app.controller('global', ['$scope', '$rootScope', '$http',
 			$rootScope.user = userData;
 		});
 
+		$rootScope.message = {};
+
 		$rootScope.categoryList = [];		
 		$http.post('/categories/list').success( function (categoryData) {
 			$rootScope.categoryList = categoryData;
@@ -43529,15 +43531,6 @@ app.controller('global', ['$scope', '$rootScope', '$http',
 		$rootScope.fromNow = function (date) { 	return moment(date).fromNow(); }
 		$rootScope.daysFromNow = function (date) { return moment(date).fromNow('dd'); }
 		$rootScope.displayDate = function (date) { return moment(date).format('DD-MM-YYYY'); }
-		
-		$rootScope.datePicker = function () {
-			var yearRange = moment().subtract('100', 'year').format('YYYY') + ':' + moment().format('YYYY');
-			$('input[type="date"]').datepicker({ 
-				dateFormat: 'dd-mm-yy',
-				changeYear: true,
-				yearRange: yearRange
-			});
-		}
 
 		$rootScope.slugify = function (text) {
 			return text.toString().toLowerCase().replace(/\s+/g, '-').replace(/[^\w\-]+/g, '').replace(/\-\-+/g, '-').replace(/^-+/, '').replace(/-+$/, '');
@@ -44741,6 +44734,7 @@ ctrl.controller('projectsDetail', ['$scope', '$rootScope', '$routeParams', '$htt
 			});
 
 			$scope.updatingTask = 'none';
+			$scope.initComment();
 		}
 
 		if (!$cookies.sortTasks) $cookies.sortTasks = 'priority';
@@ -44858,6 +44852,31 @@ ctrl.controller('projectsDetail', ['$scope', '$rootScope', '$routeParams', '$htt
 		$scope.updateTimelineTask = 'none';
 		$scope.updatingTimelineTask = function (index) {
 			$scope.updateTimelineTask = index;
+		}
+
+		$scope.initComment = function () {
+			$scope.taskSpeak = { 'body': ''	};
+			$scope.currentComment = 'none';
+		}
+		$scope.initComment();
+		
+		$scope.commentTask = function (index) { 
+			$scope.currentComment = index; 
+		}
+
+		$scope.submitComment = function (task) {
+			var index = $scope.currentProject.tasks.indexOf(task); 
+			$scope.taskSpeak.postDate = moment().format();
+			$scope.taskSpeak.author = $rootScope.user;
+			$scope.currentProject.tasks[index].comments.push($scope.taskSpeak);
+			$scope.updateProject();
+		}
+
+		$scope.removeComment = function (task, comment) {
+			var x = $scope.currentProject.tasks.indexOf(task); 
+			var y = $scope.currentProject.tasks[x].comments.indexOf(comment);
+			$scope.currentProject.tasks[x].comments.splice(y, 1);
+			$scope.updateProject();
 		}
 	}
 ]);

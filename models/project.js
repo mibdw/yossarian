@@ -14,12 +14,6 @@ var projectSchema = mongoose.Schema({
 	categories: [{ type: String, ref: 'Category' }],
 	description: String,
 	completed: { type: Boolean, default: false },
-	comments: [{
-		author: { type: String, ref: 'User' },
-		body: String,
-		postDate: Date,
-		visible: { type: Boolean, default: true }
-	}],
 	tasks: [{
 		title: String,
 		description: String,
