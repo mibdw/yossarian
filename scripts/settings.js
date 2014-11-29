@@ -78,7 +78,6 @@ ctrl.controller('settingsCategories', ['$scope', '$rootScope', '$routeParams', '
 
 ctrl.controller('settingsUsers', ['$scope', '$rootScope', '$routeParams', '$http', '$filter', '$upload', 
 	function ($scope, $rootScope, $routeParams, $http, $filter, $upload) {	
-		$rootScope.datePicker();
 		$scope.userView = 'create';
 		$scope.userList = [];
 		
@@ -181,7 +180,6 @@ ctrl.controller('settingsUsers', ['$scope', '$rootScope', '$routeParams', '$http
 				});
 			}
 		};
-
 
 		$scope.removeUser = function () {
 			if (confirm('Are you sure you want to remove this user?') == true) {

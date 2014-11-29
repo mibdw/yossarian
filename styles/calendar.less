@@ -1,0 +1,139 @@
+#main.calendar {
+	aside {
+		padding-left: 0;
+		border-left-width: 0;
+
+		.upcoming-events {
+
+			li {
+				position: relative;
+				cursor: pointer;
+				border-bottom: 1px solid @line;
+				padding: .3em 0;
+
+				&:hover { 
+					background-color: @hover; 
+
+					dl { color: @text; }
+				}
+
+				.upcoming-title {
+					font-weight: bold;
+					float: left;
+				}
+
+				.upcoming-timeline {
+					font-size: .9em;
+					font-style: italic;
+					float: right;
+				}
+
+				dl {
+					margin-top: .1em;
+					float: left;
+					width: 100%;
+					font-size: .9em;
+					line-height: 1.2em;
+					color: @vague;
+
+					dt { float: left }
+					dd { margin-left: 20% }
+				}
+			}
+		}
+	}
+
+	.calendar-title { font-size: 1.6em; }
+	.calendar-nav {
+		margin: 0;
+		padding: 0;
+		list-style-type: none;
+		float: right;
+		padding-top: .5em;	
+
+		li {
+			display: inline;
+			margin-left: .2em;
+
+			&.calendar-today, &.calendar-create { margin-right: 1em; }
+
+			&.calendar-filter {
+				margin-right: 1em;
+				position: relative;
+
+				.active span {
+					font-weight: bold;
+					text-decoration: underline;
+				}
+
+				ul {
+					z-index: 999;
+					position: absolute;
+					top: 20px;
+					left: 50%;
+					width: 140px;
+					background-color: @back;
+					border: 1px solid @text;
+					padding: .5em;	
+					margin-left: -70px;
+
+					li {
+						display: block;
+						margin-bottom: .1em;
+
+						label {
+							color: @text;
+							line-height: 1em;
+							display: block;
+							white-space: nowrap;
+							overflow-x: hidden;
+							text-overflow: ellipsis;
+						}
+					}						
+				}
+			}
+		}
+	}
+
+	.event-cancel {
+		float: right;
+		padding-top: .5em;
+	}
+
+	.event-form {
+		.clearfix;
+
+		label {
+			float: left;
+			width: 25%;
+			clear: left;
+		}
+
+		input[type='text'], input[type='date'], textarea, select {
+			float: left;
+			width: 75%;
+
+			&#start { padding-right: 70px } 
+		}
+	}
+
+	.event-range {
+		float: right;
+		width: 60px;
+		font-size: .9em;
+		margin: -2em -.2em 0 0;
+	}
+
+	.event-submit {
+		float: right;
+		margin-top: .2em;
+	}
+
+	.event-remove {
+		line-height: 1.8em;
+	}
+
+	.credits {
+		padding-top: .5em; 
+	}
+}

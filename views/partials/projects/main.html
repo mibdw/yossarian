@@ -1,9 +1,14 @@
 <aside class="right" style="width: 22%">
+	<ul class="menu" style="margin: .5em 0 0;">
+		<li ng-class="{active: projectView.name == 'list'}"><a href="" ng-click="setProjectView(0)">List</a></li>
+		<li ng-class="{active: projectView.name == 'calendar'}"><a href="" ng-click="setProjectView(1)">Calendar</a></li>
+		<li><a href="/#/projects/create">Create project</a></li>
+	</ul>	
 
 	<input type="text" class="search" ng-model="projectSearch" placeholder="Search projects" ng-show="projectView.name == 'list'">
 	<a href="" class="clear" ng-show="projectSearch" ng-click="clearProjectSearch()" ng-show="projectView.name == 'list'">Clear</a>
 
-	<ul class="checkboxes" style="margin-top: 1em; padding-bottom: 0;">
+	<ul class="checkboxes" style="margin-top: 1em; padding-bottom: 0;" ng-show="projectView.name == 'list'">
 		<li>
 			<label for="open">
 				<input type="checkbox" id="open" ng-click="setStatusProjects('open')" ng-checked="statusProjects == 'open'"> Open projects
@@ -38,11 +43,6 @@
 		</li>	
 	</ul>
 			
-	<ul class="menu" style="margin: .5em 0 0;">
-		<li ng-class="{active: projectView.name == 'list'}"><a href="" ng-click="setProjectView(0)">List</a></li>
-		<li ng-class="{active: projectView.name == 'calendar'}"><a href="" ng-click="setProjectView(1)">Calendar</a></li>
-		<li><a href="/#/projects/create">Create project</a></li>
-	</ul>	
 </aside>
 
 <div class="content left" style="width: 78%" ng-include="projectView.url">

@@ -1,0 +1,109 @@
+&.settings {
+
+	.categories {
+		
+		.category-list {
+			list-style-type: none;
+			margin: 0;
+			padding: 0;
+			.clearfix();
+
+			li { 
+
+				div { .clearfix(); }				
+				a { display: none; }
+				&:hover a { display: inline; }
+
+				input[type='text'] { width: 50%; }
+				select { width: 40%; margin-bottom: 10px; }
+			}
+		}
+
+		.category-create {
+			input[type='text'] { width: 60%; }
+		}
+	}
+
+	.users {
+		.user-search { 
+			width: 100%; 
+			padding-right: 4em;
+		}
+		
+		.user-nav {
+			text-align: center;
+			color: @vague;
+			margin-top: .5em;
+
+			.user-next { float: right; }
+			.user-prev { float: left; }
+		}
+
+		.user-clear {
+			float: right;
+			position: relative;
+			top: -1.8em;
+			right: .5em;
+		}
+
+		.user-list {
+			margin: 0;
+			padding: 0;
+			list-style-type: none;
+
+			li {
+				padding: .5em 0;
+				border-bottom: 1px solid @line;
+				cursor: pointer;
+
+				&:hover { background-color: @hover; }
+				&.active { background-color: @mark; }
+
+				img {
+					margin: 0 .5em 0 0;
+					float: left;
+				}
+			}
+		}
+
+		.user-form {
+			h2 { 
+				float: left;
+				width: 81%;
+			}
+
+			.close {
+				float: right;
+				line-height: 2em;
+			}
+
+			input[type='text'], input[type='password'], input[type='date'], input[type='email'], input[type='file'], select, textarea {
+				float: left;
+				width: 80%;
+
+				&#new-confirm, &#update-confirm { margin: 0 0 1.5em 20%; }
+				&#new-first-name, &#update-first-name { width: 35%; margin-right: .5%; }
+				&#new-last-name, &#update-last-name { width: 44.5%; }
+			}
+
+			label {
+				float: left;
+				width: 20%;
+
+				&.wrapper {
+					margin-left: 20%;
+					width: 80%;
+					color: @text;
+				}
+			}
+
+			button { float: right; }
+
+			.user-remove { 
+				float: right;
+				line-height: 1.9em;
+				margin-right: .5em;
+			}
+		}
+	}
+}

@@ -81,8 +81,6 @@ exports.update = function(req, res, next) {
 
 			if (req.body.tasks[y].comments.length > 0) {
 				for (ci in req.body.tasks[y].comments) {
-					console.log(ci);
-					console.log(req.body.tasks[y].comments[ci].author);
 					req.body.tasks[y].comments[ci].author = req.body.tasks[y].comments[ci].author._id; 
 					if (ci == req.body.tasks[y].comments.length) {
 						if (req.body.tasks[y].participants.length > 0) {

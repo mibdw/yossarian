@@ -1,0 +1,980 @@
+#main.projects {
+
+	aside {
+
+		.checkboxes {
+			margin-top: 1em;
+		}
+
+		.links {
+			margin-top: .6em;
+			padding-top: .6em;
+			border-top: 1px solid @line;
+		}
+
+		.credits li  {
+			padding-left: 50px;
+		}
+
+		.menu li:last-child {
+			border-bottom: 1px solid @line;
+			padding-bottom: 1em;
+		}
+	}		
+
+	.projects-calendar-title { 
+		font-size: 1.6em; 
+	}
+
+	.projects-calendar-nav {
+		margin: -40px 0 0;
+		padding: 0;
+		list-style-type: none;
+		float: right;
+
+		li {
+			display: inline;
+			margin-left: .2em;
+
+			&.calendar-today { margin-right: 1em; }
+		}
+	}
+
+	.projects-calendar-view {
+
+		.fc-event {
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
+		}
+
+		.fc-event > span {
+			position: absolute;
+			top: 0;
+			right: 0;
+			bottom: 0;
+			z-index: 777;
+			width: .5em;
+
+			&.cat-0 { display: none }
+			&.cat-2 { margin-right: .5em; }
+			&.cat-3 { margin-right: 1em; }
+			&.cat-4 { margin-right: 1.5em; }
+			&.cat-5 { margin-right: 2em; }
+			&.cat-6 { margin-right: 2.5em; }
+			&.cat-7 { margin-right: 3em; }
+			&.cat-8 { margin-right: 3.5em; }
+			&.cat-9 { margin-right: 4em; }
+			&.cat-10 { margin-right: 4.5em; }
+		}
+	}
+
+	.project-list {
+		margin: 0;
+		padding: 0;
+		list-style-type: none;
+
+		& > li { .clearfix; }
+
+		li {
+			margin-bottom: 1.5em;
+			padding-bottom: .5em;
+			border-bottom: 1px solid @line;
+
+			.project-left {
+				float: left;
+				width: 75%;
+				padding-right: 1em;
+				.box-sizing (border-box);
+			}
+
+			.project-right {
+				float: left;
+				width: 25%;
+				padding-left: 1em;
+				.box-sizing (border-box);
+			}
+
+			.project-participants {
+				list-style-type: none;
+				padding: 0 0 .5em;
+				margin: 0;	
+
+				small {
+					display: block;
+					padding-left: 3px;
+					line-height: 1.5em;
+				}
+
+				li {
+					display: inline-block;
+					border-bottom-width: 0;
+					padding: 0;
+					margin: 0;
+
+					img { border: 3px solid transparent; }
+
+					&.owner img {
+						border-color: @mark;
+					}
+				}
+			}
+
+			.project-tasks {
+				list-style-type: disc;
+				padding: 0;
+				margin: 0;
+
+				small {
+					display: block;
+					padding: 0 0 0 3px;
+					marging: 0 0 .3em 0;
+					line-height: 1.5em;
+				}
+
+				li {
+					margin: 0 0 0 1em;
+					padding: 0;
+					border-width: 0;
+					font-size: .9em;
+					color: @text;
+				}				
+			}
+
+			.project-period {
+				line-height: 1.4em;
+				.text-truncate;
+			}
+
+			h2 {
+				margin-bottom: 0;
+				.text-truncate;
+
+				.completed {
+					text-decoration: line-through;
+				}
+
+				small { 
+					padding: 0 .2em;
+					background-color: @completed;
+					color: @text; 	
+				}
+			}
+
+			.project-meta {
+				float: left;
+				width: 100%;
+				margin-top: 1.5em;
+				padding-top: .5em;
+				border-top: 1px solid @line;
+				font-size: .9em;
+				color: @vague;
+
+				dl {
+					margin: 0;
+					padding: 0;
+					float: left;
+
+					dt {
+						float: left;
+						clear: left;
+						width: 3em;
+					}
+
+					dd {
+						float: left;
+					}
+				}
+
+				.badges {
+					margin: 0;
+					padding: 0;
+					float: right;
+					display: inline;
+					list-style-type: none;
+
+					li {
+						padding: 0 .3em;
+						display: inline;
+						color: @back;
+						margin-left: .3em;
+						border-bottom-width: 0;
+					}
+				}
+
+				.project-update {
+					float: right;
+				}
+			}	
+
+			&.no-projects {
+				text-align: center;
+				color: @vague;
+				border-bottom-width: 0;
+			}
+		
+		}
+	}
+
+	.project-nav {
+		color: @vague;
+		text-align: center;
+
+		.project-prev { float: left; }
+		.project-next { float: right; }
+	}
+
+	.project-detail {
+
+		h1.completed {
+			text-decoration: line-through;
+		}
+		
+		.tasks-header {
+			border-bottom: 1px solid @line;
+			margin: 2em 0 1em;
+			.clearfix; 
+
+			h2 {
+				display: inline; 
+				line-height: 1.6em;
+			}
+
+			label[for="tasks-sorting"] { 
+				float: right;
+				margin: 3px 5px 0 0; 
+			}
+
+			#tasks-sorting {
+				float: right;
+			}
+		}
+
+		.task-list {
+			padding: 0;
+			margin: 0;
+			list-style-type: none;	
+		}
+
+		.project-completed {
+			display: inline-block;
+			font-size: 1.5em;
+			font-weight: bold;
+			margin-bottom: 1em;
+			padding: 0 .2em;
+			background-color: @completed;
+		}
+
+		.links {
+			margin: .6em 0 1em;
+			padding: .6em 0 0;
+			border-top: 1px solid @line;
+
+			li { padding-left: 0 }
+		}
+
+		.project-dates {
+			margin-top: 0;
+
+			dt {
+				float: left;
+				color: @vague;
+			}
+
+			dd {
+				margin-left: 32%;
+			}
+		}
+
+		.project-participants {
+			list-style-type: none;
+			margin: 0;
+			padding: 0;
+
+			li {
+				display: inline-block;
+				margin: 0;
+				padding: 0;
+
+				img { border: 3px solid transparent; }
+
+				&.owner img { border-color: @mark; }
+			}
+		}
+
+		.badges {
+			margin: 0;
+			padding: 0;
+			list-style-type: none;
+
+			li {
+				padding: 0 .3em;
+				display: inline;
+				color: @back;
+				margin-left: .3em;
+				border-bottom-width: 0;
+			}
+		}
+	}
+
+	.user-list {
+		float: left;
+		margin: 0 0 0 30%;
+		padding: 0;
+		width: 70%;
+		list-style-type: none;
+
+		li {
+			cursor: pointer;
+
+			&:hover, &:focus { background-color: @hover; }
+			&:first-child { border-top-width: 0 }
+		}
+
+		.no-users {
+			padding: .6em 0;
+			text-align: center;
+			color: @vague;
+		}
+	}
+
+	.participant-list {
+		float: left;
+		margin: 0 0 0 30%;
+		padding: .4em 0 0;
+		width: 70%;
+		list-style-type: none;
+
+		li {
+			display: inline-block;
+			text-align: center;
+			margin-bottom: -3px;
+			position: relative;
+
+			img { border: 3px solid transparent; }
+
+			&.owner img {
+				border-color: @mark;
+			}
+
+			a {
+				font-size: .7em;
+				position: absolute;
+				left: 0;
+				right: 0;
+				bottom: 0;
+				text-align: center;
+				background-color: @back;
+				visibility: hidden;
+			}
+
+			&:hover a {
+				visibility: visible;
+			}
+		}
+	}
+
+	.task-list {
+		padding: 0;
+		list-style-type: none;	
+
+		li {			
+
+			&.no-tasks {
+				padding: .3em 0;
+				color: @vague;
+				font-style: italic;
+				text-align: center;
+			}
+
+			&.task {
+				border-top: 1px solid @line;
+				padding: .5em 0;
+				.clearfix;
+
+				&.completed {
+					border-left: .5em solid @completed;
+					padding-left: .5em;
+				}
+
+				&:first-child { border-top-width: 0; }
+
+				h3 {
+					margin-bottom: 0;
+					float: left;
+					width: 75%;
+					.box-sizing (border-box);
+					
+					&.completed span {
+						text-decoration: line-through;
+					}
+
+					small {	
+						display: inline; 
+						background-color: @completed;
+						color: @text;
+						padding: 0 .2em;
+						float: none;
+						width: auto;
+					}
+				}	
+
+				small {
+					display: block;
+					line-height: 1.4em;
+					margin-bottom: .4em;
+					float: left;
+					width: 75%;
+					.box-sizing (border-box);
+
+					&.tasked-count {
+						margin: .4em 3px -.1em;
+					}
+				}
+
+				.task-description {
+					width: 75%;
+					padding-right: 1em;
+					float: left;
+					.box-sizing (border-box);
+
+					ul, ol {
+						list-style-type: initial;
+						margin: 1em 0;
+					}
+				}
+
+				.task-comments {
+					width: 75%;
+					float: left;
+					list-style-type: none;
+					margin: 0;
+					padding: 0 1em 0 0;
+					.box-sizing (border-box);					
+
+					li {
+						border-top: 1px solid @line;
+						padding: .5em 0 .5em 50px;
+
+						.avatar {
+							margin-left: -50px;
+							float: left;
+						}
+						
+						.task-comment-body {
+							margin-bottom: .2em;
+							font-size: .8em;
+						}
+
+						.task-comment-post-date {
+							font-size: .8em;
+							color: @vague;
+						}
+						.task-comment-remove {
+							float: right;
+							font-size: .8em;
+							color: @vague;
+						}
+					}
+				}
+
+				.task-speak {
+					width: 75%;
+					float: left;
+					padding-right: 1em;
+					.box-sizing (border-box);
+
+					form {
+						padding: .6em 0 0 50px;
+						border-top: 1px solid @line;
+
+						.avatar {
+							float: left;
+							margin: 2px 0 0 -50px;
+
+						}
+
+						textarea {
+							width: 100%;
+							height: 7.5em;
+						}
+
+						button { float: right; }
+						a { line-height: 2em; }
+					}
+				}
+
+				.task-sidebar {
+					float: right;
+					width: 25%;
+					border-left: 1px solid @line;
+					padding-left: 1em;
+					.box-sizing (border-box);
+				}
+
+				.tasked-count {
+					float: none;
+					width: 100%;
+				}
+
+				.tasked {
+					margin: 0;
+					padding: 0;
+					list-style-type: none;
+
+					li {
+						display: inline-block;
+						border-top-width: 0;
+
+						img { border: 3px solid transparent; }
+
+						&.owner img {
+							border-color: @mark;
+						}
+					}
+				}
+
+				.task-priority {
+					color: @vague;
+					margin-bottom: .5em;
+
+					strong { color: @text; }
+				}
+
+				.task-options {
+					margin: .7em 0 0;
+					padding: .2em 0 0;
+					border-top: 1px solid @line;
+					list-style-type: none;
+				}
+
+
+
+				.edit-task {
+					.edit-task-main {
+						float: left;
+						width: 65%;
+						padding-right: 1em;
+						.box-sizing (border-box);
+
+						label {
+							width: 18%;
+							display: block;
+							float: left;
+						}
+						input, textarea {
+							float: left;
+							width: 82%;
+						}
+
+						.task-start, .task-end {
+							width: 30%;
+							margin-right: 3px;
+						}
+					}
+
+					.edit-task-sidebar {
+						float: left;
+						width: 35%;
+						padding-left: 1em;
+						border-left: 1px solid @line;
+						.box-sizing (border-box);
+						
+						label {
+							width: 30%;
+							float: left;
+							display: block;
+						}
+
+						select, input {
+							float: left;
+							width: 70%;
+						}
+
+						.edit-task-options {
+							float: left;
+							width: 100%;
+							margin-top: 1em;
+							padding-top: .5em;
+							border-top: 1px solid @line;
+
+							button, .remove {
+								float: right;
+								margin-left: .4em;
+							}
+
+							.remove, .cancel {
+								line-height: 2em;	
+							}
+						}
+					}
+				}
+			}
+
+			&.new-task {
+				border-top: 1px solid @line;
+				margin-top: 1em;
+				padding: 1em 0 .3em;
+
+				label {
+					width: 20%;
+					clear: left;
+				}
+
+				input, textarea, select {
+					width: 80%;
+				}
+
+				#new-task-start, #new-task-end {
+					width: 30%;
+					margin-right: 3px;
+				}
+
+				.user-list {
+					margin: 0 0 0 20%;
+					padding: 0;
+					width: 80%;
+
+					li {
+						border-top-width: 0;
+
+						&.no-users {
+							margin-left: 0;
+						}
+					}
+				}
+
+				.participant-list {
+					margin: -5px 0 0 20%;
+
+					li { border-top-width: 0; }
+				}
+
+				.clear {
+					float: left;
+					clear: left;
+					margin-top: .6em;
+					margin-left: 20%;
+				}
+
+				.create, .update {
+					float: right;
+					clear: left;
+					margin-top: .3em;
+				}
+
+				.cancel {
+					float: right;
+					margin: .6em .6em 0 0;
+				}
+			}
+		}
+	}
+
+	.tasks {
+		border-top: 1px solid @line;
+		float: left;
+		width: 100%;
+		margin-top: 1.5em;
+		padding-top: 1.5em;
+
+		.task-list {
+			padding: 0;
+			margin: 0 0 0 13%;
+			list-style-type: none;	
+		}
+	}
+
+	.timeline-text {
+		list-style-type: none;
+		margin: .5em 0;
+		padding: 0;
+		width: 60%;
+		float: left;
+		position: relative;
+
+		li {
+			min-height: 2em;
+			border-bottom: 1px solid transparent;
+
+			&.start {
+				padding-top: .9em; 
+				border-top: .5em solid @line; 
+
+				.indicator { top: 1px; 	}
+			}
+
+			&.end { 
+				border-bottom: .5em solid @line;
+
+				&.none { 
+					border-bottom-color: transparent;
+
+					.marker	{ display: none; }
+				}
+			}				
+
+			.marker {
+				background-color: @back;
+				padding: 0 .4em 0 0;
+				position: absolute;
+				z-index: 999;
+
+				&.start { top: -.35em; }
+				&.end { bottom: -.4em; }
+			}
+
+			.indicator-container {
+
+				.indicator {
+					border-top: .3em solid @line;
+					position: relative;
+					top: -3px;
+					z-index: 999;
+					cursor: pointer;
+
+					&.priority-1 { border-top: .3em solid @high; }
+					&.priority-2 { border-top: .3em solid @medium; }
+					&.priority-3 { border-top: .3em solid @low; }
+
+					.indicator-title {
+						color: @link;
+						position: relative;
+						top: -.7em;
+						padding: 0 .4em 0 0;
+						background-color: @back;
+
+						&:hover { text-decoration: underline; }
+					}
+				}
+
+				.timeline-detail {
+					padding: .2em 1em 0 0;  
+					border-bottom-width: 0;
+					background-color: @back;
+					.box-sizing (border-box);
+
+					.close { 
+						float: right; 
+					}
+
+					h3 {
+						padding-right: 6em;
+						margin-bottom: -3px;
+
+						&.completed span {
+							text-decoration: line-through;
+						}
+
+						small {	
+							display: inline-block; 
+							background-color: @completed;
+							color: @text;
+							padding: 0 .2em;
+							float: none;
+							width: auto;
+							line-height: initial;
+						}
+					}
+
+					.task-description {
+						padding-top: .5em;
+
+						ul, ol {
+							margin-bottom: 1em;
+
+							li {
+								border-width: 0;
+								padding: 0;
+								min-height: initial;
+							} 
+						}
+					}
+
+					.task-sidebar {
+						border-top: 1px solid @line;
+
+						.tasked {
+							margin: -.2em 0 0;
+							padding: 0;
+							list-style-type: none;
+							display: inline-block;
+
+							li {
+								display: inline-block;
+								border-width: 0;
+								padding-top: 0;
+
+
+								img {	border: 3px solid transparent; }
+
+								&.owner img {
+									border-color: @mark;
+								}
+							}
+						}
+
+						.task-priority {
+							float: right;
+							margin-top: .5em;
+						}
+
+						.task-options {
+							float: right;
+							padding: .3em 0 0;
+							margin: .3em 0 0;
+							list-style-type: none;
+							border-top: 1px solid @line;
+
+							li {
+								border-width: 0;
+								padding: 0;
+								margin: 0;
+								text-align: right;
+								min-height: initial;
+							}
+						}
+					}
+
+					.task-comments {
+						width: 100%;
+						float: left;
+						list-style-type: none;
+						margin: 0;
+						padding: 0;
+						border-bottom: 1px solid @line;		
+
+						li {
+							border-top: 1px solid @line;
+							padding: .5em 0 .5em 50px;
+
+							.avatar {
+								margin-left: -50px;
+								float: left;
+							}
+							
+							.task-comment-body {
+								margin-bottom: .2em;
+								font-size: .8em;
+							}
+
+							.task-comment-post-date {
+								font-size: .8em;
+								color: @vague;
+							}
+							.task-comment-remove {
+								float: right;
+								font-size: .8em;
+								color: @vague;
+							}
+						}
+					}
+
+					.task-speak {
+						width: 100%;
+						float: left;
+
+						form {
+							padding: 1em 0 .6em 50px;
+							border-bottom: 1px solid @line;
+
+							.avatar {
+								float: left;
+								margin: 2px 0 0 -50px;
+
+							}
+
+							textarea {
+								width: 100%;
+								height: 7.5em;
+							}
+
+							button { float: right; }
+							a { line-height: 2em; }
+						}
+					}
+				
+					.edit-task {
+
+						label { width: 20%;	}
+						input, textarea, select { width: 80%; }
+						
+						.task-start, .task-end { width: 35%; }
+						.task-start { margin-right: 1%; }
+
+						.participant-list, .user-list { margin-left: 20%; }
+
+						.edit-task-options {
+							float: left;
+							width: 100%;
+							padding-top: .5em;
+
+							button {
+								float: right;
+								margin-left: .5em;
+							}
+
+							.remove { line-height: 2em; float: right; }
+							.cancel { line-height: 2em; margin-left: 20%; }
+						}
+					}
+				}	
+
+				&.completed .indicator { 
+					border-top: .3em solid @completed; 
+					text-decoration: line-through;
+				}
+
+				&.hide {
+					display: none;
+
+					&.none { display: block; }
+				}
+
+				&.active .indicator-title { display: none; }
+
+			}
+		}		
+	}
+
+	.timeline-blocks {
+		list-style-type: none;
+		margin: .5em 0;
+		padding: 0;
+		width: 40%;
+		float: left;
+
+		li {
+			position: relative;
+			min-height: 2em;
+			border-bottom: 1px solid @line;
+
+			&:first-child {
+				padding-top: .9em; 
+				border-top: .5em solid @line 
+			}
+			&:last-child { border-bottom: .5em solid @line }
+			&.today { background-color: @mark; }
+
+			.task {
+				position: absolute;
+				left: 0;
+				top: -3px;
+				bottom: 2px;
+				background-color: @line;
+				z-index: 999;
+				cursor: pointer;
+
+				&.priority-1 { background-color: @high; }
+				&.priority-2 { background-color: @medium; }
+				&.priority-3 { background-color: @low; }
+
+				&.completed { background-color: @completed; }
+
+				&.fade { opacity: .25; &.active { opacity: 1; }}
+
+				&.end { bottom: -3px; }
+			}
+		}
+	}
+}
