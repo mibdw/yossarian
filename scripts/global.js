@@ -92,8 +92,17 @@ app.controller('global', ['$scope', '$rootScope', '$http',
 		$rootScope.markdownURL = 'https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet';
 
 		$rootScope.fromNow = function (date) { 	return moment(date).fromNow(); }
+		$rootScope.fromNowDays = function (date) {
+			var today = moment().format();
+			if (moment(date).diff(today, 'days') < 1) return 'Now'; 
+			return moment(date).diff(today, 'days') + 'd'; 
+		}
+		$rootScope.durationDays = function (start, end) {
+			if (moment(end).diff(start, 'days') < 1) return 1 + 'd';
+			return moment(end).diff(start, 'days') + 1 + 'd';
+		}
 		$rootScope.daysFromNow = function (date) { return moment(date).fromNow('dd'); }
-		$rootScope.displayDate = function (date) { return moment(date).format('DD-MM-YYYY'); }
+		$rootScope.displayDate = function (date) { return moment(date).format('DD/MM/YYYY'); }
 
 		$rootScope.slugify = function (text) {
 			return text.toString().toLowerCase().replace(/\s+/g, '-').replace(/[^\w\-]+/g, '').replace(/\-\-+/g, '-').replace(/^-+/, '').replace(/-+$/, '');

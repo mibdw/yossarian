@@ -1,5 +1,53 @@
 &.settings {
 
+	.profile {
+		.profile-form {
+			h2 { 
+				float: left;
+				width: 100%;
+				margin-bottom: .2em;
+
+				.avatar {
+					float: right;
+
+				}
+			}
+
+			.close {
+				float: right;
+				line-height: 2em;
+			}
+
+			input[type='text'], input[type='password'], input[type='date'], input[type='email'], input[type='file'], select, textarea {
+				float: left;
+				width: 80%;
+
+				&#new-confirm, &#update-confirm { margin: 0 0 1.5em 20%; }
+				&#new-first-name, &#update-first-name { width: 35%; margin-right: .5%; }
+				&#new-last-name, &#update-last-name { width: 44.5%; }
+			}
+
+			label {
+				float: left;
+				width: 20%;
+
+				&.wrapper {
+					margin-left: 20%;
+					width: 80%;
+					color: @text;
+				}
+			}
+
+			button { float: right; }
+
+			.user-remove { 
+				float: right;
+				line-height: 1.9em;
+				margin-right: .5em;
+			}
+		}
+	}
+
 	.categories {
 		
 		.category-list {

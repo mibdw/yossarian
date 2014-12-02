@@ -1,20 +1,18 @@
 <h1>Upcoming events</h1>
 
 <ul class="upcoming-events">
-	<li ng-repeat="event in upcomingEvents" ng-click="upcomingClick(event)" class="upcoming-content">	 
-		<span class="upcoming-title"><span class="color-block" style="background-color: {{event.category.color}}"></span> {{event.title}}</span>
+	<li ng-repeat="event in upcomingEvents" ng-click="upcomingClick(event)" class="upcoming-content">
+		<time datetime="P{{fromNowDays(event.start)}}" class="upcoming-time">{{fromNowDays(event.start)}}</time>
 
-		<span class="upcoming-timeline" ng-show="event.timeline == 'history'">Started {{fromNow(event.start)}}</span>
-		<span class="upcoming-timeline" ng-show="event.timeline == 'today'"><strong>Today</strong></span>
-		<span class="upcoming-timeline" ng-show="event.timeline == 'tomorrow'">Tomorrow</span>
-		<span class="upcoming-timeline" ng-show="event.timeline == 'future'">{{fromNow(event.start)}}</span>
-		<br>
+		<span class="color-block" style="background-color: {{event.category.color}}" title="{{event.category.name}}"></span>
+		<img src="/uploads/{{event.author.picture}}" title="Author: {{event.author.name.first}} {{event.author.name.last}}" class="upcoming-author">
 
-		<dl>
-			<dt>Date:</dt>
-			<dd>{{event.period}}</dd>
-			<dt>Author:</dt>
-			<dd>{{event.author.name.first}} {{event.author.name.last}}</dd>
-		</dl>
+		<span class="upcoming-headline">
+			<strong> {{event.title}}</strong> on {{event.period}} <time datetime="PdurationDays(event.start, event.end" class="upcoming-duration">{{durationDays(event.start, event.end)}}</time><br>
+		</span>
+		
+		<div class="upcoming-person">Posted by <em>{{event.author.name.first}} {{event.author.name.last}}</em></div>
+
+		<div class="upcoming-note">{{event.note}}</div>
 	</li>
 </ul>

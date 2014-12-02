@@ -382,8 +382,17 @@ app.controller('global', ['$scope', '$rootScope', '$http',
 		$rootScope.markdownURL = 'https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet';
 
 		$rootScope.fromNow = function (date) { 	return moment(date).fromNow(); }
+		$rootScope.fromNowDays = function (date) {
+			var today = moment().format();
+			if (moment(date).diff(today, 'days') < 1) return 'Now'; 
+			return moment(date).diff(today, 'days') + 'd'; 
+		}
+		$rootScope.durationDays = function (start, end) {
+			if (moment(end).diff(start, 'days') < 1) return 1 + 'd';
+			return moment(end).diff(start, 'days') + 1 + 'd';
+		}
 		$rootScope.daysFromNow = function (date) { return moment(date).fromNow('dd'); }
-		$rootScope.displayDate = function (date) { return moment(date).format('DD-MM-YYYY'); }
+		$rootScope.displayDate = function (date) { return moment(date).format('DD/MM/YYYY'); }
 
 		$rootScope.slugify = function (text) {
 			return text.toString().toLowerCase().replace(/\s+/g, '-').replace(/[^\w\-]+/g, '').replace(/\-\-+/g, '-').replace(/^-+/, '').replace(/-+$/, '');
@@ -880,10 +889,19 @@ ctrl.controller('calendarController', ['$scope', '$rootScope', '$routeParams', '
 		$scope.createEvent = function () {
 			$scope.incident.postDate = moment();
 			$scope.incident.author = $rootScope.user._id;
-			$scope.incident.start = moment($scope.incident.start, 'DD/MM/YYYY').format('YYYY-MM-DD');
-			if ($scope.incident.end) {
-				$scope.incident.end = moment($scope.incident.end, 'DD/MM/YYYY').endOf('day');
+			if (moment($scope.incident.start, 'DD/MM/YYYY').isValid()) {
+				$scope.incident.start = moment($scope.incident.start, 'DD/MM/YYYY').startOf('day').add(1, 'h').format();
+			} else {
+				return alert('Invalid start date');
 			}
+			if ($scope.incident.end) {
+				if (moment($scope.incident.end, 'DD/MM/YYYY').isValid()) {
+					$scope.incident.end = moment($scope.incident.end, 'DD/MM/YYYY').endOf('day').format();
+				} else {
+					return alert('Invalid end date');
+				}
+			}
+			if (!$scope.incident.category) return alert('Please assign a category');
 			$http.post('/calendar/create', $scope.incident).success(function () {
 				$scope.navMonth($scope.incident.start);		
 				$scope.incident = {};
@@ -898,10 +916,19 @@ ctrl.controller('calendarController', ['$scope', '$rootScope', '$routeParams', '
 			$scope.incident.editDate = moment();
 			$scope.incident.author = $scope.incident.author._id;
 			$scope.incident.editor = $rootScope.user._id;
-			$scope.incident.start = moment($scope.incident.start, 'DD/MM/YYYY').format('YYYY-MM-DD');
-			if ($scope.incident.end) {
-				$scope.incident.end = moment($scope.incident.end, 'DD/MM/YYYY').endOf('day');
+			if (moment($scope.incident.start, 'DD/MM/YYYY').isValid()) {
+				$scope.incident.start = moment($scope.incident.start, 'DD/MM/YYYY').startOf('day').add(1, 'h').format();
+			} else {
+				return alert('Invalid start date');
 			}
+			if ($scope.incident.end) {
+				if (moment($scope.incident.end, 'DD/MM/YYYY').isValid()) {
+					$scope.incident.end = moment($scope.incident.end, 'DD/MM/YYYY').endOf('day').format();
+				} else {
+					return alert('Invalid end date');
+				}
+			}
+			if (!$scope.incident.category) return alert('Please assign a category');
 			$http.post('/calendar/update', $scope.incident).success(function () {
 				$scope.navMonth($scope.incident.start);		
 				$scope.incident = {};
@@ -941,17 +968,12 @@ ctrl.controller('calendarController', ['$scope', '$rootScope', '$routeParams', '
 						$scope.upcomingEvents[i].timeline = 'future';
 					}
 
-					$scope.upcomingEvents[i].period = moment($scope.upcomingEvents[i].start).format('DD/MM/YYYY');
+					$scope.upcomingEvents[i].period = moment($scope.upcomingEvents[i].start).format('DD/MM');
 					if ($scope.upcomingEvents[i].end) {
-						var start = moment($scope.upcomingEvents[i].start).format('DD/MM/YYYY');
-						var end = moment($scope.upcomingEvents[i].end).format('DD/MM/YYYY');
+					var start = moment($scope.upcomingEvents[i].start).format('DD/MM');
+					var end = moment($scope.upcomingEvents[i].end).format('DD/MM');
 
-						if (moment($scope.upcomingEvents[i].start).isAfter(today, 'day') == false) {
-							var timeleft = moment($scope.upcomingEvents[i].end).fromNow(today, true);
-							$scope.upcomingEvents[i].period = start + ' \u2014 ' + end + ' (' + timeleft + ' left)';
-						} else {
-							$scope.upcomingEvents[i].period = start + ' \u2014 ' + end;
-						}						
+						$scope.upcomingEvents[i].period = start + ' - ' + end;		
 					}
 				}
 			});
@@ -1017,7 +1039,11 @@ ctrl.controller('projectsController', ['$scope', '$rootScope', '$http', '$cookie
 			if ($scope.statusProjects != status) $cookies.statusProjects = status;
 			if ($scope.statusProjects == status) $cookies.statusProjects = 'all';
 			$scope.statusProjects = $cookies.statusProjects;
+
+			$scope.projectsPage = 0;
+			$scope.projectsCriteria.page = $scope.projectsPage;
 			$scope.projectsCriteria.completed = $scope.statusProjects;
+
 			if ($scope.projectView.name == 'list') $scope.getProjects();
 			if ($scope.projectView.name == 'calendar') $('.projects-calendar-view').fullCalendar('refetchEvents');
 		}
@@ -1044,7 +1070,11 @@ ctrl.controller('projectsController', ['$scope', '$rootScope', '$http', '$cookie
 			} else if ($scope.categoriesProjects.indexOf(id) == -1) {
 				$scope.categoriesProjects.push(id);
 			}
+
+			$scope.projectsPage = 0;
+			$scope.projectsCriteria.page = $scope.projectsPage;
 			$scope.projectsCriteria.categories = $scope.categoriesProjects;
+			
 			if ($scope.projectView.name == 'list') $scope.getProjects();
 			if ($scope.projectView.name == 'calendar') $('.projects-calendar-view').fullCalendar('refetchEvents');
 			$cookies.categoriesProjects = $scope.categoriesProjects;
@@ -1059,6 +1089,7 @@ ctrl.controller('projectsController', ['$scope', '$rootScope', '$http', '$cookie
 		$scope.navProjects = function (direction) {
 			if (direction == 'next') $scope.projectsPage = $scope.projectsPage + 1;
 			if (direction == 'prev') $scope.projectsPage = $scope.projectsPage - 1;
+			$scope.projectsCriteria.page = $scope.projectsPage;
 			$scope.getProjects();
 		}
 
@@ -1204,8 +1235,8 @@ ctrl.controller('projectsForm', ['$scope', '$rootScope', '$http', '$routeParams'
 		if ($routeParams.slug) {
 			$http.post('/projects/detail', { slug: $routeParams.slug }).success(function (projectData) {
 				$scope.venture = projectData;
-				if ($scope.venture.start) $scope.venture.start = moment($scope.venture.start).format('DD-MM-YYYY');
-				if ($scope.venture.end) $scope.venture.end = moment($scope.venture.end).format('DD-MM-YYYY');
+				if ($scope.venture.start) $scope.venture.start = moment($scope.venture.start).format('DD/MM/YYYY');
+				if ($scope.venture.end) $scope.venture.end = moment($scope.venture.end).format('DD/MM/YYYY');
 
 				angular.forEach($scope.venture.tasks, function (task) {
 					if (task.start) task.start = $rootScope.displayDate(task.start);
@@ -1262,7 +1293,7 @@ ctrl.controller('projectsForm', ['$scope', '$rootScope', '$http', '$routeParams'
 		}
 
 		$('#new-task-start').datepicker({
-			dateFormat: 'dd-mm-yy',
+			dateFormat: 'dd/mm/yy',
 			beforeShow: function (input, inst) {
 				$('#ui-datepicker-div').addClass('right');
 			},
@@ -1272,7 +1303,7 @@ ctrl.controller('projectsForm', ['$scope', '$rootScope', '$http', '$routeParams'
 		});
 
 		$('#new-task-end').datepicker({
-			dateFormat: 'dd-mm-yy',
+			dateFormat: 'dd/mm/yy',
 			beforeShow: function (input, inst) {
 				$('#ui-datepicker-div').addClass('right');
 			},
@@ -1289,10 +1320,10 @@ ctrl.controller('projectsForm', ['$scope', '$rootScope', '$http', '$routeParams'
 				if (!$scope.venture.start) $scope.venture.start = $scope.venture.tasks[i].start;
 				if (!$scope.venture.end) $scope.venture.end = $scope.venture.tasks[i].end;
 
-				var projectStart = moment($scope.venture.start, 'DD-MM-YYYY');
-				var projectEnd = moment($scope.venture.end, 'DD-MM-YYYY');
-				var taskStart = moment($scope.venture.tasks[i].start, 'DD-MM-YYYY');
-				var taskEnd = moment($scope.venture.tasks[i].end, 'DD-MM-YYYY');
+				var projectStart = moment($scope.venture.start, 'DD/MM/YYYY');
+				var projectEnd = moment($scope.venture.end, 'DD/MM/YYYY');
+				var taskStart = moment($scope.venture.tasks[i].start, 'DD/MM/YYYY');
+				var taskEnd = moment($scope.venture.tasks[i].end, 'DD/MM/YYYY');
 
 				if (moment(projectStart).isAfter(taskStart)) $scope.venture.start = $scope.venture.tasks[i].start;
 				if (moment(projectEnd).isBefore(taskEnd)) $scope.venture.end = $scope.venture.tasks[i].end;
@@ -1435,6 +1466,8 @@ ctrl.controller('projectsForm', ['$scope', '$rootScope', '$http', '$routeParams'
 			if ($scope.venture.categories.length < 1) {
 				$scope.venture.categories.push(uncategorized);
 			}
+
+			if ($scope.venture.tasks < 1) return alert("Please add at least one task")
 			
 			$http.post('/projects/create', $scope.venture).success( function (data) {
 				window.location.pathname = "/#/projects/" + $scope.venture.slug;
@@ -1538,10 +1571,10 @@ ctrl.controller('projectsDetail', ['$scope', '$rootScope', '$routeParams', '$htt
 				if (!$scope.currentProject.start) $scope.currentProject.start = $scope.currentProject.tasks[i].start;
 				if (!$scope.currentProject.end) $scope.currentProject.end = $scope.currentProject.tasks[i].end;
 
-				var projectStart = moment($scope.currentProject.start, 'DD-MM-YYYY');
-				var projectEnd = moment($scope.currentProject.end, 'DD-MM-YYYY');
-				var taskStart = moment($scope.currentProject.tasks[i].start, 'DD-MM-YYYY');
-				var taskEnd = moment($scope.currentProject.tasks[i].end, 'DD-MM-YYYY');
+				var projectStart = moment($scope.currentProject.start, 'DD/MM/YYYY');
+				var projectEnd = moment($scope.currentProject.end, 'DD/MM/YYYY');
+				var taskStart = moment($scope.currentProject.tasks[i].start, 'DD/MM/YYYY');
+				var taskEnd = moment($scope.currentProject.tasks[i].end, 'DD/MM/YYYY');
 
 				if (moment(projectStart).isAfter(taskStart)) $scope.currentProject.start = $scope.currentProject.tasks[i].start;
 				if (moment(projectEnd).isBefore(taskEnd)) $scope.currentProject.end = $scope.currentProject.tasks[i].end;
@@ -1559,10 +1592,10 @@ ctrl.controller('projectsDetail', ['$scope', '$rootScope', '$routeParams', '$htt
 					task.markedDescription = markedText;
 				});
 
-				var projectStart = moment($scope.currentProject.start, 'DD-MM-YYYY');
-				var projectEnd = moment($scope.currentProject.end, 'DD-MM-YYYY');
-				var taskStart = moment(task.start, 'DD-MM-YYYY');
-				var taskEnd = moment(task.end, 'DD-MM-YYYY');
+				var projectStart = moment($scope.currentProject.start, 'DD/MM/YYYY');
+				var projectEnd = moment($scope.currentProject.end, 'DD/MM/YYYY');
+				var taskStart = moment(task.start, 'DD/MM/YYYY');
+				var taskEnd = moment(task.end, 'DD/MM/YYYY');
 
 				if (!$scope.currentProject.start) $scope.currentProject.start = taskStart;
 				if (!$scope.currentProject.end) $scope.currentProject.end = taskEnd;
@@ -1575,8 +1608,8 @@ ctrl.controller('projectsDetail', ['$scope', '$rootScope', '$routeParams', '$htt
 					$scope.sendProject.author = $scope.sendProject.author._id;
 					$scope.sendProject.editDate = moment();
 					$scope.sendProject.editor = $rootScope.user._id;
-					$scope.sendProject.start = moment($scope.sendProject.start).format("DD-MM-YYYY");
-					$scope.sendProject.end = moment($scope.sendProject.end).format("DD-MM-YYYY");
+					$scope.sendProject.start = moment($scope.sendProject.start).format("DD/MM/YYYY");
+					$scope.sendProject.end = moment($scope.sendProject.end).format("DD/MM/YYYY");
 					delete $scope.sendProject.markedDescription;
 					delete $scope.sendProject.completedTasks;
 					
@@ -1690,8 +1723,8 @@ ctrl.controller('projectsDetail', ['$scope', '$rootScope', '$routeParams', '$htt
 
 		$scope.timelineTask = function (day, index) {
 			var time = moment(day);
-			var start = moment($scope.currentProject.tasks[index].start, 'DD-MM-YYYY');
-			var end = moment($scope.currentProject.tasks[index].end, 'DD-MM-YYYY');
+			var start = moment($scope.currentProject.tasks[index].start, 'DD/MM/YYYY');
+			var end = moment($scope.currentProject.tasks[index].end, 'DD/MM/YYYY');
 
 			if (moment(start).isSame(time, 'day') || moment(end).isSame(time, 'day') || moment(time).isAfter(start, 'day') && moment(time).isBefore(end, 'day')) return true;
 		}	
@@ -1939,3 +1972,54 @@ ctrl.controller('settingsUsers', ['$scope', '$rootScope', '$routeParams', '$http
 		};
 	}
 ]);
+
+
+ctrl.controller('settingsProfile', ['$scope', '$rootScope', '$routeParams', '$http', '$filter', '$upload', 
+	function ($scope, $rootScope, $routeParams, $http, $filter, $upload) {	
+		
+		$http.post('/users/detail', { '_id': $rootScope.user._id }).success(function (data) {
+			$scope.human = data;
+			$scope.human.birthday = moment($scope.human.birthday).format('DD-MM-YYYY');
+		});
+
+		$scope.passwordMatch = true;
+		$scope.passwordCheck = function () {
+			if ($scope.userView == 'create') {
+				if ($scope.newUser.password != $scope.newUser.confirm) {
+					$scope.passwordMatch = false;
+				} else if ($scope.newUser.password == $scope.newUser.confirm) {
+					$scope.passwordMatch = true;
+				}	
+			} else if ($scope.userView == 'update') {
+				if ($scope.editUser.password != $scope.editUser.confirm) {
+					$scope.passwordMatch = false;
+				} else if ($scope.editUser.password == $scope.editUser.confirm) {
+					$scope.passwordMatch = true;
+				}
+			}
+		};
+
+		$scope.updateProfile = function () {
+			if ($scope.human.password != $scope.human.confirm) {
+				alert("Your passwords do not match, please retry")
+			} else {
+				var username = $scope.human.name.first + " " + $scope.human.name.last;
+
+				$scope.human.username = $rootScope.slugify(username);
+				if ($scope.human.birthday) $scope.human.birthday = moment($scope.human.birthday, "DD-MM-YYYY").format();
+				$scope.human.editDate = moment().format();
+				
+				$http.post('/users/update', $scope.human).success( function (data) {
+					if ($scope.files) {
+						var picture = $scope.files[0];
+						$scope.upload = $upload.upload({ url: '/users/avatar', data: { '_id': data._id }, file: picture }).success( function (data) {
+							window.location.reload();
+						});
+					} else {
+						window.location.reload();	
+					}
+				});
+			}
+		};
+	}
+]);	

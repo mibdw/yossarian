@@ -24,7 +24,11 @@ ctrl.controller('projectsController', ['$scope', '$rootScope', '$http', '$cookie
 			if ($scope.statusProjects != status) $cookies.statusProjects = status;
 			if ($scope.statusProjects == status) $cookies.statusProjects = 'all';
 			$scope.statusProjects = $cookies.statusProjects;
+
+			$scope.projectsPage = 0;
+			$scope.projectsCriteria.page = $scope.projectsPage;
 			$scope.projectsCriteria.completed = $scope.statusProjects;
+
 			if ($scope.projectView.name == 'list') $scope.getProjects();
 			if ($scope.projectView.name == 'calendar') $('.projects-calendar-view').fullCalendar('refetchEvents');
 		}
@@ -51,7 +55,11 @@ ctrl.controller('projectsController', ['$scope', '$rootScope', '$http', '$cookie
 			} else if ($scope.categoriesProjects.indexOf(id) == -1) {
 				$scope.categoriesProjects.push(id);
 			}
+
+			$scope.projectsPage = 0;
+			$scope.projectsCriteria.page = $scope.projectsPage;
 			$scope.projectsCriteria.categories = $scope.categoriesProjects;
+			
 			if ($scope.projectView.name == 'list') $scope.getProjects();
 			if ($scope.projectView.name == 'calendar') $('.projects-calendar-view').fullCalendar('refetchEvents');
 			$cookies.categoriesProjects = $scope.categoriesProjects;
@@ -66,6 +74,7 @@ ctrl.controller('projectsController', ['$scope', '$rootScope', '$http', '$cookie
 		$scope.navProjects = function (direction) {
 			if (direction == 'next') $scope.projectsPage = $scope.projectsPage + 1;
 			if (direction == 'prev') $scope.projectsPage = $scope.projectsPage - 1;
+			$scope.projectsCriteria.page = $scope.projectsPage;
 			$scope.getProjects();
 		}
 
@@ -211,8 +220,8 @@ ctrl.controller('projectsForm', ['$scope', '$rootScope', '$http', '$routeParams'
 		if ($routeParams.slug) {
 			$http.post('/projects/detail', { slug: $routeParams.slug }).success(function (projectData) {
 				$scope.venture = projectData;
-				if ($scope.venture.start) $scope.venture.start = moment($scope.venture.start).format('DD-MM-YYYY');
-				if ($scope.venture.end) $scope.venture.end = moment($scope.venture.end).format('DD-MM-YYYY');
+				if ($scope.venture.start) $scope.venture.start = moment($scope.venture.start).format('DD/MM/YYYY');
+				if ($scope.venture.end) $scope.venture.end = moment($scope.venture.end).format('DD/MM/YYYY');
 
 				angular.forEach($scope.venture.tasks, function (task) {
 					if (task.start) task.start = $rootScope.displayDate(task.start);
@@ -269,7 +278,7 @@ ctrl.controller('projectsForm', ['$scope', '$rootScope', '$http', '$routeParams'
 		}
 
 		$('#new-task-start').datepicker({
-			dateFormat: 'dd-mm-yy',
+			dateFormat: 'dd/mm/yy',
 			beforeShow: function (input, inst) {
 				$('#ui-datepicker-div').addClass('right');
 			},
@@ -279,7 +288,7 @@ ctrl.controller('projectsForm', ['$scope', '$rootScope', '$http', '$routeParams'
 		});
 
 		$('#new-task-end').datepicker({
-			dateFormat: 'dd-mm-yy',
+			dateFormat: 'dd/mm/yy',
 			beforeShow: function (input, inst) {
 				$('#ui-datepicker-div').addClass('right');
 			},
@@ -296,10 +305,10 @@ ctrl.controller('projectsForm', ['$scope', '$rootScope', '$http', '$routeParams'
 				if (!$scope.venture.start) $scope.venture.start = $scope.venture.tasks[i].start;
 				if (!$scope.venture.end) $scope.venture.end = $scope.venture.tasks[i].end;
 
-				var projectStart = moment($scope.venture.start, 'DD-MM-YYYY');
-				var projectEnd = moment($scope.venture.end, 'DD-MM-YYYY');
-				var taskStart = moment($scope.venture.tasks[i].start, 'DD-MM-YYYY');
-				var taskEnd = moment($scope.venture.tasks[i].end, 'DD-MM-YYYY');
+				var projectStart = moment($scope.venture.start, 'DD/MM/YYYY');
+				var projectEnd = moment($scope.venture.end, 'DD/MM/YYYY');
+				var taskStart = moment($scope.venture.tasks[i].start, 'DD/MM/YYYY');
+				var taskEnd = moment($scope.venture.tasks[i].end, 'DD/MM/YYYY');
 
 				if (moment(projectStart).isAfter(taskStart)) $scope.venture.start = $scope.venture.tasks[i].start;
 				if (moment(projectEnd).isBefore(taskEnd)) $scope.venture.end = $scope.venture.tasks[i].end;
@@ -442,6 +451,8 @@ ctrl.controller('projectsForm', ['$scope', '$rootScope', '$http', '$routeParams'
 			if ($scope.venture.categories.length < 1) {
 				$scope.venture.categories.push(uncategorized);
 			}
+
+			if ($scope.venture.tasks < 1) return alert("Please add at least one task")
 			
 			$http.post('/projects/create', $scope.venture).success( function (data) {
 				window.location.pathname = "/#/projects/" + $scope.venture.slug;
@@ -545,10 +556,10 @@ ctrl.controller('projectsDetail', ['$scope', '$rootScope', '$routeParams', '$htt
 				if (!$scope.currentProject.start) $scope.currentProject.start = $scope.currentProject.tasks[i].start;
 				if (!$scope.currentProject.end) $scope.currentProject.end = $scope.currentProject.tasks[i].end;
 
-				var projectStart = moment($scope.currentProject.start, 'DD-MM-YYYY');
-				var projectEnd = moment($scope.currentProject.end, 'DD-MM-YYYY');
-				var taskStart = moment($scope.currentProject.tasks[i].start, 'DD-MM-YYYY');
-				var taskEnd = moment($scope.currentProject.tasks[i].end, 'DD-MM-YYYY');
+				var projectStart = moment($scope.currentProject.start, 'DD/MM/YYYY');
+				var projectEnd = moment($scope.currentProject.end, 'DD/MM/YYYY');
+				var taskStart = moment($scope.currentProject.tasks[i].start, 'DD/MM/YYYY');
+				var taskEnd = moment($scope.currentProject.tasks[i].end, 'DD/MM/YYYY');
 
 				if (moment(projectStart).isAfter(taskStart)) $scope.currentProject.start = $scope.currentProject.tasks[i].start;
 				if (moment(projectEnd).isBefore(taskEnd)) $scope.currentProject.end = $scope.currentProject.tasks[i].end;
@@ -566,10 +577,10 @@ ctrl.controller('projectsDetail', ['$scope', '$rootScope', '$routeParams', '$htt
 					task.markedDescription = markedText;
 				});
 
-				var projectStart = moment($scope.currentProject.start, 'DD-MM-YYYY');
-				var projectEnd = moment($scope.currentProject.end, 'DD-MM-YYYY');
-				var taskStart = moment(task.start, 'DD-MM-YYYY');
-				var taskEnd = moment(task.end, 'DD-MM-YYYY');
+				var projectStart = moment($scope.currentProject.start, 'DD/MM/YYYY');
+				var projectEnd = moment($scope.currentProject.end, 'DD/MM/YYYY');
+				var taskStart = moment(task.start, 'DD/MM/YYYY');
+				var taskEnd = moment(task.end, 'DD/MM/YYYY');
 
 				if (!$scope.currentProject.start) $scope.currentProject.start = taskStart;
 				if (!$scope.currentProject.end) $scope.currentProject.end = taskEnd;
@@ -582,8 +593,8 @@ ctrl.controller('projectsDetail', ['$scope', '$rootScope', '$routeParams', '$htt
 					$scope.sendProject.author = $scope.sendProject.author._id;
 					$scope.sendProject.editDate = moment();
 					$scope.sendProject.editor = $rootScope.user._id;
-					$scope.sendProject.start = moment($scope.sendProject.start).format("DD-MM-YYYY");
-					$scope.sendProject.end = moment($scope.sendProject.end).format("DD-MM-YYYY");
+					$scope.sendProject.start = moment($scope.sendProject.start).format("DD/MM/YYYY");
+					$scope.sendProject.end = moment($scope.sendProject.end).format("DD/MM/YYYY");
 					delete $scope.sendProject.markedDescription;
 					delete $scope.sendProject.completedTasks;
 					
@@ -697,8 +708,8 @@ ctrl.controller('projectsDetail', ['$scope', '$rootScope', '$routeParams', '$htt
 
 		$scope.timelineTask = function (day, index) {
 			var time = moment(day);
-			var start = moment($scope.currentProject.tasks[index].start, 'DD-MM-YYYY');
-			var end = moment($scope.currentProject.tasks[index].end, 'DD-MM-YYYY');
+			var start = moment($scope.currentProject.tasks[index].start, 'DD/MM/YYYY');
+			var end = moment($scope.currentProject.tasks[index].end, 'DD/MM/YYYY');
 
 			if (moment(start).isSame(time, 'day') || moment(end).isSame(time, 'day') || moment(time).isAfter(start, 'day') && moment(time).isBefore(end, 'day')) return true;
 		}	

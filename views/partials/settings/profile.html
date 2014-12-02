@@ -1,2 +1,54 @@
+<div ng-controller="settingsProfile">
+	<section style="width: 60%" class="profile-form">
+		<form ng-submit="updateProfile()">
+			<h2>
+				Profile
+				<img src="/uploads/{{human.picture}}" class="avatar">
+			</h2>
 
-<h2>Profile</h2>
+			<label for="new-email">E-mail</label>
+			<input type="email" ng-model="human.email" id="new-email" placeholder="name@example.com">
+
+			<label for="new-password">Password</label>
+			<input type="password"  ng-model="human.password" id="new-password" placeholder="All characters allowed">
+			<input type="password"  ng-model="human.confirm" id="new-confirm" placeholder="Confirm password" ng-change="passwordCheck()" ng-class="{invalid: passwordMatch == false}">
+
+			<label for="new-first-name">Name</label>
+			<input type="text" ng-model="human.name.first" id="new-first-name" placeholder="First">
+			<input type="text" ng-model="human.name.last" id="new-last-name" placeholder="Last">
+			
+				<label for="new-role">Role</label>
+				<select ng-model="human.role" id="new-role">
+					<option value="admin">Administrator</option>
+					<option value="editor">Editor</option>
+					<option value="author">Author</option>
+					<option value="editor">Editor</option>
+					<option value="user">User</option>
+				</select>
+
+			<label for="new-birthday">Birthday</label>
+			<input type="text" ng-model="human.birthday" id="new-birthday" placeholder="DD-MM-YYYY">
+
+			<label for="new-department">Department</label>
+			<select ng-model="human.department" id="new-department">
+				<option value="management">Management</option>
+				<option value="sales">Sales</option>
+				<option value="customer-service">Customer service</option>
+				<option value="orders">Orders</option>
+				<option value="accounts">Accounts</option>
+				<option value="journals">Journals</option>
+				<option value="it">IT</option>
+				<option value="approval-plans-nts">Approval plans / NTS</option>
+				<option value="shipping-receiving">Shipping / receiving</option>
+			</select>
+
+			<label for="new-picture">Picture</label>
+			<input type="file" id="new-picture" accept="images\*" ng-file-select="selectFile($files)">
+
+			<label for="new-note">Note</label>
+			<textarea rows="8"  ng-model="human.note" id="new-note"></textarea>
+
+			<button type="submit">Update</button>
+		</form>
+	</section>
+</div>

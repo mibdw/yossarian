@@ -1,6 +1,12 @@
 <div class="project-detail content right" style="width: 75%" ng-include="projectDetail.url"></div>
 
 <aside class="project-detail left" style="width: 25%">
+	<ul class="menu">
+		<li ng-class="{active: projectDetail.name == 'description'}"><a href="" ng-click="setProjectDetail(0)">Description</a></li>
+		<li ng-class="{active: projectDetail.name == 'timeline'}"><a href="" ng-click="setProjectDetail(1)">Timeline</a></li>
+		<li><a href="/#/projects/{{currentProject.slug}}/update">Update project</a></li>
+		<li><a href="/#/projects">Back to projects</a></li>
+	</ul> 
 
 	<span class="project-completed" ng-show="currentProject.tasks.length == currentProject.completedTasks && currentProject.tasks.length != 0">Project completed!</span>
 
@@ -43,10 +49,4 @@
 	</ul>
 
 
-	<ul class="menu">
-		<li ng-class="{active: projectDetail.name == 'description'}"><a href="" ng-click="setProjectDetail(0)">Description</a></li>
-		<li ng-class="{active: projectDetail.name == 'timeline'}"><a href="" ng-click="setProjectDetail(1)">Timeline</a></li>
-		<li><a href="/#/projects/{{currentProject.slug}}/update">Update project</a></li>
-		<li><a href="/#/projects">Back to projects</a></li>
-	</ul> 
 </aside>

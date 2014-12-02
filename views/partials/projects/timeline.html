@@ -156,6 +156,7 @@
 			ng-click="timelineView($index)"
 			class="{{task._id}} task priority-{{task.priority}}"
 			style="width: {{ 90 / currentProject.tasks.length }}% ;left: {{ 95 / currentProject.tasks.length * $index + 3}}%"
+			title="{{task.title}}"
 		>
 		</div>
 	</li>

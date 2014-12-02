@@ -251,10 +251,19 @@ ctrl.controller('calendarController', ['$scope', '$rootScope', '$routeParams', '
 		$scope.createEvent = function () {
 			$scope.incident.postDate = moment();
 			$scope.incident.author = $rootScope.user._id;
-			$scope.incident.start = moment($scope.incident.start, 'DD/MM/YYYY').format('YYYY-MM-DD');
-			if ($scope.incident.end) {
-				$scope.incident.end = moment($scope.incident.end, 'DD/MM/YYYY').endOf('day');
+			if (moment($scope.incident.start, 'DD/MM/YYYY').isValid()) {
+				$scope.incident.start = moment($scope.incident.start, 'DD/MM/YYYY').startOf('day').add(1, 'h').format();
+			} else {
+				return alert('Invalid start date');
 			}
+			if ($scope.incident.end) {
+				if (moment($scope.incident.end, 'DD/MM/YYYY').isValid()) {
+					$scope.incident.end = moment($scope.incident.end, 'DD/MM/YYYY').endOf('day').format();
+				} else {
+					return alert('Invalid end date');
+				}
+			}
+			if (!$scope.incident.category) return alert('Please assign a category');
 			$http.post('/calendar/create', $scope.incident).success(function () {
 				$scope.navMonth($scope.incident.start);		
 				$scope.incident = {};
@@ -269,10 +278,19 @@ ctrl.controller('calendarController', ['$scope', '$rootScope', '$routeParams', '
 			$scope.incident.editDate = moment();
 			$scope.incident.author = $scope.incident.author._id;
 			$scope.incident.editor = $rootScope.user._id;
-			$scope.incident.start = moment($scope.incident.start, 'DD/MM/YYYY').format('YYYY-MM-DD');
-			if ($scope.incident.end) {
-				$scope.incident.end = moment($scope.incident.end, 'DD/MM/YYYY').endOf('day');
+			if (moment($scope.incident.start, 'DD/MM/YYYY').isValid()) {
+				$scope.incident.start = moment($scope.incident.start, 'DD/MM/YYYY').startOf('day').add(1, 'h').format();
+			} else {
+				return alert('Invalid start date');
 			}
+			if ($scope.incident.end) {
+				if (moment($scope.incident.end, 'DD/MM/YYYY').isValid()) {
+					$scope.incident.end = moment($scope.incident.end, 'DD/MM/YYYY').endOf('day').format();
+				} else {
+					return alert('Invalid end date');
+				}
+			}
+			if (!$scope.incident.category) return alert('Please assign a category');
 			$http.post('/calendar/update', $scope.incident).success(function () {
 				$scope.navMonth($scope.incident.start);		
 				$scope.incident = {};
@@ -312,17 +330,12 @@ ctrl.controller('calendarController', ['$scope', '$rootScope', '$routeParams', '
 						$scope.upcomingEvents[i].timeline = 'future';
 					}
 
-					$scope.upcomingEvents[i].period = moment($scope.upcomingEvents[i].start).format('DD/MM/YYYY');
+					$scope.upcomingEvents[i].period = moment($scope.upcomingEvents[i].start).format('DD/MM');
 					if ($scope.upcomingEvents[i].end) {
-						var start = moment($scope.upcomingEvents[i].start).format('DD/MM/YYYY');
-						var end = moment($scope.upcomingEvents[i].end).format('DD/MM/YYYY');
+					var start = moment($scope.upcomingEvents[i].start).format('DD/MM');
+					var end = moment($scope.upcomingEvents[i].end).format('DD/MM');
 
-						if (moment($scope.upcomingEvents[i].start).isAfter(today, 'day') == false) {
-							var timeleft = moment($scope.upcomingEvents[i].end).fromNow(today, true);
-							$scope.upcomingEvents[i].period = start + ' \u2014 ' + end + ' (' + timeleft + ' left)';
-						} else {
-							$scope.upcomingEvents[i].period = start + ' \u2014 ' + end;
-						}						
+						$scope.upcomingEvents[i].period = start + ' - ' + end;		
 					}
 				}
 			});

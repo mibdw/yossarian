@@ -6,39 +6,64 @@
 		.upcoming-events {
 
 			li {
+				padding: .5em 0 .5em 7em;
 				position: relative;
-				cursor: pointer;
+				font-size: .9em;
 				border-bottom: 1px solid @line;
-				padding: .3em 0;
+				white-space: normal;
+				cursor: pointer;
+
+
+				.upcoming-time {
+					position: absolute;
+					left: 0;
+					top: .7em;
+					color: @vague;
+					width: 2.4em;
+					text-align: center;
+					font-size: .9em;
+				}
+
+				.color-block {
+					position: absolute;
+					left: 3em;
+					top: .7em;
+					width: 1.5em;
+					height: 1.5em;
+				}
+
+				.upcoming-author {
+					position: absolute;
+					top: .7em;
+					left: 4.7em;
+					width: 1.5em;
+					height: 1.5em;
+				}
+
+				.upcoming-duration {
+					color: @vague;
+					font-size: .75em;
+				}
+
+				.upcoming-person {
+					color: @vague;
+					font-size: .9em;
+				}
+
+				.upcoming-note {
+					margin-top: .3em;
+					color: @vague;
+					font-size: .9em;
+				}
 
 				&:hover { 
 					background-color: @hover; 
 
-					dl { color: @text; }
+					.upcoming-time, .upcoming-duration, .upcoming-person, .upcoming-note {
+						color: @text;
+					}
 				}
 
-				.upcoming-title {
-					font-weight: bold;
-					float: left;
-				}
-
-				.upcoming-timeline {
-					font-size: .9em;
-					font-style: italic;
-					float: right;
-				}
-
-				dl {
-					margin-top: .1em;
-					float: left;
-					width: 100%;
-					font-size: .9em;
-					line-height: 1.2em;
-					color: @vague;
-
-					dt { float: left }
-					dd { margin-left: 20% }
-				}
 			}
 		}
 	}

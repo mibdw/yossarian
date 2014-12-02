@@ -195,3 +195,54 @@ ctrl.controller('settingsUsers', ['$scope', '$rootScope', '$routeParams', '$http
 		};
 	}
 ]);
+
+
+ctrl.controller('settingsProfile', ['$scope', '$rootScope', '$routeParams', '$http', '$filter', '$upload', 
+	function ($scope, $rootScope, $routeParams, $http, $filter, $upload) {	
+		
+		$http.post('/users/detail', { '_id': $rootScope.user._id }).success(function (data) {
+			$scope.human = data;
+			$scope.human.birthday = moment($scope.human.birthday).format('DD-MM-YYYY');
+		});
+
+		$scope.passwordMatch = true;
+		$scope.passwordCheck = function () {
+			if ($scope.userView == 'create') {
+				if ($scope.newUser.password != $scope.newUser.confirm) {
+					$scope.passwordMatch = false;
+				} else if ($scope.newUser.password == $scope.newUser.confirm) {
+					$scope.passwordMatch = true;
+				}	
+			} else if ($scope.userView == 'update') {
+				if ($scope.editUser.password != $scope.editUser.confirm) {
+					$scope.passwordMatch = false;
+				} else if ($scope.editUser.password == $scope.editUser.confirm) {
+					$scope.passwordMatch = true;
+				}
+			}
+		};
+
+		$scope.updateProfile = function () {
+			if ($scope.human.password != $scope.human.confirm) {
+				alert("Your passwords do not match, please retry")
+			} else {
+				var username = $scope.human.name.first + " " + $scope.human.name.last;
+
+				$scope.human.username = $rootScope.slugify(username);
+				if ($scope.human.birthday) $scope.human.birthday = moment($scope.human.birthday, "DD-MM-YYYY").format();
+				$scope.human.editDate = moment().format();
+				
+				$http.post('/users/update', $scope.human).success( function (data) {
+					if ($scope.files) {
+						var picture = $scope.files[0];
+						$scope.upload = $upload.upload({ url: '/users/avatar', data: { '_id': data._id }, file: picture }).success( function (data) {
+							window.location.reload();
+						});
+					} else {
+						window.location.reload();	
+					}
+				});
+			}
+		};
+	}
+]);	

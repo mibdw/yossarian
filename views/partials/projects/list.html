@@ -34,10 +34,10 @@
 				<small class="project-tasks-count" ng-show="project.tasks.length == 1">1 task / {{project.completedTasks}} completed:</small>
 				<small class="project-tasks-count" ng-show="project.tasks.length > 1">{{project.tasks.length}} tasks / {{project.completedTasks}} completed:</small>
 				
-				<li ng-repeat="task in project.tasks | limitTo: 3">
+				<li ng-repeat="task in project.tasks | limitTo: 3" ng-class="{complete: task.completed == true}">
 					{{task.title}}
 				</li>
-				<li ng-show="project.tasks.length > 3"><a href="/#/projects/{{project.slug}}">More...</a></li>
+				<li ng-show="project.tasks.length > 3"><a href="/#/projects/{{project.slug}}">{{project.tasks.length - 3}} more task<span ng-show="project.tasks.length > 4">s</span>...</a></li>
 			</ul>			
 		</div>
 

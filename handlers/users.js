@@ -25,9 +25,22 @@ exports.remove = function(req, res, next) {
 };
 
 exports.update = function(req, res, next) {
-	User.findByIdAndUpdate(req.body._id, { $set: req.body }, function (err, user) {
+	User.findById(req.body._id, function (err, user) {
 		if (err) console.log(err);
-		return res.send(user);
+		if (user) {
+			user.name = req.body.name;
+			user.password = req.body.password;
+			user.role = req.body.role;
+			user.birthday = req.body.birthday;
+			user.department = req.body.department;
+			user.note = req.body.note;
+			user.active = req.body.active;
+
+			user.save(function (err) {
+				if (err) console.log(err);
+				return res.send(user);
+			});
+		}
 	});
 };
 

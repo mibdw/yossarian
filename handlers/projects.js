@@ -79,12 +79,17 @@ exports.update = function(req, res, next) {
 			if (req.body.tasks[y].end) req.body.tasks[y].end = moment(req.body.tasks[y].end, 'DD-MM-YYYY').format();
 			if (req.body.tasks[y].completed == true) completedTasks = completedTasks + 1; 
 
-			if (req.body.tasks[y].comments.length > 0) {
-				for (ci in req.body.tasks[y].comments) {
-					req.body.tasks[y].comments[ci].author = req.body.tasks[y].comments[ci].author._id; 
-					if (ci == req.body.tasks[y].comments.length) {
+			if (req.body.tasks[y].comments && req.body.tasks[y].comments.length > 0) {
+				
+				for (c in req.body.tasks[y].comments) {
+					req.body.tasks[y].comments[c].author = req.body.tasks[y].comments[c].author._id; 
+					
+					if (c == req.body.tasks[y].comments.length - 1) {
+						
 						if (req.body.tasks[y].participants.length > 0) {
+							
 							for (z in req.body.tasks[y].participants) {
+								
 								if (req.body.participants.indexOf(req.body.tasks[y].participants[z]._id) == -1) {
 									req.body.participants.push(req.body.tasks[y].participants[z]._id);
 								}
