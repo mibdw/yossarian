@@ -1,66 +1,68 @@
-var app = angular.module('yossarian', ['ngRoute', 'ngCookies', 'ngSanitize', 'ui.highlight', 'angularFileUpload', 'dashboard', 'docs', 'calendar', 'projects', 'relations', 'settings']);
+var app = angular.module('yossarian', ['ngRoute', 'ngCookies', 'ngSanitize', 'ui.highlight', 'angularFileUpload', 'dashboard', 'docs', 'calendar', 'projects', 'contacts', 'settings']);
 
 app.config(['$routeProvider', function ($routeProvider) {
-	$routeProvider.
-		when('/', {
+	$routeProvider.when('/', {
 		templateUrl: 'partials/dashboard/main',
 		controller: 'dashboardController'
-		}).
-		when('/docs/:slug/update', {
+	})
+	.when('/dashboard', {
+		redirectTo: '/'
+	})
+	.when('/docs/:slug/update', {
 		templateUrl: 'partials/docs/update',
 		controller: 'docsUpdate'
-		}).
-		when('/docs/create', {
+	})
+	.when('/docs/create', {
 		templateUrl: 'partials/docs/create',
 		controller: 'docsCreate'
-		}).
-		when('/docs/:slug', {
+	})
+	.when('/docs/:slug', {
 		templateUrl: 'partials/docs/main',
 		controller: 'docsController'
-		}).
-		when('/docs', {
+	})
+	.when('/docs', {
 		templateUrl: 'partials/docs/main',
 		controller: 'docsController'
-		}).
-		when('/calendar', {
+	})
+	.when('/calendar', {
 		templateUrl: 'partials/calendar/main',
 		controller: 'calendarController'
-		}).
-		when('/calendar/:year/:month', {
+	})
+	.when('/calendar/:year/:month', {
 		templateUrl: 'partials/calendar/main',
 		controller: 'calendarController'
-		}).
-		when('/projects/:slug/update', {
+	})
+	.when('/projects/:slug/update', {
 		templateUrl: 'partials/projects/update',
 		controller: 'projectsForm'
-		}).
-		when('/projects/create', {
+	})
+	.when('/projects/create', {
 		templateUrl: 'partials/projects/create',
 		controller: 'projectsForm'
-		}).
-		when('/projects/:slug', {
+	})
+	.when('/projects/:slug', {
 		templateUrl: 'partials/projects/detail',
 		controller: 'projectsDetail'
-		}).
-		when('/projects', {
+	})
+	.when('/projects', {
 		templateUrl: 'partials/projects/main',
 		controller: 'projectsController'
-		}).
-		when('/relations', {
-		templateUrl: 'partials/relations/main',
-		controller: 'relationsController'
-		}).
-		when('/settings/:option', {
+	})
+	.when('/contacts', {
+		templateUrl: 'partials/contacts/main',
+		controller: 'contactsController'
+	})
+	.when('/settings/:option', {
 		templateUrl: 'partials/settings/main',
 		controller: 'settingsController'
-		}).
-		when('/settings', {
+	})
+	.when('/settings', {
 		templateUrl: 'partials/settings/main',
 		controller: 'settingsController'
-		}).
-		otherwise({
+	})
+	.otherwise({
 		redirectTo: '/'
-		});
+	});
 }]);
 
 app.controller('global', ['$scope', '$rootScope', '$http',
@@ -70,11 +72,11 @@ app.controller('global', ['$scope', '$rootScope', '$http',
 		$rootScope.seperator = ' \u2014 ';
 
 		$rootScope.menu = [
-			{ slug: 'docs', name: 'Documents' },
+			{ slug: 'dashboard', name: 'Dashboard' },
+			{ slug: 'docs', name: 'Knowledge base' },
 			{ slug: 'calendar', name: 'Calendar' },	
 			{ slug: 'projects', name: 'Projects' },
-			{ slug: 'relations', name: 'Relations' },
-			{ slug: 'settings', name: 'Settings' }
+			{ slug: 'contacts', name: 'Contacts' }
 		];
 
 		$rootScope.user = {};

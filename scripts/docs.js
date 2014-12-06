@@ -3,7 +3,7 @@ var ctrl = angular.module('docs', []);
 ctrl.controller('docsController', ['$scope', '$rootScope', '$routeParams', '$http', '$sce',
 	function ($scope, $rootScope, $routeParams, $http, $sce) {	
 		$rootScope.slug = 'docs';
-		$rootScope.heading = 'Documents'; 
+		$rootScope.heading = 'Knowledge base'; 
 		$rootScope.moniker = $rootScope.heading + $rootScope.seperator + $rootScope.masthead;
 
 		$scope.docsMenu = [];
@@ -33,7 +33,7 @@ ctrl.controller('docsController', ['$scope', '$rootScope', '$routeParams', '$htt
 					$scope.currentDoc.marked = $sce.trustAsHtml(markedText);
 				});
 
-				$rootScope.heading = $scope.currentDoc.title + ' \u00AB Documents'; 
+				$rootScope.heading = $scope.currentDoc.title + ' \u00AB Knowledge base'; 
 				$rootScope.moniker = $rootScope.heading + $rootScope.seperator + $rootScope.masthead;
 			});
 

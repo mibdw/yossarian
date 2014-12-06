@@ -83,7 +83,7 @@
 							<a href="" ng-show="displayTask.completed != true" ng-click="completeTask(displayTask._id)">Mark done</a>
 							<a href="" ng-show="displayTask.completed == true" ng-click="uncompleteTask(displayTask._id)">Mark undone</a>
 						</li>
-						<li><a href="" ng-click="commentTask($index)">Comment</a></li>
+						<li><a href="" ng-click="commentTask($index)">Comment<span ng-show="task.comments.length > 0"> ({{task.comments.length}})</span></a></li>
 						<li><a href="" ng-click="updatingTimelineTask($index)">Update</a></li>
 					</ul>
 				</div>				

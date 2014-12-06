@@ -22,9 +22,17 @@
 			
 		<ul class="nav">
 			<li ng-repeat="option in menu" ng-class="{active: option.slug == slug}">
-				<a href="/#/{{option.slug}}">{{option.name}}</a>
+				<a href="/#/{{option.slug}}" title="{{option.name}}">{{option.name}}</a>
 			</li>
-			<li><a href="/logout" title="Logout {{user.name.first}} {{user.name.last}}">Logout</a></li>
+			<li class="user-nav">
+				&nbsp;
+				<img src="/uploads/{{user.picture}}" title="{{user.name.first}} {{user.name.last}}" class="avatar">
+				<ul>
+					<li><a href="/#/settings/profile">Profile</a></li>
+					<li><a href="/#/settings/users">Settings</a></li>
+					<li><a href="/logout" title="Logout {{user.name.first}} {{user.name.last}}">Logout</a></li>
+				</ul>
+			</li>
 		</ul>
 	</header>
 

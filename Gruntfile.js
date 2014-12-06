@@ -26,7 +26,7 @@ module.exports = function(grunt) {
 						'scripts/docs.js', 
 						'scripts/calendar.js', 
 						'scripts/projects.js', 
-						'scripts/relations.js', 
+						'scripts/contacts.js', 
 						'scripts/settings.js'
 					]
 				}

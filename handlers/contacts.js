@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 var moment = require('moment');
 
-var Relation = require(__dirname + '/../models/relation.js');
+var Relation = require(__dirname + '/../models/contact.js');
 
 exports.create = function(req, res, next) {
 

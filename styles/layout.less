@@ -46,12 +46,77 @@ header {
 		padding: 0;
 
 		li {
-			display: inline;
-			margin-left: .85em;
+			display: inline-block;
+			margin-left: 1.2em;
 
 			&.active a  {
 				color: @text;
 				text-decoration: underline;
+			}
+
+			&.user-nav {
+				position: relative;
+				width: 35px;
+				cursor: pointer;
+
+				.avatar {
+					position: absolute;
+					top: 0;
+					right: 0;
+					width: 35px;
+					height: 35px;
+				}
+
+				ul {
+					display: none;
+					position: absolute;
+					top: 20px;
+					right: -5px;
+					min-width: 7em;
+					padding: 20px 0 20px 20px;
+					margin: 0;
+
+					li {
+						padding: 0;
+						line-height: auto;
+						margin: 0;
+						display: block;
+
+						a {
+							background-color: @back;
+							padding: 0 .6em;
+							display: block;
+							border-width: 0 1px 1px;
+							border-style: solid;
+							border-color: @line;
+
+							&:hover {
+								color: @text;
+							}
+						}
+
+						&:first-child a { border-top-width: 1px; }
+
+						&:after {
+							content: "";
+							display: block;
+							position: absolute;
+							top: 12px;
+							right: 15px;
+							width: 15px;
+							height: 15px;
+							background-color: @back;
+							border-width: 1px 1px 0 0;
+							border-style: solid;
+							border-color: @line;
+							transform: rotate(-45deg);
+						}
+					}
+				}
+
+				&:hover ul {
+					display: block;
+				}
 			}
 		}
 	}

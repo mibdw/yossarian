@@ -38,7 +38,7 @@ module.exports = function (app, res, req) {
 	});
 
 	app.get('/partials/:section/:partial', function (req, res) {
-		res.render("partials/" + req.params.section + "/" + req.params.partial + ".html");
+		res.render(req.params.section + "/" + req.params.partial + ".html");
 	});
 
 	app.post('/marked', ensureAuthenticated, function(req, res) {
@@ -90,14 +90,13 @@ module.exports = function (app, res, req) {
 	app.post('/projects/list', ensureAuthenticated, projects.list);
 	app.post('/projects/calendar', ensureAuthenticated, projects.calendar);
 
-	var relations = require(__dirname + '/relations.js');
-	app.post('/relations/create', ensureAuthenticated, relations.create);
-	app.post('/relations/remove', ensureAuthenticated, relations.remove);
-	app.post('/relations/update', ensureAuthenticated, relations.update);
-	app.post('/relations/detail', ensureAuthenticated, relations.detail);
-	app.post('/relations/list', ensureAuthenticated, relations.list);
+	var contacts = require(__dirname + '/contacts.js');
+	app.post('/contacts/create', ensureAuthenticated, contacts.create);
+	app.post('/contacts/remove', ensureAuthenticated, contacts.remove);
+	app.post('/contacts/update', ensureAuthenticated, contacts.update);
+	app.post('/contacts/detail', ensureAuthenticated, contacts.detail);
+	app.post('/contacts/list', ensureAuthenticated, contacts.list);
 };
-
 
 function ensureAuthenticated(req, res, next) {
 	if (req.isAuthenticated()) { return next(); }
