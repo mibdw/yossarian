@@ -290,7 +290,7 @@ if(!e)return e;for(var n,h=e,k=[],m,p;n=h.match(d);)m=n[0],n[2]==n[3]&&(m="mailt
 
 var app = angular.module('yossarian', ['ngRoute', 'ngCookies', 'ngSanitize', 'ui.highlight', 'angularFileUpload', 'dashboard', 'docs', 'calendar', 'projects', 'contacts', 'settings']);
 
-app.config(['$routeProvider', function ($routeProvider) {
+app.config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
 	$routeProvider.when('/', {
 		templateUrl: 'partials/dashboard/main',
 		controller: 'dashboardController'
@@ -353,6 +353,8 @@ app.config(['$routeProvider', function ($routeProvider) {
 	.otherwise({
 		redirectTo: '/'
 	});
+
+	$locationProvider.html5Mode(false);
 }]);
 
 app.controller('global', ['$scope', '$rootScope', '$http',
@@ -619,7 +621,7 @@ ctrl.controller('docsUpdate', ['$scope', '$rootScope', '$routeParams', '$http', 
 			} else {
 
 				if (confirm('Are you sure you want to remove this document?') == true) {
-					$http.post('/docs/remove', { remove: $scope.updateDoc._id }).success( function (data) {
+					$http.post('/docs/remove', { 'remove': $scope.updateDoc._id, 'slug': $scope.updateDoc.slug, 'title': $scope.updateDoc.title }).success( function (data) {
 						window.location.pathname = '/#/docs';	
 					});
 				}	
@@ -740,7 +742,9 @@ ctrl.controller('calendarController', ['$scope', '$rootScope', '$routeParams', '
 			});
 		}, 1);
 		
-		$('.calendar-view').fullCalendar('gotoDate', $scope.displayDate);
+		setTimeout(function () {
+			$('.calendar-view').fullCalendar('gotoDate', $scope.displayDate);
+		}, 1);
 
 		$scope.eventOptions = [
 			{ name: 'Default', slug: 'default', url: '/partials/calendar/default' },
@@ -892,7 +896,8 @@ ctrl.controller('calendarController', ['$scope', '$rootScope', '$routeParams', '
 			$scope.incident.postDate = moment();
 			$scope.incident.author = $rootScope.user._id;
 			if (moment($scope.incident.start, 'DD/MM/YYYY').isValid()) {
-				$scope.incident.start = moment($scope.incident.start, 'DD/MM/YYYY').startOf('day').add(1, 'h').format();
+				$scope.incident.start = moment($scope.incident.start, 'DD/MM/YYYY').startOf('day').add(2, 'h').format();
+				alert($scope.incident.start);
 			} else {
 				return alert('Invalid start date');
 			}
@@ -919,7 +924,8 @@ ctrl.controller('calendarController', ['$scope', '$rootScope', '$routeParams', '
 			$scope.incident.author = $scope.incident.author._id;
 			$scope.incident.editor = $rootScope.user._id;
 			if (moment($scope.incident.start, 'DD/MM/YYYY').isValid()) {
-				$scope.incident.start = moment($scope.incident.start, 'DD/MM/YYYY').startOf('day').add(1, 'h').format();
+				$scope.incident.start = moment($scope.incident.start, 'DD/MM/YYYY').startOf('day').add(2, 'h').format();
+				alert($scope.incident.start);
 			} else {
 				return alert('Invalid start date');
 			}
@@ -943,7 +949,7 @@ ctrl.controller('calendarController', ['$scope', '$rootScope', '$routeParams', '
 
 		$scope.removeEvent = function () {
 			if (confirm('Are you sure you want to remove this event?') == true) {
-				$http.post('/calendar/remove', { remove: $scope.incident._id }).success( function (data) {	
+				$http.post('/calendar/remove', { 'remove': $scope.incident._id, 'start': moment($scope.incident.start, 'DD/MM/YYYY').format(), 'title': $scope.incident.title }).success( function (data) {	
 					$scope.incident = {};
 					$scope.eventPage(0);
 
@@ -1454,7 +1460,7 @@ ctrl.controller('projectsForm', ['$scope', '$rootScope', '$http', '$routeParams'
 
 		$scope.removeProject = function () {
 			if (confirm('Are you sure you want to remove this project?') == true) {
-				$http.post('/projects/remove', {'remove': $scope.venture._id}).success( function (data) {
+				$http.post('/projects/remove', { 'remove': $scope.venture._id, 'slug': $scope.venture.slug, 'title': $scope.venture.title }).success( function (data) {
 					window.location.pathname = "/#/projects";
 				});	
 			}

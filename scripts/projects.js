@@ -437,7 +437,7 @@ ctrl.controller('projectsForm', ['$scope', '$rootScope', '$http', '$routeParams'
 
 		$scope.removeProject = function () {
 			if (confirm('Are you sure you want to remove this project?') == true) {
-				$http.post('/projects/remove', {'remove': $scope.venture._id}).success( function (data) {
+				$http.post('/projects/remove', { 'remove': $scope.venture._id, 'slug': $scope.venture.slug, 'title': $scope.venture.title }).success( function (data) {
 					window.location.pathname = "/#/projects";
 				});	
 			}

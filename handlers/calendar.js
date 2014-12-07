@@ -2,11 +2,16 @@ var mongoose = require('mongoose');
 var moment = require('moment');
 
 var Event = require(__dirname + '/../models/event.js');
+var Change = require(__dirname + '/../models/change.js');
 
 exports.create = function(req, res, next) {
 	var createEvent = new Event(req.body);
 	createEvent.save(function (err, eventData) {
 		if (err) return console.log(err);
+
+		var change = new Change({ 'user': req.user._id, 'slug': moment(req.body.start).format('YYYY/MM'), 'title': req.body.title, 'action': 'create', 'section': 'calendar' });
+		change.save(function (err, change) { if (err) console.log(err); });
+
 		return res.send(eventData);
 	});
 };
@@ -14,6 +19,10 @@ exports.create = function(req, res, next) {
 exports.remove = function(req, res, next) {
 	Event.findByIdAndRemove(req.body.remove, function (err) {
 		if (err) return console.log(err);
+
+		var change = new Change({ 'user': req.user._id, 'slug': moment(req.body.start).format('YYYY/MM'), 'title': req.body.title, 'action': 'remove', 'section': 'calendar' });
+		change.save(function (err, change) { if (err) console.log(err); });
+
 		res.send('success');
 	});
 };
@@ -21,6 +30,10 @@ exports.remove = function(req, res, next) {
 exports.update = function(req, res, next) {
 	Event.findByIdAndUpdate(req.body._id, { $set: req.body }, function (err, eventData) {
 		if (err) console.log(err);
+
+		var change = new Change({ 'user': req.user._id, 'slug': moment(eventData.start).format('YYYY/MM'), 'title': eventData.title, 'action': 'update', 'section': 'calendar' });
+		change.save(function (err, change) { if (err) console.log(err); });
+
 		return res.send(eventData);
 	});
 };

@@ -172,7 +172,7 @@ ctrl.controller('docsUpdate', ['$scope', '$rootScope', '$routeParams', '$http', 
 			} else {
 
 				if (confirm('Are you sure you want to remove this document?') == true) {
-					$http.post('/docs/remove', { remove: $scope.updateDoc._id }).success( function (data) {
+					$http.post('/docs/remove', { 'remove': $scope.updateDoc._id, 'slug': $scope.updateDoc.slug, 'title': $scope.updateDoc.title }).success( function (data) {
 						window.location.pathname = '/#/docs';	
 					});
 				}	

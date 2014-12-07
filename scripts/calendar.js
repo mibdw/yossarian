@@ -100,7 +100,9 @@ ctrl.controller('calendarController', ['$scope', '$rootScope', '$routeParams', '
 			});
 		}, 1);
 		
-		$('.calendar-view').fullCalendar('gotoDate', $scope.displayDate);
+		setTimeout(function () {
+			$('.calendar-view').fullCalendar('gotoDate', $scope.displayDate);
+		}, 1);
 
 		$scope.eventOptions = [
 			{ name: 'Default', slug: 'default', url: '/partials/calendar/default' },
@@ -252,7 +254,8 @@ ctrl.controller('calendarController', ['$scope', '$rootScope', '$routeParams', '
 			$scope.incident.postDate = moment();
 			$scope.incident.author = $rootScope.user._id;
 			if (moment($scope.incident.start, 'DD/MM/YYYY').isValid()) {
-				$scope.incident.start = moment($scope.incident.start, 'DD/MM/YYYY').startOf('day').add(1, 'h').format();
+				$scope.incident.start = moment($scope.incident.start, 'DD/MM/YYYY').startOf('day').add(2, 'h').format();
+				alert($scope.incident.start);
 			} else {
 				return alert('Invalid start date');
 			}
@@ -279,7 +282,8 @@ ctrl.controller('calendarController', ['$scope', '$rootScope', '$routeParams', '
 			$scope.incident.author = $scope.incident.author._id;
 			$scope.incident.editor = $rootScope.user._id;
 			if (moment($scope.incident.start, 'DD/MM/YYYY').isValid()) {
-				$scope.incident.start = moment($scope.incident.start, 'DD/MM/YYYY').startOf('day').add(1, 'h').format();
+				$scope.incident.start = moment($scope.incident.start, 'DD/MM/YYYY').startOf('day').add(2, 'h').format();
+				alert($scope.incident.start);
 			} else {
 				return alert('Invalid start date');
 			}
@@ -303,7 +307,7 @@ ctrl.controller('calendarController', ['$scope', '$rootScope', '$routeParams', '
 
 		$scope.removeEvent = function () {
 			if (confirm('Are you sure you want to remove this event?') == true) {
-				$http.post('/calendar/remove', { remove: $scope.incident._id }).success( function (data) {	
+				$http.post('/calendar/remove', { 'remove': $scope.incident._id, 'start': moment($scope.incident.start, 'DD/MM/YYYY').format(), 'title': $scope.incident.title }).success( function (data) {	
 					$scope.incident = {};
 					$scope.eventPage(0);
 

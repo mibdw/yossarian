@@ -1,6 +1,6 @@
 var app = angular.module('yossarian', ['ngRoute', 'ngCookies', 'ngSanitize', 'ui.highlight', 'angularFileUpload', 'dashboard', 'docs', 'calendar', 'projects', 'contacts', 'settings']);
 
-app.config(['$routeProvider', function ($routeProvider) {
+app.config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
 	$routeProvider.when('/', {
 		templateUrl: 'partials/dashboard/main',
 		controller: 'dashboardController'
@@ -63,6 +63,8 @@ app.config(['$routeProvider', function ($routeProvider) {
 	.otherwise({
 		redirectTo: '/'
 	});
+
+	$locationProvider.html5Mode(false);
 }]);
 
 app.controller('global', ['$scope', '$rootScope', '$http',

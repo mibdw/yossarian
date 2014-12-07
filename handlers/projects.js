@@ -2,6 +2,7 @@ var mongoose = require('mongoose');
 var moment = require('moment');
 
 var Project = require(__dirname + '/../models/project.js');
+var Change = require(__dirname + '/../models/change.js');
 
 exports.create = function(req, res, next) {
 
@@ -37,6 +38,10 @@ exports.create = function(req, res, next) {
 		var project = new Project(req.body);
 		project.save(function (err, project) {
 			if (err) return console.log(err);
+
+			var change = new Change({ 'user': req.user._id, 'slug': project.slug, 'title': project.title, 'action': 'create', 'section': 'projects' });
+			change.save(function (err, change) { if (err) console.log(err); });
+
 			return res.send(project);
 		});
 	}
@@ -66,6 +71,10 @@ exports.create = function(req, res, next) {
 exports.remove = function(req, res, next) {
 	Project.findByIdAndRemove(req.body.remove, function (err) {
 		if (err) return console.log(err);
+
+		var change = new Change({ 'user': req.user._id, 'slug': req.body.slug, 'title': req.body.title, 'action': 'remove', 'section': 'projects' });
+		change.save(function (err, change) { if (err) console.log(err); });
+
 		res.send('success');
 	});
 };
@@ -134,6 +143,10 @@ exports.update = function(req, res, next) {
 
 		Project.findByIdAndUpdate(req.body._id, { $set: req.body }, function (err, projectData) {
 			if (err) console.log(err);
+	
+			var change = new Change({ 'user': req.user._id, 'slug': projectData.slug, 'title': projectData.title, 'action': 'update', 'section': 'projects' });
+			change.save(function (err, change) { if (err) console.log(err); });
+
 			return res.send(projectData);
 		});
 	}

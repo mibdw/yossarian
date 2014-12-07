@@ -53,7 +53,6 @@ app.use(passport.session());
 app.use(app.router);
 app.use(express.static(__dirname + '/public')); 
 
-
 var routes = require(__dirname + '/handlers/routes')(app);
 
 app.listen(999, function() {
