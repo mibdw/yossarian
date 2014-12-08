@@ -1,1 +1,9 @@
-<div class="under-construction"><em>{{heading}}</em> &mdash; Under construction</div>
+<aside class="left" style="width: 11%">
+	<ul class="menu">
+		<li ng-repeat="option in dashMenu" ng-class="{active: option == dashActive}">
+			<a href="" ng-click="dashMenuClick($index)">{{option.name}}</a>
+		</li>
+	</ul>
+</aside>
+
+<div class="content right" style="width: 89%;" ng-include="dashActive.url"></div>

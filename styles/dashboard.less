@@ -1,0 +1,223 @@
+#main.dashboard {
+	h1 {
+		margin-bottom: .2em;
+
+		span {
+			float: right;
+			font-size: .65em;
+			line-height: 2em;
+			font-weight: normal;
+			position: relative;
+			color: @link;
+			cursor: pointer;
+
+			&.active { 
+				font-weight: bold; 
+				text-decoration: underline;
+
+				ul { font-weight: normal; }
+			}
+			i { font-style: normal; }
+
+			ul {
+				display: none;
+				position: absolute;
+				padding: 1em 0 .6em;
+				margin: 0;
+				list-style-type: none;
+				top: 1em;
+				right: -.7em;
+				min-width: 10em;
+				z-index: 1234;
+				color: @text;
+
+				li {
+					background-color: @back;
+					border-width: 0 1px;
+					border-style: solid;
+					border-color: @line;
+					padding: 0 .5em;
+
+					&:first-child { border-top-width: 1px; }
+					&:last-child { border-bottom-width: 1px; }
+				}
+
+				&.checkboxes {
+					li {
+						&:first-child { padding-top: .4em }
+						&:last-child { padding-bottom: .4em }
+
+						label {
+							color: @text;
+							line-height: 1.4em;
+							padding: 0 .4em;
+							display: block;
+							white-space: nowrap;
+							overflow-x: hidden;
+							text-overflow: ellipsis;
+							cursor: pointer;
+						}
+					}						
+				}
+			}
+
+			&:hover {
+				text-decoration: underline;
+
+				&.dropdown:after {
+					content: "";
+					display: block;
+					position: absolute;
+					top: 1.65em;
+					right: 50%;
+					width: .6em;
+					height: .6em;
+					margin-right: -.4em;
+					background-color: @back;
+					border-width: 1px 1px 0 0;
+					border-color: @line;
+					border-style: solid;
+					z-index: 1235;
+					transform: rotate(-45deg);
+				}
+
+				ul { 
+					display: block; 
+					color: @text;
+				}
+			}
+
+		}
+	}
+
+	.memos {
+		list-style-type: none;
+		margin: 0 0 2em;
+		padding: 0;
+		.clearfix;
+
+		li {
+			border-top: 1px solid @line;
+			padding: .5em 0;
+
+			&.fresh-memo {
+
+				textarea {
+					width: 100%;
+					height: 7em;
+					font-size: .9em;
+				}
+
+				button {
+					float: right;
+				}
+
+				.fresh-memo-length {
+					color: @vague;
+					line-height: 1.8em;
+				}
+			}
+
+			&.no-memo {
+				padding: 1em 0;
+				color: @vague;
+				text-align: center;
+			}
+		}
+	}
+
+	.changelog {
+		margin: 0;
+		padding: 0;
+		list-style-type: none;
+	
+		li {
+			font-size: .9em;
+			line-height: 1.1em;
+			padding: .3em 0 .3em 2em;
+			position: relative;
+			border-top: 1px solid @line;
+			.clearfix;
+			.box-sizing (border-box);
+
+			.avatar {
+				position: absolute;
+				top: .5em;
+				left: 0;
+				width: 1.5em;
+				height: 1.5em;
+			}
+
+			.change-section {
+				text-transform: capitalize;
+				font-style: italic;
+			}
+		}
+	}
+
+	.upcoming-events {
+		list-style-type: none;
+		padding: 0;
+		margin: 0;
+
+		li {
+			padding: .5em 0 .5em 7em;
+			position: relative;
+			font-size: .9em;
+			border-top: 1px solid @line;
+			white-space: normal;
+			cursor: pointer;
+
+			.upcoming-time {
+				position: absolute;
+				left: 0;
+				top: .7em;
+				color: @vague;
+				width: 2.4em;
+				text-align: center;
+				font-size: .9em;
+			}
+
+			.color-block {
+				position: absolute;
+				left: 3em;
+				top: .7em;
+				width: 1.5em;
+				height: 1.5em;
+			}
+
+			.upcoming-author {
+				position: absolute;
+				top: .7em;
+				left: 4.7em;
+				width: 1.5em;
+				height: 1.5em;
+			}
+
+			.upcoming-duration {
+				color: @vague;
+				font-size: .75em;
+			}
+
+			.upcoming-person {
+				color: @vague;
+				font-size: .9em;
+			}
+
+			.upcoming-note {
+				margin-top: .3em;
+				color: @vague;
+				font-size: .9em;
+			}
+
+			&:hover { 
+				background-color: @hover; 
+
+				.upcoming-time, .upcoming-duration, .upcoming-person, .upcoming-note {
+					color: @text;
+				}
+			}
+
+		}
+	}
+}

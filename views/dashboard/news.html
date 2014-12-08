@@ -1,0 +1,75 @@
+<div ng-controller="dashboardNews">
+	
+	<section style="width: 33.3333%">
+		<h1>Memos 
+			<span href="" ng-click="createMemo = !createMemo">
+				<i ng-hide="createMemo">Create</i>
+				<i ng-show="createMemo">Close</i>
+			</span>
+		</h1>
+		<ul class="memos">
+			<li class="fresh-memo" ng-show="createMemo">
+				<textarea ng-model="freshMemo" maxlength="300"></textarea>
+				<button ng-click="postMemo()">Create</button>
+				<span class="fresh-memo-length">{{300 - freshMemo.length}} left</span>
+			</li>
+			<li ng-hide="memos.length < 1" class="no-memo">
+				There are no memos
+			</li>
+		</ul>
+
+		<h1>Changelog</h1>
+		<ul class="changelog">
+			<li ng-repeat="change in changelog">
+				<img src="/uploads/{{change.user.picture}}" title="{{change.user.name.first}} {{change.user.name.last}}" class="avatar">
+				{{change.user.name.first}} {{change.action}}d <a href="/#/{{change.section}}/{{change.slug}}">{{change.title}}</a> in <span class="change-section">{{change.section}}</span> <br>
+				<small><time datetime="{{change.date}}">{{fromNow(change.date)}}</time></small>
+			</li>
+		</ul>
+	</section>
+
+	<section style="width: 33.3333%">
+		<h1>Events
+			<span href="" class="dropdown" ng-class="{active: eventFilter.length > 0}">Filter
+				<ul class="checkboxes">
+					<li ng-repeat="category in categoryList">
+						<label for="{{category.slug}}">
+							<input type="checkbox" id="{{category.slug}}" value="{{category._id}}" ng-checked="eventFilter.indexOf(category._id) > -1" ng-click="categoryToggle(category._id)">
+							<i class="color-block" style="background-color: {{category.color}};"></i>
+							{{category.name}}
+						</label>
+					</li>
+				</ul>
+			</span>
+		</h1>
+		<ul class="upcoming-events">
+			<li ng-repeat="event in upcomingEvents" class="upcoming-content" ng-click="upcomingClick(event.start)">
+				<time datetime="P{{fromNowDays(event.start)}}" class="upcoming-time">{{fromNowDays(event.start)}}</time>
+
+				<span class="color-block" style="background-color: {{event.category.color}}" title="{{event.category.name}}"></span>
+				<img src="/uploads/{{event.author.picture}}" title="Author: {{event.author.name.first}} {{event.author.name.last}}" class="upcoming-author">
+
+				<span class="upcoming-headline">
+					<strong> {{event.title}}</strong> on {{event.period}} <time datetime="PdurationDays(event.start, event.end" class="upcoming-duration">{{durationDays(event.start, event.end)}}</time><br>
+				</span>
+				
+				<div class="upcoming-person">Posted by <em>{{event.author.name.first}} {{event.author.name.last}}</em></div>
+
+				<div class="upcoming-note">{{event.note}}</div>
+			</li>
+		</ul>
+	</section>
+
+	<section style="width: 33.3333%">
+
+		<h1>Tasks
+			<span href="" class="dropdown">Filter
+				<ul>
+					<li>Test 1</li>
+					<li>Test 2</li>
+				</ul>
+			</span>
+		</h1>
+	</section>
+
+</div>

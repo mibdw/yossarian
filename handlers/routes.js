@@ -60,6 +60,10 @@ module.exports = function (app, res, req) {
 	app.post('/contacts/update', ensureAuthenticated, contacts.update);
 	app.post('/contacts/detail', ensureAuthenticated, contacts.detail);
 	app.post('/contacts/list', ensureAuthenticated, contacts.list);
+
+
+	var changes = require(__dirname + '/changes.js');
+	app.post('/changes/list', ensureAuthenticated, changes.list);
 	
 	app.get('/partials/:section/:partial', function (req, res) {
 		res.render(req.params.section + "/" + req.params.partial + ".html");

@@ -7,7 +7,7 @@
 				<span ng-hide="calendarFilter">Filter</span>
 				<span ng-show="calendarFilter">Close</span>
 			</a>
-			<ul ng-show="calendarFilter" id="filter" outside-click="closeFilter()">
+			<ul ng-show="calendarFilter" id="filter">
 				<li ng-repeat="category in categoryList">
 					<label for="{{category.slug}}">
 						<input type="checkbox" id="{{category.slug}}" value="{{category._id}}" ng-checked="eventFilter.indexOf(category._id) > -1" ng-click="categoryToggle(category._id)">
