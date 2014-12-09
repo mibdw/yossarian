@@ -282,7 +282,6 @@ ctrl.controller('calendarController', ['$scope', '$rootScope', '$routeParams', '
 			$scope.incident.editor = $rootScope.user._id;
 			if (moment($scope.incident.start, 'DD/MM/YYYY').isValid()) {
 				$scope.incident.start = moment($scope.incident.start, 'DD/MM/YYYY').startOf('day').add(2, 'h').format();
-				alert($scope.incident.start);
 			} else {
 				return alert('Invalid start date');
 			}

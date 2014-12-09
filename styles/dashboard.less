@@ -98,9 +98,34 @@
 
 		li {
 			border-top: 1px solid @line;
-			padding: .5em 0;
+			font-size: .9em;
+			line-height: 1.1em;
+			padding: .5em 0 .5em 2em;
+			position: relative;
+			border-top: 1px solid @line;
+			.clearfix;
+			.box-sizing (border-box);
+
+			.avatar {
+				position: absolute;
+				top: .5em;
+				left: 0;
+				width: 1.5em;
+				height: 1.5em;
+			}
+
+			small {
+				padding: .7em 0 .3em;
+				display: block;
+
+				a { 
+					float: right;
+					color: @vague
+				}
+			}
 
 			&.fresh-memo {
+				padding-left: 0;
 
 				textarea {
 					width: 100%;
@@ -123,6 +148,16 @@
 				color: @vague;
 				text-align: center;
 			}
+
+			&.pagination {
+				color: @vague;
+				text-align: center;
+				font-size: .8em;
+
+				a { color: @vague }
+				.next { float: right }
+				.prev { float: left;}
+			}
 		}
 	}
 
@@ -132,13 +167,19 @@
 		list-style-type: none;
 	
 		li {
-			font-size: .9em;
+			font-size: .8em;
 			line-height: 1.1em;
-			padding: .3em 0 .3em 2em;
+			padding: .5em 0 .5em 2em;
 			position: relative;
 			border-top: 1px solid @line;
+			color: @vague;
 			.clearfix;
 			.box-sizing (border-box);
+			
+			a {
+				color: @vague;
+				font-weight: bold;
+			}
 
 			.avatar {
 				position: absolute;
@@ -151,6 +192,32 @@
 			.change-section {
 				text-transform: capitalize;
 				font-style: italic;
+			}
+
+			&:hover {
+				color: @text;
+				background-color: @hover;
+
+				a { color: @link; }
+				small { color: @text; }
+
+				&.pagination {
+					color: @vague;
+					background-color: transparent;
+
+					a { color: @vague }
+				}
+			}
+
+			&.pagination {
+				color: @vague;
+				text-align: center;
+				font-size: .8em;
+				padding: .5em 0;
+
+				a { color: @vague; font-weight: normal; }
+				.next { float: right }
+				.prev { float: left;}
 			}
 		}
 	}

@@ -2,9 +2,8 @@ var mongoose = require('mongoose');
 
 var memoSchema = mongoose.Schema({
 	body: String,
-	postDate: Date,
-	author: { type: String, ref: 'User' },
-	visible: { type: Boolean, default: true }
+	date: { type: Date, default: Date.now },
+	author: { type: String, ref: 'User' }
 });
 
 var User = require(__dirname + '/user');

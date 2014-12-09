@@ -1,34 +1,38 @@
 <div ng-controller="dashboardNews">
 	
-	<section style="width: 33.3333%">
+	<section style="width: 37%">
 		<h1>Memos 
-			<span href="" ng-click="createMemo = !createMemo">
-				<i ng-hide="createMemo">Create</i>
-				<i ng-show="createMemo">Close</i>
+			<span href="" ng-click="freshMemo = !freshMemo">
+				<i ng-hide="freshMemo">Create</i>
+				<i ng-show="freshMemo">Close</i>
 			</span>
 		</h1>
 		<ul class="memos">
-			<li class="fresh-memo" ng-show="createMemo">
-				<textarea ng-model="freshMemo" maxlength="300"></textarea>
-				<button ng-click="postMemo()">Create</button>
-				<span class="fresh-memo-length">{{300 - freshMemo.length}} left</span>
+			<li class="fresh-memo" ng-show="freshMemo">
+				<textarea ng-model="newMemo" maxlength="300"></textarea>
+				<button ng-click="createMemo()">Create</button>
+				<span class="fresh-memo-length">{{300 - newMemo.length}} left</span>
 			</li>
-			<li ng-hide="memos.length < 1" class="no-memo">
+			<li ng-repeat="memo in memos.data">
+				<img src="/uploads/{{memo.author.picture}}" title="{{memo.author.name.first}} {{memo.author.name.last}}" class="avatar">
+				{{memo.body}}<br>
+				<small>
+					<time datetime="{{memo.date}}">{{fromNow(memo.date)}}</time>
+					<a href="" class="remove" ng-click="removeMemo(memo._id)">Remove</a>
+				</small>
+			</li>
+			<li ng-show="memos.data.length == 0" class="no-memo">
 				There are no memos
 			</li>
-		</ul>
-
-		<h1>Changelog</h1>
-		<ul class="changelog">
-			<li ng-repeat="change in changelog">
-				<img src="/uploads/{{change.user.picture}}" title="{{change.user.name.first}} {{change.user.name.last}}" class="avatar">
-				{{change.user.name.first}} {{change.action}}d <a href="/#/{{change.section}}/{{change.slug}}">{{change.title}}</a> in <span class="change-section">{{change.section}}</span> <br>
-				<small><time datetime="{{change.date}}">{{fromNow(change.date)}}</time></small>
+			<li ng-show="memos.count > memoLimit" class="pagination">
+				<a href="" ng-click="navMemo('prev')" class="prev" ng-show="memoPage > 0">&laquo; Previous</a>
+				{{memoPage + 1}} of {{memoPages}}
+				<a href="" ng-click="navMemo('next')" class="next" ng-show="memoPage + 1 < memoPages">Next &raquo;</a>
 			</li>
 		</ul>
 	</section>
 
-	<section style="width: 33.3333%">
+	<section style="width: 37%">
 		<h1>Events
 			<span href="" class="dropdown" ng-class="{active: eventFilter.length > 0}">Filter
 				<ul class="checkboxes">
@@ -60,16 +64,21 @@
 		</ul>
 	</section>
 
-	<section style="width: 33.3333%">
+	<section style="width: 26%">
 
-		<h1>Tasks
-			<span href="" class="dropdown">Filter
-				<ul>
-					<li>Test 1</li>
-					<li>Test 2</li>
-				</ul>
-			</span>
-		</h1>
+		<h1>Changelog</h1>
+		<ul class="changelog">
+			<li ng-repeat="change in changelog.data">
+				<img src="/uploads/{{change.user.picture}}" title="{{change.user.name.first}} {{change.user.name.last}}" class="avatar">
+				{{change.user.name.first}} {{change.action}}d <a href="/#/{{change.section}}/{{change.slug}}">{{change.title}}</a> in <span class="change-section">{{change.section}}</span> <br>
+				<small><time datetime="{{change.date}}">{{fromNow(change.date)}}</time></small>
+			</li>
+			<li ng-show="changelog.count > memoLimit" class="pagination">
+				<a href="" ng-click="navChange('prev')" class="prev" ng-show="changePage > 0">&laquo; Previous</a>
+				{{changePage + 1}} of {{changePages}}
+				<a href="" ng-click="navChange('next')" class="next" ng-show="changePage + 1 < changePages">Next &raquo;</a>
+			</li>
+		</ul>
 	</section>
 
 </div>

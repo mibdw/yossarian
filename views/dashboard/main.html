@@ -1,4 +1,4 @@
-<aside class="left" style="width: 11%">
+<aside class="left" style="width: 9%">
 	<ul class="menu">
 		<li ng-repeat="option in dashMenu" ng-class="{active: option == dashActive}">
 			<a href="" ng-click="dashMenuClick($index)">{{option.name}}</a>
@@ -6,4 +6,4 @@
 	</ul>
 </aside>
 
-<div class="content right" style="width: 89%;" ng-include="dashActive.url"></div>
+<div class="content right" style="width: 91%;" ng-include="dashActive.url"></div>

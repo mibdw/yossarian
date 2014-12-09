@@ -8,7 +8,7 @@ module.exports = function (app, res, req) {
 	app.get('/login', auth.login);
 	app.get('/logout', ensureAuthenticated, auth.logout);
 	app.post('/login', auth.entry);
-	
+
 	var users = require(__dirname + '/users.js');
 	app.post('/users/create', ensureAuthenticated, users.create);
 	app.post('/users/remove', ensureAuthenticated, users.remove);
@@ -25,11 +25,9 @@ module.exports = function (app, res, req) {
 	app.post('/categories/list', ensureAuthenticated, categories.list);
 
 	var memo = require(__dirname + '/memo.js');
-	app.post('/memo/create', ensureAuthenticated, memo.create);
-	app.post('/memo/remove', ensureAuthenticated, memo.remove);
-	app.post('/memo/update', ensureAuthenticated, memo.update);
-	app.post('/memo/detail', ensureAuthenticated, memo.detail);
-	app.post('/memo/list', ensureAuthenticated, memo.list);
+	app.post('/memos/create', ensureAuthenticated, memo.create);
+	app.post('/memos/remove', ensureAuthenticated, memo.remove);
+	app.post('/memos/list', ensureAuthenticated, memo.list);
 
 	var docs = require(__dirname + '/docs.js');
 	app.post('/docs/create', ensureAuthenticated, docs.create);
