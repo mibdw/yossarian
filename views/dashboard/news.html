@@ -1,6 +1,6 @@
 <div ng-controller="dashboardNews">
 	
-	<section style="width: 37%">
+	<section style="width: 39%">
 		<h1>Memos 
 			<span href="" ng-click="freshMemo = !freshMemo">
 				<i ng-hide="freshMemo">Create</i>
@@ -13,7 +13,7 @@
 				<button ng-click="createMemo()">Create</button>
 				<span class="fresh-memo-length">{{300 - newMemo.length}} left</span>
 			</li>
-			<li ng-repeat="memo in memos.data">
+			<li ng-repeat="memo in memos.data | limitTo: memoLimit">
 				<img src="/uploads/{{memo.author.picture}}" title="{{memo.author.name.first}} {{memo.author.name.last}}" class="avatar">
 				{{memo.body}}<br>
 				<small>
@@ -32,7 +32,7 @@
 		</ul>
 	</section>
 
-	<section style="width: 37%">
+	<section style="width: 39%">
 		<h1>Events
 			<span href="" class="dropdown" ng-class="{active: eventFilter.length > 0}">Filter
 				<ul class="checkboxes">
@@ -64,11 +64,11 @@
 		</ul>
 	</section>
 
-	<section style="width: 26%">
+	<section style="width: 22%">
 
 		<h1>Changelog</h1>
 		<ul class="changelog">
-			<li ng-repeat="change in changelog.data">
+			<li ng-repeat="change in changelog.data | limitTo: changeLimit">
 				<img src="/uploads/{{change.user.picture}}" title="{{change.user.name.first}} {{change.user.name.last}}" class="avatar">
 				{{change.user.name.first}} {{change.action}}d <a href="/#/{{change.section}}/{{change.slug}}">{{change.title}}</a> in <span class="change-section">{{change.section}}</span> <br>
 				<small><time datetime="{{change.date}}">{{fromNow(change.date)}}</time></small>

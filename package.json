@@ -17,7 +17,8 @@
     "mongoose": ">= 0.0.0",
     "passport": ">= 0.0.0",
     "passport-local": ">= 0.0.0",
-    "multer": "^0.1.6"
+    "multer": "^0.1.6",
+    "socket.io": "^1.2.1"
   },
   "devDependencies": {
     "grunt": "0.4.x",

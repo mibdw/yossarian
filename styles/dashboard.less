@@ -99,7 +99,7 @@
 		li {
 			border-top: 1px solid @line;
 			font-size: .9em;
-			line-height: 1.1em;
+			line-height: 1.25em;
 			padding: .5em 0 .5em 2em;
 			position: relative;
 			border-top: 1px solid @line;
@@ -153,6 +153,7 @@
 				color: @vague;
 				text-align: center;
 				font-size: .8em;
+				padding-left: 0;
 
 				a { color: @vague }
 				.next { float: right }
@@ -168,7 +169,7 @@
 	
 		li {
 			font-size: .8em;
-			line-height: 1.1em;
+			line-height: 1.25em;
 			padding: .5em 0 .5em 2em;
 			position: relative;
 			border-top: 1px solid @line;
@@ -178,7 +179,7 @@
 			
 			a {
 				color: @vague;
-				font-weight: bold;
+				text-decoration: underline;
 			}
 
 			.avatar {
@@ -205,7 +206,10 @@
 					color: @vague;
 					background-color: transparent;
 
-					a { color: @vague }
+					a { 
+						color: @vague;
+						text-decoration: underline;
+					}
 				}
 			}
 
@@ -215,7 +219,11 @@
 				font-size: .8em;
 				padding: .5em 0;
 
-				a { color: @vague; font-weight: normal; }
+				a { 
+					color: @vague; 
+					text-decoration: none; 
+				}
+
 				.next { float: right }
 				.prev { float: left;}
 			}

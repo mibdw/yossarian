@@ -69,6 +69,8 @@ app.config(['$routeProvider', '$locationProvider', function ($routeProvider, $lo
 
 app.controller('global', ['$scope', '$rootScope', '$http',
 	function ($scope, $rootScope, $http) {
+
+		var socket = io();
 		
 		$rootScope.masthead = 'Yossarian';
 		$rootScope.seperator = ' \u2014 ';
@@ -78,7 +80,7 @@ app.controller('global', ['$scope', '$rootScope', '$http',
 			{ slug: 'docs', name: 'Knowledge base' },
 			{ slug: 'calendar', name: 'Calendar' },	
 			{ slug: 'projects', name: 'Projects' },
-			{ slug: 'contacts', name: 'Contacts' }
+			// { slug: 'contacts', name: 'Contacts' }
 		];
 
 		$rootScope.user = {};

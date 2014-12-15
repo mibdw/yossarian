@@ -36,6 +36,7 @@ passport.use(new LocalStrategy(function(username, password, done) {
 }));
 
 var app = express();
+var http = require('http').Server(app);
 
 
 app.engine('html', require('ejs').renderFile);
@@ -55,7 +56,7 @@ app.use(express.static(__dirname + '/public'));
 
 var routes = require(__dirname + '/handlers/routes')(app);
 
-app.listen(999, function() {
+http.listen(999, function() {
 	console.log('\n\nYossarian\n\n' + moment().format('YYYY-MM-DD HH:mm:ss') + ' - Where are the Snowdens of yesteryear?\n' + moment().format('YYYY-MM-DD HH:mm:ss') + ' - Application launched at http://localhost:999');
 });
 

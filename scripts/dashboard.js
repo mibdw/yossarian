@@ -69,7 +69,7 @@ ctrl.controller('dashboardNews', ['$scope', '$http', '$cookies',
 
 		$scope.changePage = 0;
 		$scope.changePages = 0;
-		$scope.changeLimit = 15;
+		$scope.changeLimit = 12;
 
 		$scope.changelog = [];
 		$scope.getChangelog = function () {

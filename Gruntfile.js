@@ -40,6 +40,7 @@ module.exports = function(grunt) {
 					'scripts/libs/jquery-1.11.1.js', 
 					'scripts/libs/jquery-ui.js', 
 					'scripts/libs/moment-with-locales.js', 
+					'scripts/libs/socket.io.js', 
 					'scripts/libs/fullcalendar.js',
 					'scripts/annotated.js', 
 				],
