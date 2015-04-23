@@ -38,7 +38,6 @@ passport.use(new LocalStrategy(function(username, password, done) {
 var app = express();
 var http = require('http').Server(app);
 
-
 app.engine('html', require('ejs').renderFile);
 app.set('views', __dirname + '/views');
 
